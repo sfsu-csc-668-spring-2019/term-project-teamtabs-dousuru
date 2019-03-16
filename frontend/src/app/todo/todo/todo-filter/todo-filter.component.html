@@ -1,0 +1,5 @@
+<select [formControl]="dropdown">
+  <option *ngFor="let filter of filters" [value]="filter.value">{{
+    filter.name
+  }}</option>
+</select>

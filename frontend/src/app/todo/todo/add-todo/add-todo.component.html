@@ -1,0 +1,7 @@
+<form (submit)="onSubmit($event)">
+  <label
+    >Add Todo:
+    <input type="text" [formControl]="todoName" />
+    <button type="submit">Add</button>
+  </label>
+</form>

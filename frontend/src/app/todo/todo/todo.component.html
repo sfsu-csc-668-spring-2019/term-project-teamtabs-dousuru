@@ -1,0 +1,14 @@
+<app-todo-info></app-todo-info>
+<app-add-todo></app-add-todo>
+<app-todo-filter (onFilter)="filter($event)"></app-todo-filter>
+<button (click)="removeCompleted()">Remove completed</button>
+<ul>
+  <li *ngFor="let todo of (todos | async)">
+    <input
+      type="checkbox"
+      [checked]="todo.completed"
+      (change)="changeCompleted(todo, $event)"
+    />
+    {{ todo.name }}
+  </li>
+</ul>
