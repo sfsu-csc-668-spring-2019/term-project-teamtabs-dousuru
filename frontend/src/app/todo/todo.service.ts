@@ -13,14 +13,20 @@ export class TodoService {
     this.todosSubject$ = new BehaviorSubject([]);
   }
 
+  get todos(): Todo[] {
+    return this.todosSubject$.getValue();
+  }
+
+  set todos(newValue: Todo[]) {
+    this.todosSubject$.next(newValue);
+  }
+
   get todos$(): Observable<Todo[]> {
     return this.todosSubject$.asObservable();
   }
 
   addTodo(todo: Todo) {
-    this.todosSubject$.pipe(take(1)).subscribe(todos => {
-      this.todosSubject$.next([...todos, todo]);
-    });
+    this.todos = [...this.todos, todo];
   }
 
   setTodos(todos: Todo[]) {
@@ -28,22 +34,17 @@ export class TodoService {
   }
 
   setTodo(withId: number, newTodo: Todo) {
-    this.todosSubject$.pipe(take(1)).subscribe(todos => {
-      const updated = todos.map(todo => {
-        if (todo.id !== withId) {
-          return todo;
-        } else {
-          return newTodo;
-        }
-      });
-      this.todosSubject$.next(updated);
+    const updated = this.todos.map(todo => {
+      if (todo.id !== withId) {
+        return todo;
+      } else {
+        return newTodo;
+      }
     });
+    this.todos = updated;
   }
 
   removeCompleted() {
-    this.todosSubject$.pipe(take(1)).subscribe(todos => {
-      const filtered = todos.filter(todo => !todo.completed);
-      this.todosSubject$.next(filtered);
-    });
+    this.todos = this.todos.filter(todo => !todo.completed);
   }
 }
