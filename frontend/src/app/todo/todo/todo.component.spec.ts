@@ -7,13 +7,13 @@ import { Todo } from "../Todo";
 import { By } from "@angular/platform-browser";
 
 @Component({ template: "", selector: "app-todo-info" })
-class TodoInfoStub {}
+class TodoInfoStubComponent {}
 
 @Component({ template: "", selector: "app-add-todo" })
-class AddTodoStub {}
+class AddTodoStubComponent {}
 
 @Component({ template: "", selector: "app-todo-filter" })
-class TodoFilterStub {}
+class TodoFilterStubComponent {}
 
 describe("TodoComponent", () => {
   let component: TodoComponent;
@@ -23,7 +23,12 @@ describe("TodoComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TodoComponent, TodoInfoStub, AddTodoStub, TodoFilterStub]
+      declarations: [
+        TodoComponent,
+        TodoInfoStubComponent,
+        AddTodoStubComponent,
+        TodoFilterStubComponent
+      ]
     }).compileComponents();
   }));
 
@@ -44,7 +49,7 @@ describe("TodoComponent", () => {
   });
 
   it("should update service when todo is updated", () => {
-    let spy = spyOn(service, "setTodo");
+    const spy = spyOn(service, "setTodo");
     const todo = new Todo("asdf");
     component.changeCompleted(todo, { target: { checked: true } });
     expect(spy).toHaveBeenCalled();
@@ -52,7 +57,7 @@ describe("TodoComponent", () => {
   });
 
   it("should display a list of todos from service", () => {
-    let todos = [new Todo("hello"), new Todo("World")];
+    const todos = [new Todo("hello"), new Todo("World")];
     service.setTodos(todos);
     fixture.detectChanges();
 

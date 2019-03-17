@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { Observable, of } from "rxjs";
 import { Todo } from "../../Todo";
 import { TodoInfoComponent } from "./todo-info.component";
 import { TodoService } from "../../todo.service";

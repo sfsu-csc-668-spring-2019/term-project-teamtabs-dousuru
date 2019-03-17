@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { TodoService } from "../todo.service";
 import { Todo } from "../Todo";
 import { TodoFilter } from "./todo-filter/TodoFilter";

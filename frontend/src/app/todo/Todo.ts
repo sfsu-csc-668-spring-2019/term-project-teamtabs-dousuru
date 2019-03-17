@@ -1,9 +1,9 @@
 export class Todo {
+  private static _nextId = 0;
+
   private _name: string;
   private _completed: boolean;
   private _id: number;
-
-  private static _nextId = 0;
 
   private static nextId() {
     return this._nextId++;
@@ -23,12 +23,12 @@ export class Todo {
     return this._name;
   }
 
-  public get completed(): boolean {
-    return this._completed;
-  }
-
   public set name(newName: string) {
     this._name = newName;
+  }
+
+  public get completed(): boolean {
+    return this._completed;
   }
 
   public set completed(newCompleted: boolean) {

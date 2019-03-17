@@ -4,13 +4,13 @@ import { Component } from "@angular/core";
 import { AppComponent } from "./app.component";
 
 @Component({ selector: "app-todo", template: "" })
-class TodoComponentStub {}
+class TodoStubComponent {}
 
 describe("AppComponent", () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AppComponent, TodoComponentStub]
+      declarations: [AppComponent, TodoStubComponent]
     }).compileComponents();
   }));
 

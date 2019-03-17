@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { TodoService } from "../../todo.service";
@@ -9,7 +15,7 @@ import { TodoFilter } from "./TodoFilter";
   templateUrl: "./todo-filter.component.html",
   styleUrls: ["./todo-filter.component.scss"]
 })
-export class TodoFilterComponent implements OnInit {
+export class TodoFilterComponent implements OnInit, OnDestroy {
   constructor(private todoService: TodoService) {}
 
   dropdown = new FormControl(TodoFilter.All);
@@ -17,7 +23,7 @@ export class TodoFilterComponent implements OnInit {
   private dropdownSub: Subscription;
 
   @Output()
-  onFilter = new EventEmitter<TodoFilter>();
+  filter = new EventEmitter<TodoFilter>();
 
   get currentFilter(): TodoFilter {
     return this.dropdown.value as TodoFilter;
@@ -31,8 +37,8 @@ export class TodoFilterComponent implements OnInit {
 
   ngOnInit() {
     this.dropdownSub = this.dropdown.valueChanges.subscribe(value => {
-      const filter: TodoFilter = parseInt(value);
-      this.onFilter.emit(filter);
+      const filter: TodoFilter = parseInt(value, 10);
+      this.filter.emit(filter);
     });
   }
 

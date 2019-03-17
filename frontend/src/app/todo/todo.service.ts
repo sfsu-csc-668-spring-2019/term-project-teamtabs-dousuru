@@ -30,8 +30,11 @@ export class TodoService {
   setTodo(withId: number, newTodo: Todo) {
     this.todosSubject$.pipe(take(1)).subscribe(todos => {
       const updated = todos.map(todo => {
-        if (todo.id !== withId) return todo;
-        else return newTodo;
+        if (todo.id !== withId) {
+          return todo;
+        } else {
+          return newTodo;
+        }
       });
       this.todosSubject$.next(updated);
     });
