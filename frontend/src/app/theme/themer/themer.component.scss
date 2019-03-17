@@ -1,0 +1,11 @@
+@mixin theme($text) {
+  color: $text;
+}
+
+.light-theme {
+  @include theme(black);
+}
+
+.dark-theme {
+  @include theme(white);
+}
