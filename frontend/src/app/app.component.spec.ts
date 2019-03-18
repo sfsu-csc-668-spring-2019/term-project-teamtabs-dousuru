@@ -6,11 +6,22 @@ import { AppComponent } from "./app.component";
 @Component({ selector: "app-todo", template: "" })
 class TodoStubComponent {}
 
+@Component({ selector: "app-theme-chooser", template: "" })
+class ThemeChooserStubComponent {}
+
+@Component({ selector: "app-themer", template: "" })
+class ThemerStubComponent {}
+
 describe("AppComponent", () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AppComponent, TodoStubComponent]
+      declarations: [
+        AppComponent,
+        TodoStubComponent,
+        ThemerStubComponent,
+        ThemeChooserStubComponent
+      ]
     }).compileComponents();
   }));
 
