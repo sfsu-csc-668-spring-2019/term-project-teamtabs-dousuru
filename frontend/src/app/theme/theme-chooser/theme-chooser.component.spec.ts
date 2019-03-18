@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ThemeChooserComponent } from './theme-chooser.component';
+import { ThemeChooserComponent } from "./theme-chooser.component";
 
-describe('ThemeChooserComponent', () => {
+describe("ThemeChooserComponent", () => {
   let component: ThemeChooserComponent;
   let fixture: ComponentFixture<ThemeChooserComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThemeChooserComponent ]
-    })
-    .compileComponents();
+      declarations: [ThemeChooserComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ThemeChooserComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

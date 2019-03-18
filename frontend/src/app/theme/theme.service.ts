@@ -23,9 +23,4 @@ export class ThemeService {
   set theme(newTheme: Theme) {
     this.themeSubject.next(newTheme);
   }
-
-  // TODO refactor service to not need this
-  public toggleTheme() {
-    this.theme = this.theme === themes[0] ? themes[1] : themes[0];
-  }
 }

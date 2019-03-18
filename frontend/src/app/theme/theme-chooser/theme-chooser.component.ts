@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ThemeService } from "../theme.service";
+import { light, dark } from "../Theme";
 
 @Component({
   selector: "app-theme-chooser",
@@ -11,7 +12,11 @@ export class ThemeChooserComponent implements OnInit {
 
   ngOnInit() {}
 
-  swapTheme() {
-    this.themeService.toggleTheme();
+  setLight() {
+    this.themeService.theme = light;
+  }
+
+  setDark() {
+    this.themeService.theme = dark;
   }
 }

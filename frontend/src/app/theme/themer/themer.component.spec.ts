@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ThemerComponent } from './themer.component';
+import { ThemerComponent } from "./themer.component";
 
-describe('ThemerComponent', () => {
+describe("ThemerComponent", () => {
   let component: ThemerComponent;
   let fixture: ComponentFixture<ThemerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThemerComponent ]
-    })
-    .compileComponents();
+      declarations: [ThemerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ThemerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
