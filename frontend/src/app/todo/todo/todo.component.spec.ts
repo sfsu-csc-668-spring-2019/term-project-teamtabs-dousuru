@@ -1,10 +1,8 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { Component, DebugElement } from "@angular/core";
+import { Component, DebugElement, Input } from "@angular/core";
 
 import { TodoComponent } from "./todo.component";
 import { TodoService } from "../todo.service";
-import { Todo } from "../Todo";
-import { By } from "@angular/platform-browser";
 
 @Component({ template: "", selector: "app-todo-info" })
 class TodoInfoStubComponent {}
@@ -14,6 +12,11 @@ class AddTodoStubComponent {}
 
 @Component({ template: "", selector: "app-todo-filter" })
 class TodoFilterStubComponent {}
+
+@Component({ template: "", selector: "app-todo-list" })
+class TodoListStubComponent {
+  @Input() todos;
+}
 
 describe("TodoComponent", () => {
   let component: TodoComponent;
@@ -27,7 +30,8 @@ describe("TodoComponent", () => {
         TodoComponent,
         TodoInfoStubComponent,
         AddTodoStubComponent,
-        TodoFilterStubComponent
+        TodoFilterStubComponent,
+        TodoListStubComponent
       ]
     }).compileComponents();
   }));
@@ -46,23 +50,5 @@ describe("TodoComponent", () => {
 
   it("should create", () => {
     expect(component).toBeTruthy();
-  });
-
-  it("should update service when todo is updated", () => {
-    const spy = spyOn(service, "setTodo");
-    const todo = new Todo("asdf");
-    component.changeCompleted(todo, { target: { checked: true } });
-    expect(spy).toHaveBeenCalled();
-    expect(spy.calls.mostRecent().args[0]).toEqual(todo.id);
-  });
-
-  it("should display a list of todos from service", () => {
-    const todos = [new Todo("hello"), new Todo("World")];
-    service.setTodos(todos);
-    fixture.detectChanges();
-
-    const el: HTMLElement = de.query(By.css("ul")).nativeElement;
-    expect(el.innerText).toContain("hello");
-    expect(el.innerText).toContain("World");
   });
 });

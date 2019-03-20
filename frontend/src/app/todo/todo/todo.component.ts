@@ -18,12 +18,6 @@ export class TodoComponent implements OnInit {
     this.todos = this.todoService.todos$;
   }
 
-  changeCompleted(todo: Todo, event) {
-    const newValue = event.target.checked;
-    todo.completed = newValue;
-    this.todoService.setTodo(todo.id, todo);
-  }
-
   removeCompleted() {
     this.todoService.removeCompleted();
   }

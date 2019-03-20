@@ -5,6 +5,7 @@ import { TodoComponent } from "./todo/todo.component";
 import { TodoInfoComponent } from "./todo/todo-info/todo-info.component";
 import { AddTodoComponent } from "./todo/add-todo/add-todo.component";
 import { TodoFilterComponent } from "./todo/todo-filter/todo-filter.component";
+import { TodoListComponent } from "./todo/todo-list/todo-list.component";
 import { TodoService } from "./todo.service";
 
 @NgModule({
@@ -12,7 +13,8 @@ import { TodoService } from "./todo.service";
     TodoComponent,
     TodoInfoComponent,
     AddTodoComponent,
-    TodoFilterComponent
+    TodoFilterComponent,
+    TodoListComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [TodoComponent],
