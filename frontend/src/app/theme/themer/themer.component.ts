@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Observable } from "rxjs";
+import { ThemeService } from "./../theme.service";
+import { Theme } from "../Theme";
 
 @Component({
   selector: "app-themer",
@@ -7,7 +10,10 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
   encapsulation: ViewEncapsulation.None
 })
 export class ThemerComponent implements OnInit {
-  constructor() {}
+  currentTheme: Observable<Theme>;
+  constructor(private themeService: ThemeService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentTheme = this.themeService.theme$;
+  }
 }

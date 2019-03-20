@@ -1,0 +1,30 @@
+& {
+  color: $text;
+  background-color: $background-color !important;
+
+  transition: color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input {
+  color: $text;
+  background-color: $background-color;
+}
+
+button.primary {
+  background-color: $primary;
+  color: $primary-invert;
+
+  &.outline {
+    background-color: inherit;
+    color: $text;
+    border: 1px solid $primary;
+
+    &:hover {
+      background-color: $primary;
+      color: $primary-invert;
+      transition: color 0.2s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
+    }
+  }
+}

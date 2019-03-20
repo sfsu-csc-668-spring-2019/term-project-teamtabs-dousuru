@@ -1,11 +1,20 @@
-@mixin theme($text) {
-  color: $text;
+.root {
+  height: 100%;
+  width: 100%;
 }
 
 .light-theme {
-  @include theme(black);
+  $text: black;
+  $background-color: white;
+  $primary: #bc28f4;
+  $primary-invert: white;
+  @import "../theme";
 }
 
 .dark-theme {
-  @include theme(white);
+  $text: white;
+  $background-color: #222;
+  $primary: #bc28f4;
+  $primary-invert: white;
+  @import "../theme";
 }

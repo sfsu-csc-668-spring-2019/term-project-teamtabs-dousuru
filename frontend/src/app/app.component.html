@@ -1,6 +1,5 @@
-<div class="root" [ngClass]="(currentTheme | async).cssClass">
+<app-themer>
   <app-theme-chooser></app-theme-chooser>
   <app-todo></app-todo>
   <router-outlet></router-outlet>
-  <app-themer></app-themer>
-</div>
+</app-themer>
