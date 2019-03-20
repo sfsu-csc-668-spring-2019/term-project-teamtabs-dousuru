@@ -4,6 +4,21 @@ body {
   height: 100%;
 }
 
+/* border-box setup */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+/* custom element styles */
 p {
   margin: 0;
 }
@@ -26,18 +41,4 @@ button {
 input,
 select {
   border: 1px solid gray;
-}
-
-/* border-box setup */
-html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
 }

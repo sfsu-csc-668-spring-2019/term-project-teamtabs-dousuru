@@ -10,6 +10,10 @@ export class Theme {
   public toString() {
     return `Theme(${this.name}, ${this.cssClass})`;
   }
+
+  public equals(other: Theme): boolean {
+    return this.cssClass === other.cssClass;
+  }
 }
 
 export const light = new Theme("Light", "light-theme");
