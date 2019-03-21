@@ -56,6 +56,21 @@ namespace DouSuru {
 
             app.UseMvc(routes => {
                 routes.MapRoute(
+                    name: "user",
+                    template: "{controller=User}/");
+                routes.MapRoute(
+                    name: "organization",
+                    template: "{controller=Organization}/");
+                routes.MapRoute(
+                    name: "project",
+                    template: "{controller=Project}/");
+                routes.MapRoute(
+                    name: "list",
+                    template: "{controller=List}/");
+                routes.MapRoute(
+                    name: "task",
+                    template: "{controller=Task}/");
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
