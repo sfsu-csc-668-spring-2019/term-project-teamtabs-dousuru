@@ -71,8 +71,8 @@ namespace DouSuru {
                     name: "task",
                     template: "{controller=Task}/");
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: "home",
+                    template: "{controller=Home}/");
             });
         }
     }

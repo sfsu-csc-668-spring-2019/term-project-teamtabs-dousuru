@@ -1,36 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DouSuru.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace DouSuru.Controllers {
+    [Route("/")]
     public class HomeController : Controller {
-        public IActionResult Index() {
-            return View();
+
+        [HttpGet("")]
+        public ActionResult GetHomeIndex() {
+            return Json(new { authentication = false });
         }
 
-        public IActionResult About() {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+        [HttpGet("about")]
+        public ActionResult GetHomeAbout() {
+            return Json(new { authentication = false });
         }
 
-        public IActionResult Contact() {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+        [HttpGet("privacy")]
+        public ActionResult GetHomePrivacy() {
+            return Json(new { authentication = false });
         }
 
-        public IActionResult Privacy() {
-            return View();
+        [HttpGet("login")]
+        public ActionResult GetHomeLogin() {
+            return Json(new { authentication = false });
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [HttpGet("logout")]
+        public ActionResult GetHomeLogout() {
+            return Json(new { authentication = false });
         }
+
+        [HttpGet("register")]
+        public ActionResult GetHomeRegister() {
+            return Json(new { authentication = false });
+        }
+
+        [HttpPost("login")]
+        public ActionResult PostHomeLogin([FromBody]string body) {
+            return Json(new { authentication = false });
+        }
+
+        [HttpPost("register")]
+        public ActionResult PostHomeRegister([FromBody]string body) {
+            return Json(new { authentication = false });
+        }
+
     }
 }
