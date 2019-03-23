@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SharedModule } from "./../shared/shared.module";
 import { TodoComponent } from "./todo/todo.component";
 import { TodoInfoComponent } from "./todo/todo-info/todo-info.component";
 import { AddTodoComponent } from "./todo/add-todo/add-todo.component";
@@ -16,7 +17,7 @@ import { TodoService } from "./todo.service";
     TodoFilterComponent,
     TodoListComponent
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
   exports: [TodoComponent],
   providers: [TodoService]
 })

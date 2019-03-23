@@ -1,0 +1,14 @@
+.checkbox {
+  display: inline-block;
+  $color: #00ffdd;
+  height: 1.3rem;
+  width: 1.3rem;
+  margin: 0.5rem;
+  border-radius: 50%;
+  border: 2px solid $color;
+  transition: background-color 0.1s ease-in;
+
+  &.checked {
+    background-color: $color;
+  }
+}
