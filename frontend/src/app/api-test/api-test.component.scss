@@ -1,0 +1,18 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 1rem;
+}
+
+$invalid-border: 1px solid red;
+
+input.ng-touched.ng-invalid {
+  border: $invalid-border;
+}
+
+textarea.ng-touched.ng-invalid {
+  border: $invalid-border;
+}

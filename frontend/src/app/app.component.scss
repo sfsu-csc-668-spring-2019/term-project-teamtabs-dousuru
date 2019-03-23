@@ -1,13 +1,9 @@
 .grid {
   display: grid;
   grid-template-rows: [header] auto [main] 1fr;
+  grid-template-columns: 1fr;
 }
 
 .header {
-  grid-area: header;
   justify-self: flex-end;
-}
-
-.main {
-  grid-area: main;
 }
