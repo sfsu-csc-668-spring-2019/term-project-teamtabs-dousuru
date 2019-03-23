@@ -1,10 +1,13 @@
-import { DebugElement } from "@angular/core";
+import { DebugElement, Component } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
 import { TodoListComponent } from "./todo-list.component";
 import { Todo } from "../../Todo";
 import { TodoService } from "../../todo.service";
+
+@Component({ template: "", selector: "app-checkbox" })
+class CheckboxStubComponent {}
 
 describe("TodoListComponent", () => {
   let component: TodoListComponent;
@@ -14,7 +17,7 @@ describe("TodoListComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TodoListComponent],
+      declarations: [TodoListComponent, CheckboxStubComponent],
       providers: [TodoService]
     }).compileComponents();
   }));
