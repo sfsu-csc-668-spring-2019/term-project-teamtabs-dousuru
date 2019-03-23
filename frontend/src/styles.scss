@@ -18,6 +18,16 @@ html {
   box-sizing: inherit;
 }
 
+@import url("https://rsms.me/inter/inter.css");
+html {
+  font-family: "Inter", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", sans-serif;
+  }
+}
+
 /* custom element styles */
 p {
   margin: 0;
@@ -41,4 +51,14 @@ button {
 input,
 select {
   border: 1px solid gray;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 1rem;
 }
