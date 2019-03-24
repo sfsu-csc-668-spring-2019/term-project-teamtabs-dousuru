@@ -6,11 +6,11 @@ import { AppComponent } from "./app.component";
 import { TodoModule } from "./todo/todo.module";
 import { ThemeModule } from "./theme/theme.module";
 import { HomepageComponent } from "./homepage/homepage.component";
-import { ApiTestComponent } from "./api-test/api-test.component";
 import { HttpClientModule } from "@angular/common/http";
+import { NetworkTestingModule } from "./network-testing/network-testing.module";
 
 @NgModule({
-  declarations: [AppComponent, HomepageComponent, ApiTestComponent],
+  declarations: [AppComponent, HomepageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -18,7 +18,8 @@ import { HttpClientModule } from "@angular/common/http";
     FormsModule,
     ReactiveFormsModule,
     TodoModule,
-    ThemeModule
+    ThemeModule,
+    NetworkTestingModule
   ],
   bootstrap: [AppComponent]
 })

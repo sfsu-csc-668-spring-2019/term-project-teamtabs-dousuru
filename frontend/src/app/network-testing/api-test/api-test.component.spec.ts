@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ApiTestComponent } from './api-test.component';
+import { ApiTestComponent } from "./api-test.component";
 
-describe('ApiTestComponent', () => {
+describe("ApiTestComponent", () => {
   let component: ApiTestComponent;
   let fixture: ComponentFixture<ApiTestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ApiTestComponent ]
-    })
-    .compileComponents();
+      declarations: [ApiTestComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ApiTestComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

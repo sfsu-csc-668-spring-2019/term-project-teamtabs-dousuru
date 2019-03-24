@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Subscription, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { ApiService } from "../api.service";
-import { formArrayNameProvider } from "@angular/forms/src/directives/reactive_directives/form_group_name";
 import { HttpResponse } from "@angular/common/http";
 
 @Component({
@@ -31,7 +30,9 @@ export class ApiTestComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   makeRequest() {

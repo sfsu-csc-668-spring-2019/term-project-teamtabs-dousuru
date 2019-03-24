@@ -7,7 +7,7 @@ import {
   HttpResponse
 } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { filter } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 import { environment } from "src/environments/environment.prod";
 
 @Injectable({
@@ -30,9 +30,11 @@ export class ApiService {
       }
     );
     return this.httpClient.request(request).pipe(
-      filter(res => {
+      filter((res: HttpEvent<HttpResponse<string>>) => {
         return res.type === HttpEventType.Response;
-      })
+      }),
+      // typescript can't infer type since we filter it above based on an enum
+      map(res => (res as unknown) as HttpResponse<string>)
     );
   }
 }

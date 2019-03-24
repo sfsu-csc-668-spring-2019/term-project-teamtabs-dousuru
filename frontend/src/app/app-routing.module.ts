@@ -1,4 +1,3 @@
-import { ApiTestComponent } from "./api-test/api-test.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HomepageComponent } from "./homepage/homepage.component";
@@ -6,8 +5,7 @@ import { TodoComponent } from "./todo/todo/todo.component";
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
-  { path: "todo", component: TodoComponent },
-  { path: "api", component: ApiTestComponent }
+  { path: "todo", component: TodoComponent }
 ];
 
 @NgModule({
