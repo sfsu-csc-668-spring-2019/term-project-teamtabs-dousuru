@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiRoot: "http://localhost:3000"
+  apiRoot: "http://localhost:3000",
+  socketRoot: "ws://localhost:3000/socket"
 };
 
 /*
