@@ -1,6 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Observable, of } from "rxjs";
 
+import { HttpResponse } from "@angular/common/http";
 import { ApiTestComponent } from "./api-test.component";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ApiService } from "../api.service";
+
+class ApiStubService {
+  makeRequest(
+    path: string,
+    method: string,
+    body: string
+  ): Observable<HttpResponse<string>> {
+    return of(new HttpResponse({ body: "asdf" }));
+  }
+}
 
 describe("ApiTestComponent", () => {
   let component: ApiTestComponent;
@@ -8,7 +22,9 @@ describe("ApiTestComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ApiTestComponent]
+      declarations: [ApiTestComponent],
+      imports: [ReactiveFormsModule],
+      providers: [{ provide: ApiService, useValue: ApiStubService }]
     }).compileComponents();
   }));
 
