@@ -1,9 +1,0 @@
-.grid {
-  display: grid;
-  grid-template-rows: [header] auto [main] 1fr;
-  grid-template-columns: 1fr;
-}
-
-.header {
-  justify-self: flex-end;
-}
