@@ -1,0 +1,19 @@
+.dashboard {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 70px [organizations] 10% [projects] 1fr [main];
+  grid-template-areas: "organizations projects main";
+}
+
+.organizations {
+  grid-area: organizations;
+}
+
+.projects {
+  grid-area: projects;
+}
+
+.main {
+  grid-area: main;
+}
