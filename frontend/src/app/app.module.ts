@@ -14,14 +14,14 @@ import { NavigationModule } from "./navigation/navigation.module";
   declarations: [AppComponent, HomepageComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NavigationModule,
     TodoModule,
     ThemeModule,
-    NetworkTestingModule
+    NetworkTestingModule,
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })
