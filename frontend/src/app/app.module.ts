@@ -8,18 +8,22 @@ import { ThemeModule } from "./theme/theme.module";
 import { HomepageComponent } from "./homepage/homepage.component";
 import { HttpClientModule } from "@angular/common/http";
 import { NetworkTestingModule } from "./network-testing/network-testing.module";
+import { NavigationModule } from "./navigation/navigation.module";
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
   declarations: [AppComponent, HomepageComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NavigationModule,
+    AuthModule,
     TodoModule,
     ThemeModule,
-    NetworkTestingModule
+    NetworkTestingModule,
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })
