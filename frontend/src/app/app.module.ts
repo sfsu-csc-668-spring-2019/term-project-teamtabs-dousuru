@@ -9,6 +9,7 @@ import { HomepageComponent } from "./homepage/homepage.component";
 import { HttpClientModule } from "@angular/common/http";
 import { NetworkTestingModule } from "./network-testing/network-testing.module";
 import { NavigationModule } from "./navigation/navigation.module";
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
   declarations: [AppComponent, HomepageComponent],
@@ -18,6 +19,7 @@ import { NavigationModule } from "./navigation/navigation.module";
     FormsModule,
     ReactiveFormsModule,
     NavigationModule,
+    AuthModule,
     TodoModule,
     ThemeModule,
     NetworkTestingModule,
