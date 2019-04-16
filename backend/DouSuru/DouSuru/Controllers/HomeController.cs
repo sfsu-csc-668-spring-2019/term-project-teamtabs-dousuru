@@ -1,17 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using DouSuru.DAL;
+using DouSuru.Data;
+using System.Diagnostics;
 
 namespace DouSuru.Controllers {
     [Route("/")]
     public class HomeController : Controller {
+        private IConfiguration _configuration;
+        private ApplicationDbContext _context;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            Debug.Write("Hey im here");
+           _context = new ApplicationDbContext(options =>
+                options.UseNpgsql(
+                    Configuration.GetConnectionString("DefaultConnection")));
+        }
 
         [HttpGet("")]
         public ActionResult GetHomeIndex() {
+            Debug.Write(_configuration);
             return Json(new { authentication = false });
         }
 
         [HttpGet("about")]
         public ActionResult GetHomeAbout() {
-            return Json(new { authentication = false });
+        //DbContext.Database.SqlQuery<dynamic>("INSERT INTO organizations VALUES (test, description, NULL)");
+
+        //var results = DbContext.Database.SqlQuery<dynamic>("SELECT * FROM organizations").ToList();
+
+
+            return Json(new{ a = true});
+            //return Json(new { authentication = false, results });
         }
 
         [HttpGet("privacy")]

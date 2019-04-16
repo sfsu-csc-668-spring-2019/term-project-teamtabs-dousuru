@@ -3,7 +3,6 @@
 namespace DouSuru.Controllers {
     [Route("organization/")]
     public class OrganizationController : Controller {
-
         [HttpGet("create")]
         public ActionResult GetOrganizationCreate() {
             return Json(new { authentication = false });
