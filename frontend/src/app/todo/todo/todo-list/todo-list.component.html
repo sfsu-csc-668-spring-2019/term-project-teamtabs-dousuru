@@ -1,0 +1,13 @@
+<ul>
+  <li *ngFor="let todo of (todos | async)">
+    <label class="row">
+      <app-checkbox></app-checkbox>
+      <!-- <input
+        type="checkbox"
+        [checked]="todo.completed"
+        (change)="changeCompleted(todo, $event)"
+      /> -->
+      {{ todo.name }}
+    </label>
+  </li>
+</ul>

@@ -1,0 +1,7 @@
+<div class="row">
+  <app-add-todo></app-add-todo>
+  <app-todo-filter (filter)="filter($event)"></app-todo-filter>
+  <button (click)="removeCompleted()">Remove completed</button>
+</div>
+<app-todo-info></app-todo-info>
+<app-todo-list [todos]="todos"></app-todo-list>

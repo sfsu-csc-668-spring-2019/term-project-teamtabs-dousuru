@@ -1,0 +1,18 @@
+.links {
+  display: flex;
+  flex-direction: row;
+
+  a {
+    margin: 1rem;
+    color: blue;
+    text-decoration: none;
+
+    &:visited {
+      color: blue;
+    }
+
+    &.active {
+      text-decoration: underline;
+    }
+  }
+}
