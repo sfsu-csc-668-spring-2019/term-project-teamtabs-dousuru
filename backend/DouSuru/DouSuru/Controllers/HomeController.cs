@@ -3,20 +3,19 @@ using Microsoft.Extensions.Configuration;
 using DouSuru.DAL;
 using DouSuru.Data;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DouSuru.Controllers {
     [Route("/")]
     public class HomeController : Controller {
         private IConfiguration _configuration;
-        private ApplicationDbContext _context;
+        private DouSuruContext _context;
 
         public HomeController(IConfiguration configuration)
         {
             _configuration = configuration;
-            Debug.Write("Hey im here");
-           _context = new ApplicationDbContext(options =>
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+           _context = new DouSuruContext(configuration);
         }
 
         [HttpGet("")]

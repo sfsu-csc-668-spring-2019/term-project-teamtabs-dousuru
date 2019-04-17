@@ -10,18 +10,26 @@ namespace DouSuru.DAL
 {
     public class DouSuruContext : IdentityDbContext
     {
-        public DouSuruContext(DbContextOptions<DouSuruContext> options)
-            : base(options) {
+        private IConfiguration _configuration;
+
+        public DouSuruContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
         }
-    // public DouSuruContext(IConfiguration configuration) : base(new DbContextOptions())
 
-    //public DbSet<Student> Students { get; set; }
-    //public DbSet<Enrollment> Enrollments { get; set; }
-    //public DbSet<Course> Courses { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
+        }
+        // public DouSuruContext(IConfiguration configuration) : base(new DbContextOptions())
 
-    //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-    //{
-    //   modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-    //}
-}
+        //public DbSet<Student> Students { get; set; }
+        //public DbSet<Enrollment> Enrollments { get; set; }
+        //public DbSet<Course> Courses { get; set; }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //   modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        //}
+    }
 }
