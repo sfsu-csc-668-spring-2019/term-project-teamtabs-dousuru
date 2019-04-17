@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using DouSuru.DAL;
-using DouSuru.Data;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,19 +19,19 @@ namespace DouSuru.Controllers {
 
         [HttpGet("")]
         public ActionResult GetHomeIndex() {
-            Debug.Write(_configuration);
-            return Json(new { authentication = false });
+            //TODO SEPERATE QUERIES INTO RELEVANT CLASSES
+            string _insertQuery = "INSERT INTO users (user_name, password, display_name) VALUES ('Billy', 'Ian', 'Henry');";
+            _context
+                .Database
+                .ExecuteSqlCommand(_insertQuery);
+            
+            var data = _context.User.FromSql("select * from users;");
+            return Json(new { authentication = false, data });
         }
 
         [HttpGet("about")]
         public ActionResult GetHomeAbout() {
-        //DbContext.Database.SqlQuery<dynamic>("INSERT INTO organizations VALUES (test, description, NULL)");
-
-        //var results = DbContext.Database.SqlQuery<dynamic>("SELECT * FROM organizations").ToList();
-
-
             return Json(new{ a = true});
-            //return Json(new { authentication = false, results });
         }
 
         [HttpGet("privacy")]

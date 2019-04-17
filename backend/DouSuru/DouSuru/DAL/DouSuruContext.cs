@@ -11,7 +11,7 @@ namespace DouSuru.DAL
     public class DouSuruContext : IdentityDbContext
     {
         private IConfiguration _configuration;
-
+        public DbSet<UserModel> User { get; set; }
         public DouSuruContext(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -21,15 +21,11 @@ namespace DouSuru.DAL
         {
             optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
         }
-        // public DouSuruContext(IConfiguration configuration) : base(new DbContextOptions())
 
-        //public DbSet<Student> Students { get; set; }
-        //public DbSet<Enrollment> Enrollments { get; set; }
-        //public DbSet<Course> Courses { get; set; }
-
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //   modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        //}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<UserModel>().HasKey(x => x.user_id);
+            base.OnModelCreating(builder);
+        }
     }
 }
