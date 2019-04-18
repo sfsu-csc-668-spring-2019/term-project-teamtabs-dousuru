@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DouSuru.Models.Queries.UserQueries
 {
-    public class DeleteUserByUserId : Query
+    public class CreateUser : Query
     {
-        public DeleteUserByUserId()
+        public CreateUser()
         {
-            QueryString = "DELETE FROM users WHERE user_id = @user_id";
+            QueryString = "INSERT INTO users VALUES ('@user_name', '@password', '@display_name', '@user_icon', '@user_email')";
         }
 
         public override JsonResult Execute( DouSuruContext context, JsonResult parameters )
