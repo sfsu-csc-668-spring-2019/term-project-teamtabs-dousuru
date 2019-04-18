@@ -8,18 +8,22 @@ namespace DouSuru.Models.QueriesContainer
 {
     public static class QueriesContainer
     {
+        public const string CREATE_USER = "CREATE_USER";
         public const string DELETE_USER_BY_ID = "DELETE_USER_BY_ID";
         public const string GET_USER_INFORMATION_BY_USER_NAME = "GET_USER_INFORMATION_BY_USER_NAME";
+        public const string UPDATE_USER_BY_USER_NAME = "UPDATE_USER_BY_USER_NAME";
 
-        public static JsonResult Execute( string key, DouSuruContext context, object[] parameters )
+        public static JsonResult Execute( string key, DouSuruContext context, JsonResult parameters )
         {
             return _getQuery( key ).Execute( context, parameters );
         }
 
         private static Dictionary<string, Query> _queriesContainer = new Dictionary<string, Query>()
         {
+            { CREATE_USER, new CreateUser() },
             { DELETE_USER_BY_ID, new DeleteUserByUserId() },
-            { GET_USER_INFORMATION_BY_USER_NAME, new GetUserInformationByUserName() }
+            { GET_USER_INFORMATION_BY_USER_NAME, new GetUserInformationByUserName() },
+            { UPDATE_USER_BY_USER_NAME, new UpdateUserByUserName() }
         };
 
         private static Query _getQuery( string key )
