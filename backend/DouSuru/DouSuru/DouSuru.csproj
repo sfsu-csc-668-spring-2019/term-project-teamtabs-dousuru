@@ -19,4 +19,10 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Queries\UserQueries\" />
+    <Folder Include="Models\Queries\OrganizationQueries\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
 </Project>
