@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class OrganizationUsersModel {
         [Key]
-        [ForeignKey("organizations")]
+        [ForeignKey("OrganizationModel")]
         public uint organization_id { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint user_id { get; set; }
     }
 }

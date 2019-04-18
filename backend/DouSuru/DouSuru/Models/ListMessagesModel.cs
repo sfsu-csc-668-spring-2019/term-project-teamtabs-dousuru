@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class ListMessagesModel {
         [Key]
-        [ForeignKey("lists")]
+        [ForeignKey("ListModel")]
         public uint list_id { get; set; }
-        [ForeignKey("messages")]
+        [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
     }
 }

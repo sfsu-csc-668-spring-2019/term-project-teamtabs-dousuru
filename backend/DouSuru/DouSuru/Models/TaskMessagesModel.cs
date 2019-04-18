@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class TaskMessagesModel {
         [Key]
-        [ForeignKey("tasks")]
+        [ForeignKey("TaskModel")]
         public uint task_id { get; set; }
-        [ForeignKey("messages")]
+        [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
     }
 }

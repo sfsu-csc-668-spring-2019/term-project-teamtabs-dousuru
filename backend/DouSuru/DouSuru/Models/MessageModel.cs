@@ -6,7 +6,7 @@ namespace DouSuru.Models {
     public class MessageModel {
         [Key]
         public uint message_id { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint user_id { get; set; }
         public DateTime time_created { get; set; }
         public DateTime time_updated { get; set; }

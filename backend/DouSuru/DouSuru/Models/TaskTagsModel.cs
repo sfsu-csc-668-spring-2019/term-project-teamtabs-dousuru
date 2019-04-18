@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class TaskTagsModel {
         [Key]
-        [ForeignKey("tasks")]
+        [ForeignKey("TaskModel")]
         public uint task_id { get; set; }
-        [ForeignKey("tags")]
+        [ForeignKey("TagModel")]
         public uint tag_id { get; set; }
     }
 }

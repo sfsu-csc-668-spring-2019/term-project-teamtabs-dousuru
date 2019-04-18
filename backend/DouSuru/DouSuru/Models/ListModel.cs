@@ -8,7 +8,7 @@ namespace DouSuru.Models {
         public uint list_id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint user_id { get; set; }
     }
 }

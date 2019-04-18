@@ -12,7 +12,7 @@ namespace DouSuru.Models {
         public DateTime start_time { get; set; }
         public DateTime end_time { get; set; }
         public DateTime due_date { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint user_id { get; set; }
     }
 }

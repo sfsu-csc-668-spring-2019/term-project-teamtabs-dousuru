@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class PrivateMessagesModel {
         [Key]
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint owner_id { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint recipient_id { get; set; }
-        [ForeignKey("messages")]
+        [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace DouSuru.Models {
     public class ChangeLogModel {
         [Key]
         public uint log_id { get; set; }
-        [ForeignKey("users")]
+        [ForeignKey("UserModel")]
         public uint user_id { get; set; }
-        [ForeignKey("organizations")]
+        [ForeignKey("OrganizationModel")]
         public string organization_id { get; set; }
         public string description { get; set; }
         public DateTime change_date { get; set; }

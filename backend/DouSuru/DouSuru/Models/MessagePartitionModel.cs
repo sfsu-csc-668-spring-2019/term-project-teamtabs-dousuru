@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class MessagePartitionModel {
         [Key]
-        [ForeignKey("messages")]
+        [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
         public int index { get; set; }
         public string display_value { get; set; }
