@@ -2,6 +2,7 @@
 using DouSuru.Models.Queries;
 using DouSuru.Models.Queries.UserQueries;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace DouSuru.Models.QueriesContainer
@@ -14,7 +15,7 @@ namespace DouSuru.Models.QueriesContainer
         public const string UPDATE_USER_BY_USER_NAME = "UPDATE_USER_BY_USER_NAME";
         public const string UPDATE_USER_PASSWORD_BY_USER_ID = "UPDATE_USER_PASSWORD_BY_USER_ID";
 
-        public static JsonResult Execute( string key, DouSuruContext context, JsonResult parameters )
+        public static JsonResult Execute( string key, DouSuruContext context, JObject parameters )
         {
             return _getQuery( key ).Execute( context, parameters );
         }

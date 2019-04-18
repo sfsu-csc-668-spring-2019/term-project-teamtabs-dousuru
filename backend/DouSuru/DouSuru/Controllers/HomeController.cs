@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DouSuru.DAL;
+using DouSuru.Models.QueriesContainer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using DouSuru.DAL;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Newtonsoft.Json.Linq;
 
 namespace DouSuru.Controllers {
     [Route("/")]
@@ -19,13 +18,21 @@ namespace DouSuru.Controllers {
 
         [HttpGet("")]
         public ActionResult GetHomeIndex() {
-            //TODO SEPERATE QUERIES INTO RELEVANT CLASSES
-            string _insertQuery = "INSERT INTO users (user_name, password, display_name) VALUES ('Billy', 'Ian', 'Henry');";
-            _context
-                .Database
-                .ExecuteSqlCommand(_insertQuery);
+            // RUN TEST
+            /*
+            QueriesContainer.Execute( QueriesContainer.CREATE_USER, _context, JObject.FromObject( new {
+                user_name = "a3",
+                password = "b3",
+                display_name = "c3",
+                icon = "d3",
+                email = "e3"
+            } ) );
+            */
+            var data = QueriesContainer.Execute( QueriesContainer.GET_USER_INFORMATION_BY_USER_NAME, _context, JObject.FromObject( new
+            {
+                user_name = "a3"
+            } ) );
             
-            var data = _context.User.FromSql("select * from users;");
             return Json(new { authentication = false, data });
         }
 

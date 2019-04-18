@@ -9,7 +9,7 @@ namespace DouSuru.Models {
         public string password { get; set; }
         public string user_name { get; set; }
         public string display_name { get; set; }
-        public string user_icon { get; set; }
-        public string user_email { get; set; }
+        public string icon { get; set; }
+        public string email { get; set; }
     }
 }
