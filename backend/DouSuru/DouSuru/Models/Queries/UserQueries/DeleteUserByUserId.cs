@@ -6,7 +6,7 @@ namespace DouSuru.Models.Queries.UserQueries
 {
     public class DeleteUserByUserId : Query
     {
-        DeleteUserByUserId()
+        public DeleteUserByUserId()
         {
             QueryString = "DELETE FROM users WHERE user_id = @user_id";
         }
