@@ -12,6 +12,7 @@ namespace DouSuru.DAL
     {
         private IConfiguration _configuration;
         public DbSet<UserModel> User { get; set; }
+
         public DouSuruContext(IConfiguration configuration)
         {
             _configuration = configuration;
