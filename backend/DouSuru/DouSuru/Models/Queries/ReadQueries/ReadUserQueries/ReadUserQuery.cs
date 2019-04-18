@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DouSuru.Data.Queries.ReadQueries
+namespace DouSuru.Data.Queries.ReadQueries.ReadUserQueries
 {
     public class ReadUserQuery : Query
     {
