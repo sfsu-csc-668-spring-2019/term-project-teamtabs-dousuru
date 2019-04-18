@@ -11,7 +11,7 @@ namespace DouSuru.Models.Queries.UserQueries
             QueryString = "DELETE FROM users WHERE user_id = @user_id";
         }
 
-        public override JsonResult Execute( DouSuruContext context, object[] parameters )
+        public override JsonResult Execute( DouSuruContext context, JsonResult parameters)
         {
             return new JsonResult( new { data = context.Database.ExecuteSqlCommand( QueryString, parameters ) } );
         }

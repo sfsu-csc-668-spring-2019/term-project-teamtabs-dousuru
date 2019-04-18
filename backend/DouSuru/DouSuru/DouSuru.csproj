@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Queries\UserQueries\" />
-    <Folder Include="Models\Queries\OrganizationQueries\" />
     <Folder Include="Views\" />
   </ItemGroup>
 

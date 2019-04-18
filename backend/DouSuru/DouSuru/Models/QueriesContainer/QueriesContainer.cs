@@ -11,7 +11,7 @@ namespace DouSuru.Models.QueriesContainer
         public const string DELETE_USER_BY_ID = "DELETE_USER_BY_ID";
         public const string GET_USER_INFORMATION_BY_USER_NAME = "GET_USER_INFORMATION_BY_USER_NAME";
 
-        public static JsonResult Execute( string key, DouSuruContext context, object[] parameters )
+        public static JsonResult Execute( string key, DouSuruContext context, JsonResult parameters )
         {
             return _getQuery( key ).Execute( context, parameters );
         }

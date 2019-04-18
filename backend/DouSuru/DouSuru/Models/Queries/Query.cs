@@ -5,7 +5,7 @@ namespace DouSuru.Models.Queries
 {
     public abstract class Query
     {
-        public string QueryString = "a";
-        public abstract JsonResult Execute(DouSuruContext context, object[] parameters); //returns a json string or null if write query
+        public string QueryString;
+        public abstract JsonResult Execute(DouSuruContext context, JsonResult parameters); //returns a json string or null if write query
     }
 }
