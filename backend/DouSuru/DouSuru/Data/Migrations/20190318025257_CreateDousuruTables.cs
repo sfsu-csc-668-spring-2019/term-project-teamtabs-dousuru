@@ -234,7 +234,12 @@ namespace DouSuru.Migrations
               "tag_id SERIAL PRIMARY KEY, " +
               "name VARCHAR(40) NOT NULL, " +
               "color VARCHAR(6) " +
-            "); " 
+            "); " +
+            "DROP TABLE IF EXISTS task_tags CASCADE; " +
+            "CREATE TABLE task_tags(" +
+              "task_id INTEGER REFERENCES tasks(task_id), " +
+              "tag_id INTEGER REFERENCES tags(tag_id) " +
+            "); "
             );
         }
 
