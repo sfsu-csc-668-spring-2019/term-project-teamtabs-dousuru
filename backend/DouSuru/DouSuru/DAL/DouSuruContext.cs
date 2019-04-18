@@ -22,7 +22,7 @@ namespace DouSuru.DAL
         public DbSet<OrganizationUsersModel> OrganizationUsers { get; set; }
         public DbSet<ProjectUsersModel> ProjectUsers { get; set; }
         public DbSet<RoleModel> Role { get; set; }
-        public DbSet<UserRolesModel> UserRoles { get; set; }
+        public DbSet<UserRolesModel> UserRolesModel { get; set; }
         public DbSet<MessageModel> Message { get; set; }
         public DbSet<OrganizationMessagesModel> OrganizationMessages { get; set; }
         public DbSet<ProjectMessagesModel> ProjectMessages { get; set; }
