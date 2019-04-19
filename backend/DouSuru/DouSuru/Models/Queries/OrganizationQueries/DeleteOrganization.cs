@@ -8,7 +8,7 @@ namespace DouSuru.Models.Queries.OrganizationQueries
     {
         DeleteOrganization()
         {
-            QueryString = "DELETE FROM organizations WHERE organization_id=@organization CASCADE;";
+            QueryString = "DELETE FROM organizations WHERE organization_id=@organization_id CASCADE;";
         }
 
         public override JsonResult Execute(DouSuruContext context, JsonResult parameters)
