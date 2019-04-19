@@ -20,7 +20,7 @@ namespace DouSuru.Models.Queries.OrganizationQueries
                         "FROM organizations " +
                         "WHERE user_id = @user_id " +
                     ") " +
-                "INSERT INTO organization_users (@user_id, added_organization); "; 
+                "SELECT* FROM added_organization; "; 
         }
 
         public override JsonResult Execute(DouSuruContext context, JObject parameters)
@@ -29,7 +29,7 @@ namespace DouSuru.Models.Queries.OrganizationQueries
                 QueryString,
                 new NpgsqlParameter("name", (string)parameters["name"]),
                 new NpgsqlParameter("user_id", (string)parameters["user_id"]),
-                new NpgsqlParameter("description", (string)parameters["description"]),
+                new NpgsqlParameter("description", (string)parameters["discription"]),
                 new NpgsqlParameter("icon", (string)parameters["icon"]));
             return null;
         }

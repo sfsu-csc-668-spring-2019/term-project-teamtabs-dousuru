@@ -6,21 +6,21 @@ using Npgsql;
 using System;
 using System.Data.SqlClient;
 
-namespace DouSuru.Models.Queries.OrganizationQueries
+namespace DouSuru.Models.Queries.ProjectQueries
 {
-    public class CreateOrganization: Query
+    public class CreateProject: Query
     {
-        CreateOrganization()
+        CreateProject()
         {
-            QueryString = "INSERT INTO organizations (name, description, icon, user_id) " +
-                "VALUES(@organization_name, @description, @icon, @user_id); " +
-                "WITH added_organization(organization_id) as " +
+            QueryString = "INSERT INTO projects (name, description, user_id) " +
+                "VALUES(@name, @description, @user_id); " +
+                "WITH added_project(project_id) as " +
                     "( " +
-                        "SELECT MAX(organization_id) " +
+                        "SELECT MAX(project_id) " +
                         "FROM organizations " +
                         "WHERE user_id = @user_id " +
                     ") " +
-                "INSERT INTO organization_users (@user_id, added_organization); "; 
+                "INSERT INTO organization_projects (@organization_id, added_project); "; 
         }
 
         public override JsonResult Execute(DouSuruContext context, JObject parameters)
@@ -30,7 +30,7 @@ namespace DouSuru.Models.Queries.OrganizationQueries
                 new NpgsqlParameter("name", (string)parameters["name"]),
                 new NpgsqlParameter("user_id", (string)parameters["user_id"]),
                 new NpgsqlParameter("description", (string)parameters["description"]),
-                new NpgsqlParameter("icon", (string)parameters["icon"]));
+                new NpgsqlParameter("organization_id", (string)parameters["organization_id"]));
             return null;
         }
     }

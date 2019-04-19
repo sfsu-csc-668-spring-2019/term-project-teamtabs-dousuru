@@ -6,21 +6,22 @@ using Npgsql;
 using System;
 using System.Data.SqlClient;
 
-namespace DouSuru.Models.Queries.OrganizationQueries
+//REQUIRES AN ORGANIZATION
+namespace DouSuru.Models.Queries.ListQueries
 {
-    public class CreateOrganization: Query
+    public class CreateList: Query
     {
-        CreateOrganization()
+        CreateList()
         {
-            QueryString = "INSERT INTO organizations (name, description, icon, user_id) " +
-                "VALUES(@organization_name, @description, @icon, @user_id); " +
-                "WITH added_organization(organization_id) as " +
+            QueryString = "INSERT INTO lists (name, description, user_id) " +
+                "VALUES(@name, @description, @user_id); " +
+                "WITH added_list(list_id) as " +
                     "( " +
-                        "SELECT MAX(organization_id) " +
-                        "FROM organizations " +
+                        "SELECT MAX(list_id) " +
+                        "FROM lists " +
                         "WHERE user_id = @user_id " +
                     ") " +
-                "INSERT INTO organization_users (@user_id, added_organization); "; 
+                "INSERT INTO project_lists( @project_id, added_list; "; 
         }
 
         public override JsonResult Execute(DouSuruContext context, JObject parameters)
@@ -30,7 +31,7 @@ namespace DouSuru.Models.Queries.OrganizationQueries
                 new NpgsqlParameter("name", (string)parameters["name"]),
                 new NpgsqlParameter("user_id", (string)parameters["user_id"]),
                 new NpgsqlParameter("description", (string)parameters["description"]),
-                new NpgsqlParameter("icon", (string)parameters["icon"]));
+                new NpgsqlParameter("project_id", (string)parameters["project_id"]));
             return null;
         }
     }
