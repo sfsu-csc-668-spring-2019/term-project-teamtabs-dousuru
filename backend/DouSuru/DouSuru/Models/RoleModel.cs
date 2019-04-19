@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DouSuru.Models {
     public class RoleModel {
         [Key]
-        public uint organization_role_id { get; set; }
+        public uint role_id { get; set; }
+        [ForeignKey("OrganizationModel")]
+        public uint organization_id { get; set; }
         public string role_name { get; set; }
         public bool add_user { get; set; }
         public bool remove_user { get; set; }

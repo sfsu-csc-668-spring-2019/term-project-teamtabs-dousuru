@@ -3,12 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DouSuru.Models {
-    public class ListModel {
+    public class TagModel {
         [Key]
-        public uint list_id { get; set; }
+        public uint tag_id { get; set; }
         public string name { get; set; }
-        public string description { get; set; }
-        [ForeignKey("UserModel")]
-        public uint user_id { get; set; }
+        public string color { get; set; }
     }
 }

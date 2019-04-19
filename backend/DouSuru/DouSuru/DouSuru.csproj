@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Queries\OrganizationQueries\" />
     <Folder Include="Models\Queries\UserQueries\" />
     <Folder Include="Views\" />
   </ItemGroup>

@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DouSuru.Models {
-    public class OrganizationModel {
+    public class MessageModel {
         [Key]
-        public uint organization_id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string icon { get; set; }
+        public uint message_id { get; set; }
         [ForeignKey("UserModel")]
         public uint user_id { get; set; }
+        public DateTime time_created { get; set; }
+        public DateTime time_updated { get; set; }
     }
 }
