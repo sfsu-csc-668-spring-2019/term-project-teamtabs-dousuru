@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
+import { ResourcesService } from "src/app/networking/resources.service";
+import { Organization } from "src/app/networking/Organization";
 
 @Component({
   selector: "app-organization-list",
@@ -6,7 +9,10 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./organization-list.component.scss"]
 })
 export class OrganizationListComponent implements OnInit {
-  constructor() {}
+  organizations: Observable<Organization[]>;
+  constructor(private resources: ResourcesService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.organizations = this.resources.getOrganizations();
+  }
 }
