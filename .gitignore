@@ -1,0 +1,5 @@
+﻿# vs caches and personal settings
+appsettings.json
+.vs/
+obj/
+bin/

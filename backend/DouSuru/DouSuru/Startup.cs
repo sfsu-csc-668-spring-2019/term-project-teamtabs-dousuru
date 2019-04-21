@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DouSuru.Data;
+using DouSuru.DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,12 +29,11 @@ namespace DouSuru {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+            services.AddDbContext<DouSuruContext>(options =>
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
+                .AddEntityFrameworkStores<DouSuruContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -45,7 +44,7 @@ namespace DouSuru {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             } else {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -54,8 +53,27 @@ namespace DouSuru {
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
-            app.UseMvc();
+           
+            app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "user",
+                    template: "{controller=User}/");
+                routes.MapRoute(
+                    name: "organization",
+                    template: "{controller=Organization}/");
+                routes.MapRoute(
+                    name: "project",
+                    template: "{controller=Project}/");
+                routes.MapRoute(
+                    name: "list",
+                    template: "{controller=List}/");
+                routes.MapRoute(
+                    name: "task",
+                    template: "{controller=Task}/");
+                routes.MapRoute(
+                    name: "home",
+                    template: "{controller=Home}/");
+            });
         }
     }
 }
