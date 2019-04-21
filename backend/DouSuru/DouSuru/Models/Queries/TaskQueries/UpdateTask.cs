@@ -6,13 +6,22 @@ using Npgsql;
 using System;
 using System.Data.SqlClient;
 
+//task_id
+//name
+//description
+//start_time
+//end_time
+//due date
+//user_id
+
+//list_tasks
 namespace DouSuru.Models.Queries.UpdateOrganization
 {
-    public class UpdateOrganization : Query
+    public class UpdateTask : Query
     {
-        public UpdateOrganization()
+        public UpdateTask()
         {
-            QueryString = "UPDATE organizations SET (name, description, icon) = (@name, @description, @icon) WHERE organization_id = @organization_id;";
+            QueryString = "UPDATE tasks SET (name, description, end_time, due_date) = (@name, @user_id, @description, @end_time, @due_date) WHERE task_id = @task_id;";
         }
 
         public override JsonResult Execute(DouSuruContext context, JObject parameters)
@@ -22,8 +31,9 @@ namespace DouSuru.Models.Queries.UpdateOrganization
                 new NpgsqlParameter("name", (string)parameters["name"]),
                 new NpgsqlParameter("user_id", (string)parameters["user_id"]),
                 new NpgsqlParameter("description", (string)parameters["description"]),
-                new NpgsqlParameter("organization_id", (string)parameters["organization_id"]),
-                new NpgsqlParameter("icon", (string)parameters["icon"]));
+                new NpgsqlParameter("end_time", (string)parameters["end_time"]),
+                new NpgsqlParameter("due_date", (string)parameters["due_date"]),
+                new NpgsqlParameter("task_id", (string)parameters["task_id"]));
             return null;
         }
     }

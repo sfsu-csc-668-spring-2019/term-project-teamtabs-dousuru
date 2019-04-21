@@ -6,20 +6,20 @@ using Npgsql;
 using System;
 using System.Data.SqlClient;
 
-namespace DouSuru.Models.Queries.OrganizationQueries
+namespace DouSuru.Models.Queries.TaskQueries
 {
-    public class DeleteOrganization:Query
+    public class DeleteTask:Query
     {
-        DeleteOrganization()
+        DeleteTask()
         {
-            QueryString = "DELETE FROM organizations WHERE organization_id= @organization_id;";
+            QueryString = "DELETE FROM tasks WHERE tasK_id= @tasK_id;";
         }
 
         public override JsonResult Execute(DouSuruContext context, JObject parameters)
         {
             context.Database.ExecuteSqlCommand(
                 QueryString,
-                new NpgsqlParameter("organization_id", (string)parameters["organization_id"]));
+                new NpgsqlParameter("tasK_id", (string)parameters["tasK_id"]));
             return null;
         }
     }
