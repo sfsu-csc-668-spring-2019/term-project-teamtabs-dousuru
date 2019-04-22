@@ -1,0 +1,16 @@
+<div>
+  <button
+    class="primary"
+    [ngClass]="{ outline: !(selected(dark) | async) }"
+    (click)="setDark()"
+  >
+    Dark Theme
+  </button>
+  <button
+    class="primary"
+    [ngClass]="{ outline: !(selected(light) | async) }"
+    (click)="setLight()"
+  >
+    Light Theme
+  </button>
+</div>

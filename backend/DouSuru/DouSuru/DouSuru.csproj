@@ -2,12 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-DouSuru-67C2CA8F-AEA0-4CCB-BD82-F7FE5D7585BD</UserSecretsId>
+    <UserSecretsId>aspnet-DouSuru-8BF01777-3837-46FD-B651-94E574A3B3AB</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Database\**" />
+    <Content Remove="Models\Database\**" />
+    <EmbeddedResource Remove="Models\Database\**" />
+    <None Remove="Models\Database\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Queries\OrganizationQueries\" />
+    <Folder Include="Models\Queries\UserQueries\" />
+    <Folder Include="Views\" />
   </ItemGroup>
 
 </Project>
