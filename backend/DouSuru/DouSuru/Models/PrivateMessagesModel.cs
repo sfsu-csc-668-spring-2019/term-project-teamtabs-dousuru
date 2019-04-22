@@ -7,9 +7,12 @@ namespace DouSuru.Models {
         [Key]
         [ForeignKey("UserModel")]
         public uint owner_id { get; set; }
+        public UserModel Owner { get; set; }
         [ForeignKey("UserModel")]
         public uint recipient_id { get; set; }
+        public UserModel Recipent { get; set; }
         [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
+        public MessageModel Message { get; set; }
     }
 }

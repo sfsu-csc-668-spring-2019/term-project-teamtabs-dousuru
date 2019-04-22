@@ -14,5 +14,6 @@ namespace DouSuru.Models {
         public DateTime due_date { get; set; }
         [ForeignKey("UserModel")]
         public uint user_id { get; set; }
+        public UserModel User { get; set; }
     }
 }

@@ -7,7 +7,9 @@ namespace DouSuru.Models {
         [Key]
         [ForeignKey("ListModel")]
         public uint list_id { get; set; }
+        public ListModel List { get; set; }
         [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
+        public MessageModel Message { get; set; }
     }
 }
