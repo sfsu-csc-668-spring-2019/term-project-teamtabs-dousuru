@@ -8,6 +8,7 @@ namespace DouSuru.Models {
         public uint role_id { get; set; }
         [ForeignKey("OrganizationModel")]
         public uint organization_id { get; set; }
+        public OrganizationModel Organization { get; set; }
         public string role_name { get; set; }
         public bool add_user { get; set; }
         public bool remove_user { get; set; }

@@ -8,8 +8,10 @@ namespace DouSuru.Models {
         public uint log_id { get; set; }
         [ForeignKey("UserModel")]
         public uint user_id { get; set; }
+        public UserModel User { get; set; }
         [ForeignKey("OrganizationModel")]
         public string organization_id { get; set; }
+        public OrganizationModel Organization { get; set; }
         public string description { get; set; }
         public DateTime change_date { get; set; }
     }

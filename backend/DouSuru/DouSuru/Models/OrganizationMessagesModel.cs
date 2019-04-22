@@ -7,7 +7,9 @@ namespace DouSuru.Models {
         [Key]
         [ForeignKey("OrganizationModel")]
         public uint organization_id { get; set; }
+        public OrganizationModel Organization { get; set; }
         [ForeignKey("MessageModel")]
         public uint message_id { get; set; }
+        public MessageModel Message { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace DouSuru.Models {
         public bool is_public { get; set; }
         [ForeignKey("UserModel")]
         public uint user_id { get; set; }
+        public UserModel User { get; set; }
     }
 }

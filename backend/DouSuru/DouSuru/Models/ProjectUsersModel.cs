@@ -7,7 +7,9 @@ namespace DouSuru.Models {
         [Key]
         [ForeignKey("ProjectModel")]
         public uint project_id { get; set; }
+        public ProjectModel Project { get; set; }
         [ForeignKey("UserModel")]
         public uint user_id { get; set; }
+        public UserModel User { get; set; }
     }
 }

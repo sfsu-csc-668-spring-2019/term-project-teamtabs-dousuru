@@ -7,7 +7,9 @@ namespace DouSuru.Models {
         [Key]
         [ForeignKey("TaskModel")]
         public uint task_id { get; set; }
+        public TaskModel Task { get; set; }
         [ForeignKey("TagModel")]
         public uint tag_id { get; set; }
+        public TagModel Tag { get; set; }
     }
 }
