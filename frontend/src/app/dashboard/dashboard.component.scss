@@ -16,4 +16,15 @@
 
 .main {
   grid-area: main;
+  position: relative;
+
+  .collapse-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0;
+    height: 1.3rem;
+    width: 1.3rem;
+    box-shadow: 2px 2px 2px #444;
+  }
 }
