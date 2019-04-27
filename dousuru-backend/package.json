@@ -1,14 +1,9 @@
 {
-  "name": "faster-than-richard",
-  "version": "1.0.0",
-  "description": "",
+  "name": "dousuru-backend",
   "scripts": {
-    "dev": "nodemon --exec 'ts-node' src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon --exec 'ts-node' src/app.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -31,5 +26,6 @@
     "@types/node": "^11.13.8",
     "nodemon": "^1.18.11",
     "typescript": "^3.4.5"
-  }
+  },
+  "private": true
 }
