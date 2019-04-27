@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { createConnection, Connection } from "typeorm";
-import { User } from "./models/User";
 
 let _db: Connection;
 export async function getDatabaseConnection(): Promise<Connection> {
@@ -17,9 +16,9 @@ export async function getDatabaseConnection(): Promise<Connection> {
       username: "postgres",
       password: "postgres",
       database: "dousuru",
-      entities: [User],
       synchronize: true,
-      logging: true
+      logging: false,
+      entities: ["src/models/**/*.ts"]
     });
     _db = conn;
     return conn;
