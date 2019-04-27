@@ -1,4 +1,4 @@
-import { User } from "./models";
+import { User } from "../models";
 
 export class UserManager {
   static async createAccount(email: string, password: string): Promise<User> {

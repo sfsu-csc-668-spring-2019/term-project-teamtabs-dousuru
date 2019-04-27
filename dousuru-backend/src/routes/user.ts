@@ -1,8 +1,8 @@
 import express from "express";
-import authenticate from "../authMiddleware";
-import { AuthRequest } from "../AuthRequest";
-import { SecretsService } from "../SecretsService";
-import { UserManager } from "../UserManager";
+import authenticate from "../middleware/authMiddleware";
+import { AuthRequest } from "../types/AuthRequest";
+import { SecretsService } from "../controllers/SecretsService";
+import { UserManager } from "../controllers/UserManager";
 
 const router = express.Router();
 
