@@ -1,28 +1,26 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "./AuthRequest";
-import jwt from "jsonwebtoken";
+import { SecretsService } from "./SecretsService";
 import { User } from "./models";
-
-interface TokenObject {
-  userId: number;
-}
 
 export default async function authenticate(
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
-  const token = req.body.authToken;
+  let token = req.header("Authorization");
   if (!token) {
     return next();
   }
   try {
     // 1. get user id
-    const payload = jwt.verify(token, process.env.APP_SECRET) as TokenObject;
+    const payload = SecretsService.verifyToken(token);
     const userId = payload.userId;
 
     // 2. get user from database
     req.user = await User.findOne(userId);
+  } catch (err) {
+    console.error("Invalid auth token");
   } finally {
     next();
   }
