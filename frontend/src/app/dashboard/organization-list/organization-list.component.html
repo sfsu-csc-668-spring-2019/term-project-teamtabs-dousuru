@@ -1,5 +1,14 @@
 <div class="organizations">
-  <p>
-    organization-list works! Source: app/dashboard/organization-list
-  </p>
+  <ul>
+    <li *ngFor="let organization of organizations | async">
+      <div class="image-wrapper">
+        <img
+          [src]="organization.thumbnailUrl"
+          [alt]="organization.name"
+          class="org-image"
+          [ngClass]="{ active: organization.active }"
+        />
+      </div>
+    </li>
+  </ul>
 </div>
