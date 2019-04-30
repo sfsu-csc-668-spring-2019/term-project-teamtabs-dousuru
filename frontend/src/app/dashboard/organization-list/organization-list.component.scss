@@ -3,3 +3,21 @@
   height: 100%;
   background-color: #3d9970;
 }
+
+.org-image {
+  $border-radius: 3px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0.2rem auto;
+  width: 5rem;
+  height: 5rem;
+  border: $border-radius solid transparent;
+
+  &.active {
+    border-color: white;
+  }
+
+  &:hover {
+    border-color: #ddd;
+  }
+}
