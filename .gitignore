@@ -3,3 +3,5 @@ appsettings.json
 .vs/
 obj/
 bin/
+backend/src/db.ts
+backend/src/db.ts
