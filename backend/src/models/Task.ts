@@ -1,6 +1,14 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import {List} from "./List";
-import {Tag} from "./Tag";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany
+} from "typeorm";
+import { List } from "./List";
+import { Tag } from "./Tag";
+import { Message } from "./Message";
 
 @Entity()
 export class Task extends BaseEntity {
@@ -13,13 +21,13 @@ export class Task extends BaseEntity {
   @Column({ type: "varchar", length: 5000 })
   description: string;
 
-  @Column({type: "timestamp"})
+  @Column({ type: "timestamp" })
   startTime: Date;
 
-  @Column({type: "timestamp"})
+  @Column({ type: "timestamp" })
   endTime: Date;
 
-  @Column({type:"timestamp"})
+  @Column({ type: "timestamp" })
   dueDate: Date;
 
   @ManyToOne(type => List, list => list.containedTasks)
@@ -27,4 +35,7 @@ export class Task extends BaseEntity {
 
   @OneToMany(type => Tag, tag => tag.baseTask)
   containedTags: Tag[];
+
+  @OneToMany(type => Message, message => message.baseTask)
+  taskMessages: Message[];
 }

@@ -12,6 +12,7 @@ import { User } from "./User";
 import { Organization } from "./Organization";
 import { List } from "./List";
 import { Role } from "./Role";
+import { Message } from "./Message";
 import { resolveSoa } from "dns";
 
 @Entity()
@@ -46,4 +47,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(type => Role, role => role.project)
   roles: Role[];
+
+  @OneToMany(type => Message, message => message.baseProject)
+  projectMessages: Message[];
 }
