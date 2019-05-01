@@ -9,17 +9,7 @@ export async function getDatabaseConnection(): Promise<Connection> {
   }
   try {
     console.log("attempting to open new database connection");
-    const conn = await createConnection({
-      type: "postgres",
-      host: "localhost",
-      port: 5432,
-      username: "postgres",
-      password: "postgres",
-      database: "dousuru",
-      synchronize: true,
-      logging: false,
-      entities: ["src/models/**/*.ts"]
-    });
+    const conn = await createConnection();
     _db = conn;
     return conn;
   } catch (err) {
