@@ -1,4 +1,5 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Task } from "./Task";
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -18,4 +19,7 @@ export class Tag extends BaseEntity {
     nullable: false
   })
   color: string;
+
+  @ManyToOne(type => Task, task => task.containedTags)
+  baseTask: Task;
 }
