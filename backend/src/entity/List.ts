@@ -19,4 +19,3 @@ export class List extends BaseEntity {
   @OneToMany(type => Task, task => task.baseList)
   containedTasks: Task[]
 }
-
