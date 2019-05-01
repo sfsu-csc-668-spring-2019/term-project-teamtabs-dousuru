@@ -1,6 +1,17 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  OneToMany
+} from "typeorm";
 import { User } from "./User";
 import { Project } from "./Project";
+import { Role } from "./Role";
+import { resolveSoa } from "dns";
 
 @Entity()
 export class Organization extends BaseEntity {
@@ -13,16 +24,19 @@ export class Organization extends BaseEntity {
   @Column({ type: "varchar", length: 5000 })
   description: string;
 
-  @Column({ type: "varchar", length: 2083})
+  @Column({ type: "varchar", length: 2083 })
   icon: string;
 
   @ManyToOne(type => User, user => user.ownedOrganizations)
   owner: User;
 
-  @ManyToMany( type => User)
+  @ManyToMany(type => User)
   @JoinTable()
   users: User[];
 
   @OneToMany(type => Project, project => project.baseOrganization)
-  containedProjects: Project[]
+  containedProjects: Project[];
+
+  @OneToMany(type => Role, role => role.organization)
+  roles: Role[];
 }
