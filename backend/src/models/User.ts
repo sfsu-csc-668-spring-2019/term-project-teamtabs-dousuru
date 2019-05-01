@@ -18,7 +18,6 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", unique: true, nullable: false})
   displayName: string;
 
-
   @Column({ type: "varchar", length: 200, unique: true })
   email: string;
 
@@ -39,7 +38,4 @@ export class User extends BaseEntity {
 
   @ManyToMany( type => Project)
   projects: Project[];
-
-  @ManyToMany( type => List)
-  lists: List[];
 }

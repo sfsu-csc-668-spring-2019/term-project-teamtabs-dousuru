@@ -1,6 +1,7 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { User } from "./User";
 import { Project } from "./Project";
+import { Task } from "./Task";
 @Entity()
 export class List extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
@@ -12,14 +13,10 @@ export class List extends BaseEntity {
   @Column({ type: "varchar", length: 5000 })
   description: string;
 
-  @ManyToOne(type => User, user => user.ownedLists)
-  owner: User;
-
-  @ManyToMany( type => User)
-  @JoinTable()
-  users: User[];
-
   @ManyToOne(type => Project, project => project.containedLists)
   baseProject: Project
+
+  @OneToMany(type => Task, task => task.baseList)
+  containedTasks: Task[]
 }
 

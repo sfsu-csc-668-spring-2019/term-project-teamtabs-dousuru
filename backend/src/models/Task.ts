@@ -1,30 +1,17 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {List} from "./List";
 
 @Entity()
 export class Task extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column({
-    type: 'varchar',
-    length: 60,
-    nullable: false
-  })
+  @Column({ type: "varchar", length: 60, nullable: false })
   name: string;
 
-  @Column({
-    type: 'varchar',
-    length: 5000,
-    nullable: false
-  })
+  @Column({ type: "varchar", length: 5000 })
   description: string;
 
-  @Column({ type: 'date', nullable: false })
-  startTime: Date;
-
-  @Column({ type: 'date' })
-  endTime: Date;
-
-  @Column({ type: 'date' })
-  dueTime: Date;
+  @ManyToOne(type => List, list => list.containedTasks)
+  baseList: List
 }
