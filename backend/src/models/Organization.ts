@@ -1,19 +1,28 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
+import { User } from "./User";
+import { Project } from "./Project";
 
 @Entity()
 export class Organization extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
-  organization_id: number;
+  id: number;
 
-  @Column()
-  name : string;
+  @Column({ type: "varchar", length: 60, nullable: false })
+  name: string;
 
-  @Column()
-  description : string;
+  @Column({ type: "varchar", length: 5000 })
+  description: string;
 
-  @Column()
-  icon : string;
+  @Column({ type: "varchar", length: 2083})
+  icon: string;
 
-  @Column()
-  user_id : number;
+  @ManyToOne(type => User, user => user.ownedOrganizations)
+  owner: User;
+
+  @ManyToMany( type => User)
+  @JoinTable()
+  users: User[];
+
+  @OneToMany(type => Project, project => project.baseOrganization)
+  containedProjects: Project[]
 }
