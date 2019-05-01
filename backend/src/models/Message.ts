@@ -38,4 +38,10 @@ export class Message extends BaseEntity {
 
   @ManyToOne(type => Task, task => task.taskMessages)
   baseTask: Task;
+
+  @ManyToOne(type => User, user => user.sentMessages )
+  sender: User;
+
+  @ManyToOne(type => User, user => user.receivedMessages )
+  receiver: User;
 }
