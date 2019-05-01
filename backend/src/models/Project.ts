@@ -2,6 +2,7 @@ import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMa
 import { User } from "./User";
 import { Organization } from "./Organization";
 import { List } from "./List";
+import { Message } from "./Message";
 
 @Entity()
 export class Project extends BaseEntity {
@@ -29,4 +30,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(type => List, list => list.baseProject)
   containedLists: List[]
+
+  @OneToMany(type => Message, message => message.baseProject)
+  projectMessages: Message[]
 }

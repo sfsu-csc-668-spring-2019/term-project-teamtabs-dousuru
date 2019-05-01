@@ -2,6 +2,7 @@ import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, JoinTabl
 import { Organization } from "./Organization";
 import { Project } from "./Project";
 import { List } from "./List";
+import { Message } from "./Message";
 import { JoinAttribute } from "typeorm/query-builder/JoinAttribute";
 
 @Entity()
@@ -38,4 +39,7 @@ export class User extends BaseEntity {
 
   @ManyToMany( type => Project)
   projects: Project[];
+
+  @OneToMany(type => Message, message => message.owner)
+  ownedMessages: Message[];
 }
