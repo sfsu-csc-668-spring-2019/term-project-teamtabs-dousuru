@@ -35,7 +35,4 @@ export class Task extends BaseEntity {
 
   @OneToMany(type => Tag, tag => tag.baseTask)
   containedTags: Tag[];
-
-  @OneToMany(type => Message, message => message.baseTask)
-  taskMessages: Message[];
 }
