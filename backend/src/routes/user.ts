@@ -8,10 +8,16 @@ const router = express.Router();
 
 router.put("/signup", async (req, res) => {
   // 1. get email and password from body
-  const { email, password } = req.body;
-  if (!email || !password) {
+  console.log(123124125);
+  console.log(req.body);
+  const { email, password, displayName, userName, icon } = req.body;
+
+
+  if (!email || !password || !displayName || !userName) {
     return res.status(400);
   }
+
+  console.log( "WORDS EMAIL: " + email);
   // 2. encrypt the password
   const encryptedPassword = await SecretsService.encrypt(password);
 
@@ -19,7 +25,10 @@ router.put("/signup", async (req, res) => {
     // 3. save to database
     const { id: userId } = await UserManager.createAccount(
       email,
-      encryptedPassword
+      encryptedPassword,
+      displayName,
+      userName,
+      icon
     );
     // 4. generate token
     const token = SecretsService.createToken(userId);
