@@ -11,4 +11,7 @@ export class OrganizationManager {
     });
     return organization.save();
   }
+
+  //get users for organization
+  
 }

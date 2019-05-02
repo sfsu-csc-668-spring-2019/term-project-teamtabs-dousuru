@@ -12,7 +12,9 @@ export class TaskManager {
       startTime,
       dueDate
     });
-    return task
+    return task.save()
   }
+
+  //get tasks within an list
 }
 

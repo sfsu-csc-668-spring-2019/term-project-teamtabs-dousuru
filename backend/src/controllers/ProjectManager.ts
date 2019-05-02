@@ -11,7 +11,11 @@ export class ProjectManager {
       owner,
       baseOrganization
     });
-    return project
+    return project.save();
   }
+
+
+  //get projects within an organization
+
 }
 
