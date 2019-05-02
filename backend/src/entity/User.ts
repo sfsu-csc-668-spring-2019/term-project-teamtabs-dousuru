@@ -31,7 +31,7 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 200, unique: true, nullable: false })
   email: string;
 
-  @Column({ type: "varchar", length: 2083, nullable: false })
+  @Column({ type: "varchar", length: 2083, nullable: true })
   icon: string;
 
   @OneToMany(type => Project, orgnanization => orgnanization.owner)
