@@ -7,6 +7,7 @@
     "typeorm_for_windows": "ts-node ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
+    "@types/socket.io": "^2.1.2",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
