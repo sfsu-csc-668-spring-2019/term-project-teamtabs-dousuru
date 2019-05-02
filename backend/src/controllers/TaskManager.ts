@@ -14,7 +14,5 @@ export class TaskManager {
     });
     return task.save()
   }
-
-  //get tasks within an list
 }
 

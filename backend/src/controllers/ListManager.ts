@@ -11,5 +11,11 @@ export class ListManager {
     });
     return list.save()
   }
+
+  //get tasks within a list
+  static async getListTasks(listID: number): Promise<Task[]> {
+    const list = await List.findOne(listID);
+    return list.containedTasks;
+  }
 }
 
