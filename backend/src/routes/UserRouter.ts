@@ -19,7 +19,10 @@ export class UserRouter extends Router {
       try {
         const { id: userId } = await UserManager.createAccount(
           email,
-          encryptedPassword
+          encryptedPassword,
+          displayName,
+          userName,
+          icon
         );
         res.json({ token: SecretsService.createToken(userId) });
       } catch (err) {
