@@ -27,6 +27,6 @@ export class MessagePartition extends BaseEntity {
   @Column({ type: "varchar", nullable: false })
   type: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", nullable: true })
   url: string;
 }

@@ -3,7 +3,8 @@
   "scripts": {
     "start": "ts-node src/app.ts",
     "dev": "nodemon --exec 'ts-node' src/app.ts",
-    "typeorm": "ts-node ./node_modules/.bin/typeorm"
+    "typeorm": "ts-node ./node_modules/.bin/typeorm",
+    "typeorm_for_windows": "ts-node ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",

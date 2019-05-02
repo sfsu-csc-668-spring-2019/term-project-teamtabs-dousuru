@@ -18,16 +18,16 @@ export class Task extends BaseEntity {
   @Column({ type: "varchar", length: 60, nullable: false })
   name: string;
 
-  @Column({ type: "varchar", length: 5000 })
+  @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
   @Column({ type: "timestamp" })
   startTime: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", nullable: true })
   endTime: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", nullable: true })
   dueDate: Date;
 
   @ManyToOne(type => List, list => list.containedTasks)

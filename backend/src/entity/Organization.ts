@@ -22,10 +22,10 @@ export class Organization extends BaseEntity {
   @Column({ type: "varchar", length: 60, nullable: false })
   name: string;
 
-  @Column({ type: "varchar", length: 5000 })
+  @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
-  @Column({ type: "varchar", length: 2083 })
+  @Column({ type: "varchar", length: 2083, nullable: true })
   icon: string;
 
   @ManyToOne(type => User, user => user.ownedOrganizations)
