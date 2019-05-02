@@ -23,7 +23,7 @@ export class Project extends BaseEntity {
   @Column({ type: "varchar", length: 60, nullable: false })
   name: string;
 
-  @Column({ type: "varchar", length: 5000 })
+  @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
   @Column({ type: "boolean", nullable: false })

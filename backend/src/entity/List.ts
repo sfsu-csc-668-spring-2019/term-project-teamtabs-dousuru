@@ -10,7 +10,7 @@ export class List extends BaseEntity {
   @Column({ type: "varchar", length: 60, nullable: false })
   name: string;
 
-  @Column({ type: "varchar", length: 5000 })
+  @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
   @ManyToOne(type => Project, project => project.containedLists)
@@ -19,4 +19,3 @@ export class List extends BaseEntity {
   @OneToMany(type => Task, task => task.baseList)
   containedTasks: Task[]
 }
-
