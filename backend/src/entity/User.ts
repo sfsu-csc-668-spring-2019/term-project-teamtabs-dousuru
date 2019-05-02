@@ -52,9 +52,9 @@ export class User extends BaseEntity {
   @OneToMany(type => Message, message => message.owner)
   ownedMessages: Message[];
 
-  @OneToMany( type => Message, message => message.sender)
-  sentMessages: Message[]
+  @OneToMany(type => Message, message => message.sender)
+  sentMessages: Message[];
 
-  @OneToMany ( type => Message, message => message.receiver)
-  receivedMessages: Message[]
+  @OneToMany(type => Message, message => message.receiver)
+  receivedMessages: Message[];
 }
