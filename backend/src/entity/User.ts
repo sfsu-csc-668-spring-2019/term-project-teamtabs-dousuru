@@ -22,16 +22,16 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 40, unique: true, nullable: false })
   userName: string;
 
-  @Column({ type: "varchar", length: 100, unique: true, nullable: false })
+  @Column({ type: "varchar", length: 100, unique: false, nullable: false })
   password: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar", nullable: false, unique: false })
   displayName: string;
 
   @Column({ type: "varchar", length: 200, unique: true, nullable: false })
   email: string;
 
-  @Column({ type: "varchar", length: 2083, nullable: true })
+  @Column({ type: "varchar", length: 2083, nullable: true, unique: false })
   icon: string;
 
   @OneToMany(type => Project, orgnanization => orgnanization.owner)
