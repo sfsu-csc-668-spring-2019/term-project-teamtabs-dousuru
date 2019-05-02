@@ -19,7 +19,7 @@ export class List extends BaseEntity {
   @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
-  @ManyToOne(type => Project, project => project.containedLists)
+  @ManyToOne(type => Project, project => project.containedLists, {onDelete: "CASCADE"})
   baseProject: Project;
 
   @OneToMany(type => Task, task => task.baseList)

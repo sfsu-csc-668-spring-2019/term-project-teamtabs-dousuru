@@ -35,10 +35,7 @@ export class Project extends BaseEntity {
   @JoinTable()
   users: User[];
 
-  @ManyToOne(
-    type => Organization,
-    organization => organization.containedProjects
-  )
+  @ManyToOne( type => Organization, organization => organization.containedProjects, {onDelete: "CASCADE"})
   baseOrganization: Organization;
 
   @OneToMany(type => List, list => list.baseProject)

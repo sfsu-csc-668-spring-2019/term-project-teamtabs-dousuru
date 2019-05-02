@@ -20,6 +20,6 @@ export class Tag extends BaseEntity {
   })
   color: string;
 
-  @ManyToOne(type => Task, task => task.containedTags)
+  @ManyToOne(type => Task, task => task.containedTags, {onDelete: "CASCADE"})
   baseTask: Task;
 }
