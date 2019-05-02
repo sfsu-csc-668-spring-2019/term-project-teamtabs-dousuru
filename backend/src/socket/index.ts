@@ -7,6 +7,7 @@ import {
   UserHandler
 } from "./handlers";
 import SocketIO, { Socket } from "socket.io";
+import authenticate from "../middleware/authMiddleware";
 
 export class DousuruIO {
   private static _instance: DousuruIO;
@@ -55,7 +56,8 @@ export class DousuruIO {
     this.io.on("connection", socket => {
       try {
         if (socket.request.user) {
-          const { user: userId } = socket.request;
+          const { user } = socket.request;
+          const userId = user.id;
           this.userSockets.set(userId, socket);
           socket.on("disconnect", () => {
             this.userSockets.delete(userId);
