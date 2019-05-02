@@ -1,5 +1,11 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
-import { User } from "./User";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany
+} from "typeorm";
 import { Project } from "./Project";
 import { Task } from "./Task";
 @Entity()
@@ -14,8 +20,8 @@ export class List extends BaseEntity {
   description: string;
 
   @ManyToOne(type => Project, project => project.containedLists)
-  baseProject: Project
+  baseProject: Project;
 
   @OneToMany(type => Task, task => task.baseList)
-  containedTasks: Task[]
+  containedTasks: Task[];
 }

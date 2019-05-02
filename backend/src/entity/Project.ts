@@ -13,7 +13,6 @@ import { Organization } from "./Organization";
 import { List } from "./List";
 import { Role } from "./Role";
 import { Message } from "./Message";
-import { resolveSoa } from "dns";
 
 @Entity()
 export class Project extends BaseEntity {

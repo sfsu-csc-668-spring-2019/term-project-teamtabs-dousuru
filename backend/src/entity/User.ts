@@ -4,15 +4,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  JoinTable,
-  UpdateDateColumn,
   ManyToMany
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
 import { List } from "./List";
 import { Message } from "./Message";
-import { JoinAttribute } from "typeorm/query-builder/JoinAttribute";
 
 @Entity()
 export class User extends BaseEntity {

@@ -3,15 +3,11 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  ManyToMany,
-  JoinTable,
-  OneToMany
+  ManyToOne
 } from "typeorm";
 import { User } from "./User";
 import { Project } from "./Project";
 import { Organization } from "./Organization";
-import { Task } from "./task";
 
 @Entity()
 export class Message extends BaseEntity {

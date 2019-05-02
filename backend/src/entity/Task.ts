@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { List } from "./List";
 import { Tag } from "./Tag";
-import { Message } from "./Message";
 
 @Entity()
 export class Task extends BaseEntity {

@@ -1,17 +1,4 @@
-import {
-  Entity,
-  BaseEntity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  ManyToMany,
-  JoinTable,
-  OneToMany
-} from "typeorm";
-import { User } from "./User";
-import { Project } from "./Project";
-import { Organization } from "./Organization";
-import { Task } from "./Task";
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class MessagePartition extends BaseEntity {
