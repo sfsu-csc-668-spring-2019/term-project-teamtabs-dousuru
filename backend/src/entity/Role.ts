@@ -16,10 +16,10 @@ export class Role extends BaseEntity {
   @Column({ type: "varchar", length: 40, nullable: false })
   name: string;
 
-  @ManyToOne(type => Organization, organization => organization.roles)
+  @ManyToOne(type => Organization, organization => organization.roles, {onDelete: "CASCADE"})
   organization: Organization;
 
-  @ManyToOne(type => Project, project => project.roles)
+  @ManyToOne(type => Project, project => project.roles, {onDelete: "CASCADE"})
   project: Project;
 
   @Column({ type: "boolean", nullable: false })

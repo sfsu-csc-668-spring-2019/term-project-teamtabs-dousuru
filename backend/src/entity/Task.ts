@@ -29,7 +29,7 @@ export class Task extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   dueDate: Date;
 
-  @ManyToOne(type => List, list => list.containedTasks)
+  @ManyToOne(type => List, list => list.containedTasks, {onDelete: "CASCADE"})
   baseList: List;
 
   @OneToMany(type => Tag, tag => tag.baseTask)

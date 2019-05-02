@@ -3,11 +3,15 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  OneToMany
 } from "typeorm";
 import { User } from "./User";
 import { Project } from "./Project";
 import { Organization } from "./Organization";
+import { MessagePartition } from "./MessagePartition";
 
 @Entity()
 export class Message extends BaseEntity {
@@ -23,13 +27,10 @@ export class Message extends BaseEntity {
   @ManyToOne(type => User, user => user.ownedMessages)
   owner: User;
 
-  @ManyToOne(type => Project, project => project.projectMessages)
+  @ManyToOne(type => Project, project => project.projectMessages, {onDelete: "CASCADE"})
   baseProject: Project;
 
-  @ManyToOne(
-    type => Organization,
-    organization => organization.organizationMessages
-  )
+  @ManyToOne(type => Organization, organization => organization.organizationMessages, {onDelete: "CASCADE"})
   baseOrganization: Organization;
 
   @ManyToOne(type => User, user => user.sentMessages)
@@ -37,4 +38,7 @@ export class Message extends BaseEntity {
 
   @ManyToOne(type => User, user => user.receivedMessages)
   receiver: User;
+
+  @OneToMany(type => MessagePartition, messagePartition => messagePartition.baseMessage)
+  messagePartitions: MessagePartition[]
 }
