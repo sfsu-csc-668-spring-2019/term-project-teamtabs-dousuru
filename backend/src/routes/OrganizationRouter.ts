@@ -1,7 +1,7 @@
 import { Router } from "./Router";
 import { Request, Response } from "express";
 
-export class UserRouter extends Router {
+export class OrganizationRouter extends Router {
   protected setServices(): void {
     this.services = new Map();
     this.services.set("GET /create", this.getOrganizationCreate);

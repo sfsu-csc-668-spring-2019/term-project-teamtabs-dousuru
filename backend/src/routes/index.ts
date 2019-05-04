@@ -1,4 +1,5 @@
 import { UserRouter } from "./UserRouter";
+import { OrganizationRouter } from "./OrganizationRouter";
 
 export class DousuruRouter {
   private static _instance: DousuruRouter;
@@ -9,6 +10,7 @@ export class DousuruRouter {
       );
     }
     new UserRouter("/users", app);
+    new OrganizationRouter("/organization", app);
     DousuruRouter._instance = this;
   }
   public static initializeInstance(app: Express.Application): void {
