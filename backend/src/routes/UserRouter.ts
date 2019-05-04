@@ -48,53 +48,53 @@ export class UserRouter extends Router {
   }
 
   private getUserSearch(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private getUserPage(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private getUserConfiguration(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private getUserNotification(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private getUserChatlog(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserSearch(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserConfiguration(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserNotification(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserChatlog(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserChatlogSearch(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private postUserSearchContents(_: Request, res: Response): void {
-    res.status(404);
+    res.sendStatus(404);
   }
 
   private async putUserSignup(req: Request, res: Response): Promise<void> {
     const { email, password, displayName, userName, icon } = req.body;
     if (!email || !password || !displayName || !userName) {
-      res.status(400);
+      res.sendStatus(400);
       return;
     }
     const encryptedPassword = await SecretsService.encrypt(password);
@@ -109,7 +109,7 @@ export class UserRouter extends Router {
       res.json({ token: SecretsService.createToken(userId) });
     } catch (err) {
       console.log(err);
-      res.status(500);
+      res.sendStatus(500);
     }
   }
 }
