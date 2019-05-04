@@ -13,6 +13,7 @@ import { Organization } from "./Organization";
 import { List } from "./List";
 import { Role } from "./Role";
 import { Message } from "./Message";
+import { Tag } from "./Tag";
 
 @Entity()
 export class Project extends BaseEntity {
@@ -50,4 +51,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(type => Message, message => message.baseProject)
   projectMessages: Message[];
+
+  @OneToMany(type => Tag, tag => tag.basedProject)
+  tags: Tag[];
 }

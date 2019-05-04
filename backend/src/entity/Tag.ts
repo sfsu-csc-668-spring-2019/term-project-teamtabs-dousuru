@@ -4,9 +4,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  ManyToOne
 } from "typeorm";
 import { Task } from "./Task";
+import { Project } from "./Project";
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -26,6 +28,9 @@ export class Tag extends BaseEntity {
     nullable: false
   })
   color: string;
+
+  @ManyToOne(type => Project, project => project.tags, { onDelete: "CASCADE" })
+  basedProject: Project;
 
   @ManyToMany(type => Task, task => task.tags, { onDelete: "CASCADE" })
   @JoinTable()
