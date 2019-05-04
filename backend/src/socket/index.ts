@@ -60,23 +60,11 @@ export class DousuruIO {
           const userId = user.id;
           this.userSockets.set(userId, socket);
           socket.on("disconnect", () => {
-            this.userSockets.delete(userId);
-            this.userOrganizations
-              .get(userId)
-              .map(organizationId =>
-                this.organizationUserSockets.get(organizationId).delete(userId)
-              );
-            this.userProjects
-              .get(userId)
-              .map(projectId =>
-                this.projectUserSockets.get(projectId).delete(userId)
-              );
-            this.userLists
-              .get(userId)
-              .map(listId => this.listUserSockets.get(listId).delete(userId));
-            this.userTasks
-              .get(userId)
-              .map(taskId => this.taskUserSockets.get(taskId).delete(userId));
+            this.deleteUserFromUserSocketList(userId);
+            this.deleteUserFromOrganizationUserSocketList(userId);
+            this.deleteUserFromProjectUserSocketList(userId);
+            this.deleteUserFromListUserSocketList(userId);
+            this.deleteUserFromTaskUserSocketList(userId);
           });
         }
       } catch (error) {
@@ -85,17 +73,58 @@ export class DousuruIO {
     });
   }
 
+  private deleteUserFromUserSocketList(userId: string): void {
+    this.userSockets.delete(userId);
+  }
+
+  private deleteUserFromOrganizationUserSocketList(userId: string): void {
+    this.userOrganizations
+      .get(userId)
+      .map(organizationId =>
+        this.organizationUserSockets.get(organizationId).delete(userId)
+      );
+    this.userOrganizations.delete(userId);
+  }
+  private deleteUserFromProjectUserSocketList(userId: string): void {
+    this.userProjects
+      .get(userId)
+      .map(projectId => this.projectUserSockets.get(projectId).delete(userId));
+    this.userProjects.delete(userId);
+  }
+  private deleteUserFromListUserSocketList(userId: string): void {
+    this.userLists
+      .get(userId)
+      .map(listId => this.listUserSockets.get(listId).delete(userId));
+    this.userLists.delete(userId);
+  }
+  private deleteUserFromTaskUserSocketList(userId: string): void {
+    this.userTasks
+      .get(userId)
+      .map(taskId => this.taskUserSockets.get(taskId).delete(userId));
+    this.userTasks.delete(userId);
+  }
+
   private initializeHandlers(): void {
     OrganizationHandler.initializeInstance(
       this.organizationUserSockets,
-      this.userSockets
+      this.userSockets,
+      this.userOrganizations
     );
     ProjectHandler.initializeInstance(
       this.projectUserSockets,
-      this.userSockets
+      this.userSockets,
+      this.userProjects
     );
-    ListHandler.initializeInstance(this.listUserSockets, this.userSockets);
-    TaskHandler.initializeInstance(this.taskUserSockets, this.userSockets);
+    ListHandler.initializeInstance(
+      this.listUserSockets,
+      this.userSockets,
+      this.userLists
+    );
+    TaskHandler.initializeInstance(
+      this.taskUserSockets,
+      this.userSockets,
+      this.userTasks
+    );
     UserHandler.initializeInstance(this.userSockets);
   }
 

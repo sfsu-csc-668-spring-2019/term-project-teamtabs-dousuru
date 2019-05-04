@@ -4,10 +4,12 @@ export class ProjectHandler {
   private static _instance: ProjectHandler;
   private projectSockets: Map<string, Map<string, Socket>>;
   private userSockets: Map<string, Socket>;
+  private userProjects: Map<string, string[]>;
 
   private constructor(
     projectSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>
+    userSockets: Map<string, Socket>,
+    userProjects: Map<string, string[]>
   ) {
     if (ProjectHandler._instance) {
       throw new Error(
@@ -16,6 +18,7 @@ export class ProjectHandler {
     }
     this.projectSockets = projectSockets;
     this.userSockets = userSockets;
+    this.userProjects = userProjects;
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
     this.chat = this.chat.bind(this);
@@ -24,14 +27,15 @@ export class ProjectHandler {
 
   public static initializeInstance(
     projectSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>
+    userSockets: Map<string, Socket>,
+    userProjects: Map<string, string[]>
   ): void {
     if (ProjectHandler._instance) {
       throw new Error(
         "Instantiation failed: instance has already been initiated."
       );
     }
-    new ProjectHandler(projectSockets, userSockets);
+    new ProjectHandler(projectSockets, userSockets, userProjects);
   }
 
   public static getInstance(): ProjectHandler {
@@ -42,9 +46,15 @@ export class ProjectHandler {
     if (undefined === this.projectSockets.get(projectId)) {
       this.projectSockets.set(projectId, new Map());
     }
+    if (undefined === this.userProjects.get(userId)) {
+      this.userProjects.set(userId, []);
+    }
     this.projectSockets
       .get(projectId)
       .set(userId, this.userSockets.get(userId));
+    if (!this.userProjects.get(userId).includes(projectId)) {
+      this.userProjects.get(userId).push(projectId);
+    }
     this.projectSockets
       .get(projectId)
       .forEach(userSocket =>
