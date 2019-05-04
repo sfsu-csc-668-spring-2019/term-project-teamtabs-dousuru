@@ -1,6 +1,6 @@
 import { UserRouter } from "./UserRouter";
 import { OrganizationRouter } from "./OrganizationRouter";
-
+import { ProjectRouter } from "./ProjectRouter";
 export class DousuruRouter {
   private static _instance: DousuruRouter;
   private constructor(app: Express.Application) {
@@ -11,6 +11,7 @@ export class DousuruRouter {
     }
     new UserRouter("/users", app);
     new OrganizationRouter("/organization", app);
+    new ProjectRouter("/organization/id/:organizationId/project", app);
     DousuruRouter._instance = this;
   }
   public static initializeInstance(app: Express.Application): void {
