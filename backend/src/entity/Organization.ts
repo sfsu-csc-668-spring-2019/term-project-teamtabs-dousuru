@@ -33,7 +33,7 @@ export class Organization extends BaseEntity {
   @ManyToOne(type => User, user => user.ownedOrganizations)
   owner: User;
 
-  @ManyToMany(type => User)
+  @ManyToMany(type => User, user => user.organizations, { onDelete: "CASCADE" })
   @JoinTable()
   users: User[];
 

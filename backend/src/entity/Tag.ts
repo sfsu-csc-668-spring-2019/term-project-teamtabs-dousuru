@@ -27,7 +27,7 @@ export class Tag extends BaseEntity {
   })
   color: string;
 
-  @ManyToMany(type => Task)
+  @ManyToMany(type => Task, task => task.tags, { onDelete: "CASCADE" })
   @JoinTable()
   tasks: Task[];
 }

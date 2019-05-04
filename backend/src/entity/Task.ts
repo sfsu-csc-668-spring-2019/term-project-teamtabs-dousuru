@@ -32,6 +32,6 @@ export class Task extends BaseEntity {
   @ManyToOne(type => List, list => list.containedTasks, { onDelete: "CASCADE" })
   baseList: List;
 
-  @ManyToMany(type => Tag)
+  @ManyToMany(type => Tag, tag => tag.tasks, { onDelete: "CASCADE" })
   tags: Tag[];
 }
