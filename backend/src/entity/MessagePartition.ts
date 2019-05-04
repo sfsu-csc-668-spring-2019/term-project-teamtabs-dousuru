@@ -1,4 +1,10 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne
+} from "typeorm";
 import { Message } from "./Message";
 
 @Entity()
@@ -19,5 +25,5 @@ export class MessagePartition extends BaseEntity {
   url: string;
 
   @ManyToOne(type => Message, message => message.messagePartitions)
-  baseMessage: Message
+  baseMessage: Message;
 }

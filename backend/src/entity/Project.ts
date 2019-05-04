@@ -13,6 +13,7 @@ import { Organization } from "./Organization";
 import { List } from "./List";
 import { Role } from "./Role";
 import { Message } from "./Message";
+import { Tag } from "./Tag";
 
 @Entity()
 export class Project extends BaseEntity {
@@ -31,11 +32,15 @@ export class Project extends BaseEntity {
   @ManyToOne(type => User, user => user.ownedProjects)
   owner: User;
 
-  @ManyToMany(type => User)
+  @ManyToMany(type => User, user => user.ownedProjects, { onDelete: "CASCADE" })
   @JoinTable()
   users: User[];
 
-  @ManyToOne( type => Organization, organization => organization.containedProjects, {onDelete: "CASCADE"})
+  @ManyToOne(
+    type => Organization,
+    organization => organization.containedProjects,
+    { onDelete: "CASCADE" }
+  )
   baseOrganization: Organization;
 
   @OneToMany(type => List, list => list.baseProject)
@@ -46,4 +51,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(type => Message, message => message.baseProject)
   projectMessages: Message[];
+
+  @OneToMany(type => Tag, tag => tag.basedProject)
+  tags: Tag[];
 }

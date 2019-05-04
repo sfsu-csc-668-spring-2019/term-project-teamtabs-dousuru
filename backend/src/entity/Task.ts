@@ -4,7 +4,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToMany
+  ManyToMany
 } from "typeorm";
 import { List } from "./List";
 import { Tag } from "./Tag";
@@ -29,9 +29,9 @@ export class Task extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   dueDate: Date;
 
-  @ManyToOne(type => List, list => list.containedTasks, {onDelete: "CASCADE"})
+  @ManyToOne(type => List, list => list.containedTasks, { onDelete: "CASCADE" })
   baseList: List;
 
-  @OneToMany(type => Tag, tag => tag.baseTask)
-  containedTags: Tag[];
+  @ManyToMany(type => Tag, tag => tag.tasks, { onDelete: "CASCADE" })
+  tags: Tag[];
 }
