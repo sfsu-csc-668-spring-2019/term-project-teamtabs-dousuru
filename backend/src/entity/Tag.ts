@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable
+} from "typeorm";
 import { Task } from "./Task";
 
 @Entity()
@@ -7,19 +14,20 @@ export class Tag extends BaseEntity {
   id: number;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 40,
     nullable: false
   })
   name: string;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 6,
     nullable: false
   })
   color: string;
 
-  @ManyToOne(type => Task, task => task.containedTags, {onDelete: "CASCADE"})
-  baseTask: Task;
+  @ManyToMany(type => Task)
+  @JoinTable()
+  tasks: Task[];
 }
