@@ -3,10 +3,12 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne
+  ManyToOne,
+  ManyToMany
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
+import { User } from "./User";
 
 @Entity()
 export class Role extends BaseEntity {
@@ -16,12 +18,6 @@ export class Role extends BaseEntity {
   @Column({ type: "varchar", length: 40, nullable: false })
   name: string;
 
-  @ManyToOne(type => Organization, organization => organization.roles, {onDelete: "CASCADE"})
-  organization: Organization;
-
-  @ManyToOne(type => Project, project => project.roles, {onDelete: "CASCADE"})
-  project: Project;
-
   @Column({ type: "boolean", nullable: false })
   canInvite: boolean;
 
@@ -30,4 +26,13 @@ export class Role extends BaseEntity {
 
   @Column({ type: "boolean", nullable: false })
   canPost: boolean;
+
+  @ManyToOne(type => Organization, organization => organization.roles, {onDelete: "CASCADE"})
+  organization: Organization;
+
+  @ManyToOne(type => Project, project => project.roles, {onDelete: "CASCADE"})
+  project: Project;
+
+  @ManyToMany(type => User, user => user.roles)
+  users: User[]
 }

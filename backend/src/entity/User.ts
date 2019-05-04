@@ -4,12 +4,14 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  ManyToMany
+  ManyToMany,
+  JoinTable
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
 import { List } from "./List";
 import { Message } from "./Message";
+import { Role } from "./Role";
 
 @Entity()
 export class User extends BaseEntity {
@@ -54,4 +56,8 @@ export class User extends BaseEntity {
 
   @OneToMany(type => Message, message => message.receiver)
   receivedMessages: Message[];
+
+  @ManyToMany(type => Role, role => role.users)
+  @JoinTable()
+  roles: Role[]
 }

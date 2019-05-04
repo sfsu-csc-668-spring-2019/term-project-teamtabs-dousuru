@@ -22,4 +22,4 @@ export class OrganizationManager {
       const organization = await Organization.findOne(organizationID);
       return organization.containedProjects;
   }
-}
+}   
