@@ -2,6 +2,7 @@ import { UserRouter } from "./UserRouter";
 import { OrganizationRouter } from "./OrganizationRouter";
 import { ProjectRouter } from "./ProjectRouter";
 import { ListRouter } from "./ListRouter";
+import { TaskRouter } from "./TaskRouter";
 
 export class DousuruRouter {
   private static _instance: DousuruRouter;
@@ -16,6 +17,10 @@ export class DousuruRouter {
     new ProjectRouter("/organization/id/:organizationId/project", app);
     new ListRouter(
       "/organization/id/:organizationId/project/id/:projectId/list",
+      app
+    );
+    new TaskRouter(
+      "/organization/id/:organizationId/project/id/:projectId/list/id/:listId/task",
       app
     );
     DousuruRouter._instance = this;
