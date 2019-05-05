@@ -1,4 +1,4 @@
-import { Organization, User, Project, Message } from "../entity";
+import { Organization, User, Project, Message, Role } from "../entity";
 import { SecretsService } from "./SecretsService";
 
 export class OrganizationManager {
@@ -19,7 +19,6 @@ export class OrganizationManager {
     });
     return await organization.save();
   }
-
   public static async updateOrganization(
     organizationId: number,
     name: string,
@@ -32,31 +31,86 @@ export class OrganizationManager {
     organization.icon = icon;
     return await organization.save();
   }
-
   public static async deleteOrganization(
     organizationId: number
   ): Promise<void> {
     await Organization.delete(organizationId);
   }
-
   public static async getOrganization(
     organizationId: number
   ): Promise<Organization> {
     return await Organization.findOne(organizationId);
   }
-
+  public static async addOrganizationUser(
+    organizationId: number,
+    userId: number
+  ): Promise<Organization> {
+    let user = await User.findOne(userId);
+    let organization = await Organization.findOne(organizationId);
+    organization.users.push(user);
+    return await organization.save();
+  }
+  public static async removeOrganizationUser(
+    organizationId: number,
+    userId: number
+  ): Promise<Organization> {
+    let organization = await Organization.findOne(organizationId);
+    organization.users = organization.users.filter(user => user.id !== userId);
+    return await organization.save();
+  }
   public static async getOrganizationUsers(
     organizationId: number
   ): Promise<User[]> {
     let organization = await Organization.findOne(organizationId);
     return organization.users;
   }
-
+  public static async addOrganizationProject(
+    organizationId: number,
+    projectId: number
+  ): Promise<Organization> {
+    let project = await Project.findOne(projectId);
+    let organization = await Organization.findOne(organizationId);
+    organization.containedProjects.push(project);
+    return await organization.save();
+  }
+  public static async removeOrganizationProject(
+    organizationId: number,
+    projectId: number
+  ): Promise<Organization> {
+    let organization = await Organization.findOne(organizationId);
+    organization.containedProjects = organization.containedProjects.filter(
+      containedProject => containedProject.id !== projectId
+    );
+    return await organization.save();
+  }
   public static async getOrganizationProjects(
     organizationId: number
   ): Promise<Project[]> {
     let organization = await Organization.findOne(organizationId);
     return organization.containedProjects;
+  }
+  public static async addOrganizationRole(
+    organizationId: number,
+    roleId: number
+  ): Promise<Organization> {
+    let role = await Role.findOne(roleId);
+    let organization = await Organization.findOne(organizationId);
+    organization.roles.push(role);
+    return await organization.save();
+  }
+  public static async removeOrganizationRole(
+    organizationId: number,
+    roleId: number
+  ): Promise<Organization> {
+    let organization = await Organization.findOne(organizationId);
+    organization.roles = organization.roles.filter(role => role.id !== roleId);
+    return await organization.save();
+  }
+  public static async getOrganizationRoles(
+    organizationId: number
+  ): Promise<Role[]> {
+    let organization = await Organization.findOne(organizationId);
+    return organization.roles;
   }
   public static async changeOwner(
     organizationId: number,
