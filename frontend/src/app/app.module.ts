@@ -10,9 +10,16 @@ import { HttpClientModule } from "@angular/common/http";
 import { NetworkTestingModule } from "./network-testing/network-testing.module";
 import { NavigationModule } from "./navigation/navigation.module";
 import { AuthModule } from "./auth/auth.module";
+import { LoginComponent } from "./login/login.component";
+import { RegisterComponent } from "./register/register.component";
 
 @NgModule({
-  declarations: [AppComponent, HomepageComponent],
+  declarations: [
+    AppComponent,
+    HomepageComponent,
+    LoginComponent,
+    RegisterComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
