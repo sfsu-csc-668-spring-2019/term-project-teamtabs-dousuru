@@ -54,9 +54,8 @@ export class RoleManager {
     roleId: number,
     userId: number
   ): Promise<void> {
-    let user = await User.findOne(userId);
     let role = await Role.findOne(roleId);
-    role.users = role.users.filter(roleUser => roleUser !== user);
+    role.users = role.users.filter(roleUser => roleUser.id !== userId);
     await role.save();
   }
   public static async getUsers(roleId: number): Promise<JSON[]> {
