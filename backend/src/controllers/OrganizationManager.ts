@@ -124,7 +124,7 @@ export class OrganizationManager {
   public static async getInviteLink(organizationId: number): Promise<string> {
     return (await Organization.findOne(organizationId)).inviteLink;
   }
-  public static async getMessage(organizationId: number): Promise<Message[]> {
+  public static async getMessages(organizationId: number): Promise<Message[]> {
     return (await Organization.findOne(organizationId)).organizationMessages;
   }
   public static async postMessage(
