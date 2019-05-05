@@ -37,6 +37,20 @@ export class RoleManager {
       organization
     })).save();
   }
+  public static async updateRole(
+    roleId: number,
+    name: string,
+    canInvite: boolean,
+    canManage: boolean,
+    canPost: boolean
+  ): Promise<Role> {
+    let role = await Role.findOne(roleId);
+    role.name = name;
+    role.canInvite = canInvite;
+    role.canManage = canManage;
+    role.canPost = canPost;
+    return await role.save();
+  }
   public static async deleteRole(roleId: number): Promise<void> {
     await Role.delete(roleId);
   }
