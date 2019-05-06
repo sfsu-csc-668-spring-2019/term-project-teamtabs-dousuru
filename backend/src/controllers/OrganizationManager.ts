@@ -17,7 +17,8 @@ export class OrganizationManager {
       icon,
       owner
     });
-    return await organization.save();
+    await organization.save();
+    return OrganizationManager.addOrganizationUser(organization.id, ownerId);
   }
   public static async updateOrganization(
     organizationId: number,
@@ -47,7 +48,8 @@ export class OrganizationManager {
   ): Promise<Organization> {
     let user = await User.findOne(userId);
     let organization = await Organization.findOne(organizationId);
-    organization.users.push(user);
+    if (organization.users) organization.users.push(user);
+    else organization.users = [user];
     return await organization.save();
   }
   public static async removeOrganizationUser(
@@ -61,7 +63,9 @@ export class OrganizationManager {
   public static async getOrganizationUsers(
     organizationId: number
   ): Promise<User[]> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["users"]
+    });
     return organization.users;
   }
   public static async addOrganizationProject(

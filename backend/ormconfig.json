@@ -3,13 +3,14 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "postgres",
+  "password": "Undyingbane04",
   "database": "postgres",
   "synchronize": false,
   "logging": false,
   "entities": ["src/entity/**/*.ts"],
   "migrations": ["src/migration/**/*.ts"],
   "cli": {
+    "entitiesDir": "src/entity",
     "migrationsDir": "src/migration"
   }
 }

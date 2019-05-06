@@ -1,3 +1,4 @@
+import { DefaultRouter } from "./DefaultRouter";
 import { UserRouter } from "./UserRouter";
 import { OrganizationRouter } from "./OrganizationRouter";
 import { ProjectRouter } from "./ProjectRouter";
@@ -12,6 +13,7 @@ export class DousuruRouter {
         "Instantiation failed: use Dousuru.getInstance() instead of new."
       );
     }
+    new DefaultRouter("", app);
     new UserRouter("/users", app);
     new OrganizationRouter("/organization", app);
     new ProjectRouter("/organization/id/:organizationId/project", app);
