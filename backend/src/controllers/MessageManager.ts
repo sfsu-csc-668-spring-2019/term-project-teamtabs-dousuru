@@ -8,12 +8,12 @@ import {
 
 export class MessageManager {
   public static async createUserMessage(
-    senderId: number,
+    ownerId: number,
     receiverId: number,
     partitions: any[]
   ): Promise<Message> {
     let timeCreated = new Date();
-    let sender = await User.findOne(senderId);
+    let owner = await User.findOne(ownerId);
     let receiver = await User.findOne(receiverId);
     let messagePartitions = await Promise.all(
       partitions.map(partition =>
@@ -30,7 +30,7 @@ export class MessageManager {
     );
     let message = await Message.create({
       timeCreated,
-      sender,
+      owner,
       receiver,
       messagePartitions
     });
@@ -38,12 +38,12 @@ export class MessageManager {
   }
 
   public static async getUserMessage(
-    senderId: number,
+    ownerId: number,
     receiverId: number
   ): Promise<Message[]> {
-    let sender = User.findOne(senderId);
+    let owner = User.findOne(ownerId);
     let receiver = User.findOne(receiverId);
-    return await Message.find({ where: { sender, receiver } });
+    return await Message.find({ where: { owner, receiver } });
   }
 
   public static async createOrganizationMessage(

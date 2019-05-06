@@ -4,7 +4,9 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
+  JoinTable,
+  ManyToMany
 } from "typeorm";
 import { User } from "./User";
 import { Project } from "./Project";
@@ -25,22 +27,22 @@ export class Message extends BaseEntity {
   @ManyToOne(type => User, user => user.ownedMessages)
   owner: User;
 
-  @ManyToOne(type => Project, project => project.projectMessages, {
+  @ManyToMany(type => Project, project => project.projectMessages, {
     onDelete: "CASCADE"
   })
+  @JoinTable()
   baseProject: Project;
 
-  @ManyToOne(
+  @ManyToMany(
     type => Organization,
     organization => organization.organizationMessages,
     { onDelete: "CASCADE" }
   )
+  @JoinTable()
   baseOrganization: Organization;
 
-  @ManyToOne(type => User, user => user.sentMessages)
-  sender: User;
-
-  @ManyToOne(type => User, user => user.receivedMessages)
+  @ManyToMany(type => User, user => user.receivedMessages)
+  @JoinTable()
   receiver: User;
 
   @OneToMany(

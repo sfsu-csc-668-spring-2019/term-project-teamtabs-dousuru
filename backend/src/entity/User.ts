@@ -51,13 +51,10 @@ export class User extends BaseEntity {
   @OneToMany(type => Message, message => message.owner)
   ownedMessages: Message[];
 
-  @OneToMany(type => Message, message => message.sender)
-  sentMessages: Message[];
-
-  @OneToMany(type => Message, message => message.receiver)
+  @ManyToMany(type => Message, message => message.receiver)
   receivedMessages: Message[];
 
   @ManyToMany(type => Role, role => role.users)
   @JoinTable()
-  roles: Role[]
+  roles: Role[];
 }

@@ -49,7 +49,7 @@ export class Project extends BaseEntity {
   @OneToMany(type => Role, role => role.project)
   roles: Role[];
 
-  @OneToMany(type => Message, message => message.baseProject)
+  @ManyToMany(type => Message, message => message.baseProject)
   projectMessages: Message[];
 
   @OneToMany(type => Tag, tag => tag.basedProject)

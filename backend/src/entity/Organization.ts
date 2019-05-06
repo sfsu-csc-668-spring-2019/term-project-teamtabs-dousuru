@@ -37,7 +37,7 @@ export class Organization extends BaseEntity {
   @JoinTable()
   users: User[];
 
-  @OneToMany(type => Project, project => project.baseOrganization)
+  @ManyToMany(type => Project, project => project.baseOrganization)
   containedProjects: Project[];
 
   @OneToMany(type => Role, role => role.organization)
