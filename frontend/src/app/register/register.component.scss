@@ -1,0 +1,50 @@
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  border: 1px solid darkgrey;
+  background: lightcyan;
+  padding: 2em;
+}
+
+label {
+  padding: 1em 0;
+  width: 80%;
+}
+
+input {
+  height: 3em;
+  width: 100%;
+  max-width: 40em;
+
+  box-sizing: border-box;
+  border: 1px solid darkgrey;
+
+  &:focus {
+    outline: none !important;
+    border: 1px solid black;
+  }
+}
+
+button {
+  font-size: 1.5em;
+
+  width: 75%;
+  min-width: 4em;
+  max-width: 8em;
+  height: 2.25em;
+  margin: 1em 0;
+
+  border-radius: 0.2em;
+
+  transition: all 0.25s;
+
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    background: lightgray;
+  }
+}

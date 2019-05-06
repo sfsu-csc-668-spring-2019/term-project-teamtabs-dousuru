@@ -1,6 +1,7 @@
 ﻿# vs caches and personal settings
 appsettings.json
 .vs/
+.vscode/
 obj/
 bin/
 backend/src/db.ts
