@@ -1,5 +1,15 @@
-<div class="dashboard">
+<div
+  class="dashboard"
+  [appGsapToggleable]="gridInfo"
+  [gsapToggled]="collapsed"
+  gsapDuration="0.3"
+>
   <app-organization-list class="organizations"></app-organization-list>
   <app-projects-list class="sidebar"></app-projects-list>
-  <app-project-detail class="main"></app-project-detail>
+  <div class="main">
+    <button (click)="toggleCollapsed()" class="collapse-button">
+      <fa-icon [icon]="collapsed ? faChevronRight : faChevronLeft"></fa-icon>
+    </button>
+    <app-project-detail></app-project-detail>
+  </div>
 </div>
