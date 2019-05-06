@@ -7,13 +7,15 @@ import { ProjectsListComponent } from "./projects-list/projects-list.component";
 import { ProjectDetailComponent } from "./project-detail/project-detail.component";
 import { SharedModule } from "../shared/shared.module";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ChatComponent } from "./project-detail/chat/chat.component";
 
 @NgModule({
   declarations: [
     DashboardComponent,
     OrganizationListComponent,
     ProjectsListComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
