@@ -64,6 +64,7 @@ export class TaskManager {
   static async addTag(tagId: number, taskId: number): Promise<Task> {
     let tag = await Tag.findOne(tagId);
     let task = await Task.findOne(taskId);
+    task.tags = task.tags || [];
     task.tags.push(tag);
     return await task.save();
   }

@@ -21,6 +21,7 @@ export class RoleManager {
       project
     })).save();
   }
+
   public static async createOrganizationRole(
     name: string,
     canInvite: boolean,
@@ -37,6 +38,7 @@ export class RoleManager {
       organization
     })).save();
   }
+
   public static async updateRole(
     roleId: number,
     name: string,
@@ -51,9 +53,11 @@ export class RoleManager {
     role.canPost = canPost;
     return await role.save();
   }
+
   public static async deleteRole(roleId: number): Promise<void> {
     await Role.delete(roleId);
   }
+
   public static async getRole(roleId: number): Promise<Role> {
     return await Role.findOne(roleId);
   }
@@ -61,9 +65,11 @@ export class RoleManager {
   public static async addUser(roleId: number, userId: number): Promise<Role> {
     let user = await User.findOne(userId);
     let role = await Role.findOne(roleId);
+    role.users = role.users || [];
     role.users.push(user);
     return await role.save();
   }
+
   public static async removeUser(
     roleId: number,
     userId: number
@@ -72,6 +78,7 @@ export class RoleManager {
     role.users = role.users.filter(roleUser => roleUser.id !== userId);
     await role.save();
   }
+
   public static async getUsers(roleId: number): Promise<JSON[]> {
     let users = (await Role.findOne(roleId)).users;
     return await Promise.all(

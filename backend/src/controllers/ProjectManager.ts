@@ -27,6 +27,7 @@ export class ProjectManager {
     });
     return project.save();
   }
+
   public static async updateProject(
     projectId: number,
     name: string,
@@ -39,9 +40,11 @@ export class ProjectManager {
     project.isPublic = isPublic;
     return await project.save();
   }
+
   public static async deleteProject(projectId: number): Promise<void> {
     await Project.delete(projectId);
   }
+
   public static async changeOwner(
     projectId: number,
     ownerId: number
@@ -51,6 +54,7 @@ export class ProjectManager {
     project.owner = owner;
     return await project.save();
   }
+
   public static async getProject(projectId: number): Promise<Project> {
     return await Project.findOne(projectId);
   }
@@ -63,18 +67,22 @@ export class ProjectManager {
     project.projectMessages.push(message);
     return await project.save();
   }
+
   public static async getMessages(projectId: number): Promise<Message[]> {
     return (await Project.findOne(projectId)).projectMessages;
   }
+
   public static async addUser(
     projectId: number,
     userId: number
   ): Promise<Project> {
     let user = await User.findOne(userId);
     let project = await Project.findOne(projectId);
+    project.users = project.users || [];
     project.users.push(user);
     return await project.save();
   }
+
   public static async removeUser(
     projectId: number,
     userId: number
@@ -86,15 +94,18 @@ export class ProjectManager {
   public static async getUsers(projectId: number): Promise<User[]> {
     return (await Project.findOne(projectId)).users;
   }
+
   public static async addRole(
     projectId: number,
     roleId: number
   ): Promise<Project> {
     let role = await Role.findOne(roleId);
     let project = await Project.findOne(projectId);
+    project.roles = project.roles || [];
     project.roles.push(role);
     return await project.save();
   }
+
   public static async removeRole(
     projectId: number,
     roleId: number
@@ -103,18 +114,22 @@ export class ProjectManager {
     project.roles = project.roles.filter(role => role.id !== roleId);
     return await project.save();
   }
+
   public static async getRoles(projectId: number): Promise<Role[]> {
     return (await Project.findOne(projectId)).roles;
   }
+
   public static async addList(
     projectId: number,
     containedListId: number
   ): Promise<Project> {
     let containedList = await List.findOne(containedListId);
     let project = await Project.findOne(projectId);
+    project.containedLists = project.containedLists || [];
     project.containedLists.push(containedList);
     return await project.save();
   }
+
   public static async removeList(
     projectId: number,
     containedListId: number
@@ -125,18 +140,22 @@ export class ProjectManager {
     );
     return await project.save();
   }
+
   public static async getLists(projectId: number): Promise<List[]> {
     return (await Project.findOne(projectId)).containedLists;
   }
+
   public static async addTag(
     projectId: number,
     tagId: number
   ): Promise<Project> {
     let tag = await Tag.findOne(tagId);
     let project = await Project.findOne(projectId);
+    project.tags = project.tags || [];
     project.tags.push(tag);
     return await project.save();
   }
+
   public static async removeTag(
     projectId: number,
     tagId: number
@@ -145,6 +164,7 @@ export class ProjectManager {
     project.tags = project.tags.filter(tag => tag.id !== tagId);
     return await project.save();
   }
+
   public static async getTags(projectId: number): Promise<Tag[]> {
     return (await Project.findOne(projectId)).tags;
   }

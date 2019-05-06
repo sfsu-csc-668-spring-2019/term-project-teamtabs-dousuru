@@ -30,7 +30,7 @@ export class Tag extends BaseEntity {
   color: string;
 
   @ManyToOne(type => Project, project => project.tags, { onDelete: "CASCADE" })
-  basedProject: Project;
+  baseProject: Project;
 
   @ManyToMany(type => Task, task => task.tags, { onDelete: "CASCADE" })
   @JoinTable()

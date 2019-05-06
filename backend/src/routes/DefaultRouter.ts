@@ -9,6 +9,7 @@ export class DefaultRouter extends Router {
     this.services.set("GET /", this.getLandingPage);
   }
 
+  user_id = 1;
   password = "not encrypted";
   email = "test@test.com";
   displayName = "Irik";
@@ -38,4 +39,28 @@ export class DefaultRouter extends Router {
     var orgUsers = await OrganizationManager.getOrganizationUsers(1);
     res.send(userorgs);
   }
+
+  private async userTests(): Promise<any> {
+    //Make account
+    //UserManager.createAccount(this.email, this.password, this.displayName, this.userName, this.icon)
+    var results = [];
+    //Get User info
+    var userInformation = await UserManager.getUserInformation(
+      this.displayName
+    );
+    results.push(userInformation);
+
+    var userOrgs = await UserManager.getOrganizations(this.user_id);
+    results.push(userOrgs);
+
+    var userProjects = await UserManager.getOrganizationProjects(
+      this.user_id,
+      userOrgs[0].id
+    );
+    results.push(userProjects);
+
+    return results;
+  }
+
+  private async organizationTests(): Promise<any> {}
 }

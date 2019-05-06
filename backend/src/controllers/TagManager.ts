@@ -7,13 +7,13 @@ export class TagManager {
     color: string,
     projectId: number
   ): Promise<Tag> {
-    let basedProject = await getConnection()
+    let baseProject = await getConnection()
       .createQueryBuilder()
       .select("project")
       .from(Project, "project")
       .where("project.id = :projectId", { projectId })
       .getOne();
-    let tag = await Tag.create({ name, color, basedProject });
+    let tag = await Tag.create({ name, color, baseProject });
     return await tag.save();
   }
 
