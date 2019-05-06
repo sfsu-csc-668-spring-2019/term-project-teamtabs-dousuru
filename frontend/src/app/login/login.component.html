@@ -1,34 +1,28 @@
-<div class="wrapper">
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label>
-        Username
-        <input
-          type="text"
-          name="username"
-          placeholder="enter username"
-          required
-          formControlName="username"
-        />
-      </label>
-    </div>
-    <div>
-      <label>
-        Password
-        <input
-          type="password"
-          name="password"
-          placeholder="enter password"
-          required
-          formControlName="password"
-        />
-      </label>
-    </div>
-    <div>
-      <button type="submit">
-        Login
-      </button>
-    </div>
+<div class="col">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="col">
+    <h2>Login</h2>
+    <label>
+      Username
+      <input
+        type="text"
+        name="username"
+        formControlName="username"
+        placeholder="enter username"
+        required
+      />
+    </label>
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        formControlName="password"
+        placeholder="enter password"
+        required
+      />
+    </label>
+    <button type="submit" [disabled]="!loginForm.valid">
+      Login
+    </button>
   </form>
 </div>

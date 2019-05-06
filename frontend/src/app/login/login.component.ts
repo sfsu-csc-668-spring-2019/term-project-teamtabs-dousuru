@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 
 import { AuthService } from "../auth/auth.service";
 
@@ -9,11 +9,11 @@ import { AuthService } from "../auth/auth.service";
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
-  loginForm = new FormGroup({
-    username: new FormControl(""),
-    password: new FormControl("")
+  loginForm = this.fb.group({
+    username: ["", Validators.required],
+    password: ["", Validators.required]
   });
 
   onSubmit(): void {
