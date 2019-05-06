@@ -1,16 +1,16 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/AuthRequest";
 import { SecretsService } from "../controllers/SecretsService";
-import { User } from "../models";
+import { User } from "../entity";
 
 export default async function authenticate(
   req: AuthRequest,
   res: Response,
-  next: NextFunction
+  next: Function
 ) {
   let token = req.header("Authorization");
   if (!token) {
-    return next();
+    return next(req, res);
   }
   try {
     // 1. get user id
@@ -22,6 +22,6 @@ export default async function authenticate(
   } catch (err) {
     console.error("Invalid auth token");
   } finally {
-    next();
+    next(req, res);
   }
 }
