@@ -12,7 +12,7 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   loginForm = this.fb.group({
-    username: ["", Validators.required],
+    identifier: ["", Validators.required],
     password: ["", Validators.required]
   });
 

@@ -2,12 +2,12 @@
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="col">
     <h2>Login</h2>
     <label>
-      Username
+      Username or Email
       <input
         type="text"
-        name="username"
-        formControlName="username"
-        placeholder="enter username"
+        name="identifier"
+        formControlName="identifier"
+        placeholder="enter your username or email"
         required
       />
     </label>
@@ -17,7 +17,7 @@
         type="password"
         name="password"
         formControlName="password"
-        placeholder="enter password"
+        placeholder="enter your password"
         required
       />
     </label>
