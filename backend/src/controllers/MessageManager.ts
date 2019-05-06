@@ -37,13 +37,15 @@ export class MessageManager {
     return await message.save();
   }
 
-  public static async getUserMessage(
+  public static async getUserMessages(
     ownerId: number,
     receiverId: number
   ): Promise<Message[]> {
     let owner = User.findOne(ownerId);
     let receiver = User.findOne(receiverId);
-    return await Message.find({ where: { owner, receiver } });
+    return await Message.find({
+      where: [{ owner, receiver }, { owner: receiver, receiver: owner }]
+    });
   }
 
   public static async createOrganizationMessage(
@@ -76,13 +78,11 @@ export class MessageManager {
     return await message.save();
   }
 
-  public static async getOrganizationMessage(
-    ownerId: number,
+  public static async getOrganizationMessages(
     organizationId: number
   ): Promise<Message[]> {
-    let owner = await User.findOne(ownerId);
     let baseOrganization = await Organization.findOne(organizationId);
-    return await Message.find({ where: { owner, baseOrganization } });
+    return await Message.find({ where: { baseOrganization } });
   }
 
   public static async createProjectMessage(
@@ -115,13 +115,11 @@ export class MessageManager {
     return await message.save();
   }
 
-  public static async getProjectMessage(
-    ownerId: number,
+  public static async getProjectMessages(
     projectId: number
   ): Promise<Message[]> {
-    let owner = await User.findOne(ownerId);
     let baseProject = await Project.findOne(projectId);
-    return await Message.find({ where: { owner, baseProject } });
+    return await Message.find({ where: { baseProject } });
   }
 
   public static async updateMessage(
