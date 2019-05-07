@@ -18,6 +18,9 @@ export class MessagePartition extends BaseEntity {
   @Column({ type: "varchar", nullable: false })
   associatedValue: string;
 
+  @Column({ type: "varchar", nullable: true })
+  textValue: string;
+
   @Column({ type: "varchar", nullable: false })
   type: string;
 

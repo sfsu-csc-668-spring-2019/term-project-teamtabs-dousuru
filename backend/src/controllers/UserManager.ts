@@ -85,6 +85,7 @@ export class UserManager {
     });
   }
 
+  //static async signIn( userName: string, password: string)
   //get all accounts in project
 
   //find account by email
