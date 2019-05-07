@@ -6,24 +6,25 @@ import { Observable, of } from "rxjs";
   providedIn: "root"
 })
 export class AuthService {
-  private _isAuthenticated: boolean;
+  private _authToken: string;
+  private localStorageKey = "authToken";
 
-  get autenticated(): Observable<boolean> {
-    return of(this._isAuthenticated);
+  get authenticated(): Observable<boolean> {
+    return of(!!this.authToken);
   }
 
   constructor(private loggingService: LoggingService) {
-    this._isAuthenticated = localStorage.getItem("auth") === "true" || false;
-    this.loggingService.logAuthChange(this._isAuthenticated);
+    this.authToken = localStorage.getItem(this.localStorageKey);
+    this.loggingService.logAuthChange(!!this.authToken);
   }
 
-  get isAuthenticated() {
-    return this._isAuthenticated;
+  get authToken(): string {
+    return this._authToken;
   }
 
-  set isAuthenticated(newValue: boolean) {
-    this._isAuthenticated = newValue;
-    localStorage.setItem("auth", newValue.toString());
-    this.loggingService.logAuthChange(newValue);
+  set authToken(newValue: string) {
+    this._authToken = newValue;
+    localStorage.setItem(this.localStorageKey, newValue);
+    this.loggingService.logAuthChange(!!newValue);
   }
 }
