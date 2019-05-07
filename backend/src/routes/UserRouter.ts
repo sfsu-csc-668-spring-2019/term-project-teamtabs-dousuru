@@ -1,11 +1,17 @@
 import { Router } from "./Router";
-import { SecretsService } from "../controllers/SecretsService";
-import { UserManager } from "../controllers/UserManager";
 import authenticate from "../middleware/authMiddleware";
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
 
+import { PutUserSignup } from "../services/users";
+
+const SERVICES = [PutUserSignup];
+
 export class UserRouter extends Router {
+  public getRoute(): string {
+    return "/users";
+  }
+
   protected setServices(): void {
     this.services = new Map();
     this.services.set("GET /auth_valid", this.getAuthValid);
@@ -38,7 +44,11 @@ export class UserRouter extends Router {
       this.postUserChatlogSearch
     );
     this.services.set("POST /id/:userId/search", this.postUserSearchContents);
-    this.services.set("PUT /signup", this.putUserSignup);
+
+    SERVICES.forEach(ServiceClass => {
+      const instance = new ServiceClass();
+      this.services.set(instance.getRoute(), instance.execute());
+    });
   }
 
   private getAuthValid(req: Request, res: Response): void {
@@ -89,27 +99,5 @@ export class UserRouter extends Router {
 
   private postUserSearchContents(_: Request, res: Response): void {
     res.sendStatus(404);
-  }
-
-  private async putUserSignup(req: Request, res: Response): Promise<void> {
-    const { email, password, displayName, userName, icon } = req.body;
-    if (!email || !password || !displayName || !userName) {
-      res.sendStatus(400);
-      return;
-    }
-    const encryptedPassword = await SecretsService.encrypt(password);
-    try {
-      const { id: userId } = await UserManager.createAccount(
-        email,
-        encryptedPassword,
-        displayName,
-        userName,
-        icon
-      );
-      res.json({ token: SecretsService.createToken(userId) });
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
-    }
   }
 }

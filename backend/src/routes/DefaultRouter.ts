@@ -9,6 +9,10 @@ export class DefaultRouter extends Router {
     this.services.set("GET /", this.getLandingPage);
   }
 
+  public static getRoute(): string {
+    return "";
+  }
+
   user_id = 1;
   password = "not encrypted";
   email = "test@test.com";

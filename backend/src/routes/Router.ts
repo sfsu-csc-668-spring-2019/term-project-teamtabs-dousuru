@@ -19,6 +19,8 @@ export abstract class Router {
 
   protected abstract setServices(): void;
 
+  public abstract getRoute(): string;
+
   private registerServices(): void {
     this.services.forEach((_, fullPath, __) => {
       let pathItems = fullPath.split(" ");
