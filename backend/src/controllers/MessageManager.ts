@@ -19,9 +19,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -60,9 +59,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -97,9 +95,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -131,9 +128,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );

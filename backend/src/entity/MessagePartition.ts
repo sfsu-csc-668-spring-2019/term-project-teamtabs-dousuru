@@ -13,16 +13,13 @@ export class MessagePartition extends BaseEntity {
   id: number;
 
   @Column({ type: "integer", nullable: false })
-  index: Date;
+  index: number;
 
   @Column({ type: "varchar", nullable: false })
-  displayedValue: string;
+  associatedValue: string;
 
   @Column({ type: "varchar", nullable: false })
   type: string;
-
-  @Column({ type: "varchar", nullable: true })
-  url: string;
 
   @ManyToOne(type => Message, message => message.messagePartitions)
   baseMessage: Message;
