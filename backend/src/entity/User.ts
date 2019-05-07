@@ -39,14 +39,9 @@ export class User extends BaseEntity {
   @OneToMany(type => Project, project => project.owner)
   ownedProjects: Project[];
 
-  // does a user really own a list? why?
-  @OneToMany(type => Project, list => list.owner)
-  ownedLists: List[];
-
   @ManyToMany(type => Organization, organization => organization.users)
   organizations: Organization[];
 
-  // same as lists
   @ManyToMany(type => Project, project => project.users)
   projects: Project[];
 
@@ -56,7 +51,6 @@ export class User extends BaseEntity {
   @ManyToMany(type => Message, message => message.receiver)
   receivedMessages: Message[];
 
-  // Doesn't this depend on the organization?
   @ManyToMany(type => Role, role => role.users)
   @JoinTable()
   roles: Role[];
