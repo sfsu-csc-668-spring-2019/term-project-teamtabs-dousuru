@@ -1,12 +1,16 @@
 import { Router } from "./Router";
 import { default as SERVICES } from "../services/tasks";
 
-export class UserRouter extends Router {
+export class TaskRouter extends Router {
   protected setServices(): void {
     this.services = new Map();
     SERVICES.forEach(ServiceClass => {
       const instance = new ServiceClass();
       this.services.set(instance.getRoute(), instance.execute());
     });
+  }
+
+  public getRoute(): string {
+    return "/organization/id/:organizationId/project/id/:projectId/list/id/:listId/task";
   }
 }

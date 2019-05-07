@@ -9,4 +9,8 @@ export class UserRouter extends Router {
       this.services.set(instance.getRoute(), instance.execute());
     });
   }
+
+  public getRoute(): string {
+    return "/users";
+  }
 }
