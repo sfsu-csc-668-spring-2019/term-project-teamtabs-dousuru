@@ -39,9 +39,6 @@ export class User extends BaseEntity {
   @OneToMany(type => Project, project => project.owner)
   ownedProjects: Project[];
 
-  @OneToMany(type => Project, list => list.owner)
-  ownedLists: List[];
-
   @ManyToMany(type => Organization, organization => organization.users)
   organizations: Organization[];
 
