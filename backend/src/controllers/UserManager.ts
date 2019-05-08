@@ -86,8 +86,10 @@ export class UserManager {
     userID: number,
     organizationID: number
   ): Promise<Project[]> {
-    const user = await User.findOne(userID);
-    const organization = await Organization.findOne(organizationID);
+    const user = await User.findOne(userID, { relations: ["roles"] });
+    const organization = await Organization.findOne(organizationID, {
+      relations: ["containedProjects", "containedProjects.roles"]
+    });
     return organization.containedProjects.filter(project => {
       if (project.isPublic) {
         return true;

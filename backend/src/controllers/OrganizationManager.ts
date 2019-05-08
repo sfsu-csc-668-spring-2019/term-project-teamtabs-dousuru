@@ -51,9 +51,12 @@ export class OrganizationManager {
     userId: number
   ): Promise<Organization> {
     let user = await User.findOne(userId);
-    let organization = await Organization.findOne(organizationId);
-    if (organization.users) organization.users.push(user);
-    else organization.users = [user];
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["users"]
+    });
+    if (!organization.users.includes(user)) {
+      organization.users.push(user);
+    }
     return await organization.save();
   }
 
@@ -61,7 +64,9 @@ export class OrganizationManager {
     organizationId: number,
     userId: number
   ): Promise<Organization> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["users"]
+    });
     organization.users = organization.users.filter(user => user.id !== userId);
     return await organization.save();
   }
@@ -80,7 +85,9 @@ export class OrganizationManager {
     projectId: number
   ): Promise<Organization> {
     let project = await Project.findOne(projectId);
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["containedProjects"]
+    });
     organization.containedProjects = organization.containedProjects || [];
     organization.containedProjects.push(project);
     return await organization.save();
@@ -90,7 +97,9 @@ export class OrganizationManager {
     organizationId: number,
     projectId: number
   ): Promise<Organization> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["containedProjects"]
+    });
     organization.containedProjects = organization.containedProjects.filter(
       containedProject => containedProject.id !== projectId
     );
@@ -100,7 +109,9 @@ export class OrganizationManager {
   public static async getOrganizationProjects(
     organizationId: number
   ): Promise<Project[]> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["containedProjects"]
+    });
     return organization.containedProjects;
   }
 
@@ -109,9 +120,12 @@ export class OrganizationManager {
     roleId: number
   ): Promise<Organization> {
     let role = await Role.findOne(roleId);
-    let organization = await Organization.findOne(organizationId);
-    organization.roles = organization.roles || [];
-    organization.roles.push(role);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
+    if (!organization.roles.includes(role)) {
+      organization.roles.push(role);
+    }
     return await organization.save();
   }
 
@@ -119,7 +133,9 @@ export class OrganizationManager {
     organizationId: number,
     roleId: number
   ): Promise<Organization> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
     organization.roles = organization.roles.filter(role => role.id !== roleId);
     return await organization.save();
   }
@@ -127,7 +143,9 @@ export class OrganizationManager {
   public static async getOrganizationRoles(
     organizationId: number
   ): Promise<Role[]> {
-    let organization = await Organization.findOne(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
     return organization.roles;
   }
 
@@ -146,7 +164,9 @@ export class OrganizationManager {
   }
 
   public static async getMessages(organizationId: number): Promise<Message[]> {
-    return (await Organization.findOne(organizationId)).organizationMessages;
+    return (await Organization.findOne(organizationId, {
+      relations: ["organizationMessages"]
+    })).organizationMessages;
   }
 
   public static async postMessage(
@@ -154,8 +174,9 @@ export class OrganizationManager {
     messageId: number
   ): Promise<void> {
     let message = await Message.findOne(messageId);
-    let organization = await Organization.findOne(organizationId);
-    organization.organizationMessages = organization.organizationMessages || [];
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["organizationMessages"]
+    });
     organization.organizationMessages.push(message);
     await organization.save();
   }

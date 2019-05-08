@@ -41,7 +41,7 @@ export class TagManager {
   }
 
   public static async getTasks(tagId: number): Promise<Task[]> {
-    let tag = await Tag.findOne(tagId);
+    let tag = await Tag.findOne(tagId, { relations: ["tasks"] });
     return tag.tasks;
   }
 

@@ -65,13 +65,17 @@ export class ProjectManager {
     messageId: number
   ): Promise<Project> {
     let message = await Message.findOne(messageId);
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, {
+      relations: ["projectMessages"]
+    });
     project.projectMessages.push(message);
     return await project.save();
   }
 
   public static async getMessages(projectId: number): Promise<Message[]> {
-    return (await Project.findOne(projectId)).projectMessages;
+    return (await Project.findOne(projectId, {
+      relations: ["projectMessages"]
+    })).projectMessages;
   }
 
   public static async addUser(
@@ -79,9 +83,10 @@ export class ProjectManager {
     userId: number
   ): Promise<Project> {
     let user = await User.findOne(userId);
-    let project = await Project.findOne(projectId);
-    project.users = project.users || [];
-    project.users.push(user);
+    let project = await Project.findOne(projectId, { relations: ["users"] });
+    if (!project.users.includes(user)) {
+      project.users.push(user);
+    }
     return await project.save();
   }
 
@@ -89,12 +94,12 @@ export class ProjectManager {
     projectId: number,
     userId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, { relations: ["users"] });
     project.users = project.users.filter(user => user.id !== userId);
     return await project.save();
   }
   public static async getUsers(projectId: number): Promise<User[]> {
-    return (await Project.findOne(projectId)).users;
+    return (await Project.findOne(projectId, { relations: ["users"] })).users;
   }
 
   public static async addRole(
@@ -102,9 +107,10 @@ export class ProjectManager {
     roleId: number
   ): Promise<Project> {
     let role = await Role.findOne(roleId);
-    let project = await Project.findOne(projectId);
-    project.roles = project.roles || [];
-    project.roles.push(role);
+    let project = await Project.findOne(projectId, { relations: ["roles"] });
+    if (!project.roles.includes(role)) {
+      project.roles.push(role);
+    }
     return await project.save();
   }
 
@@ -112,13 +118,13 @@ export class ProjectManager {
     projectId: number,
     roleId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, { relations: ["roles"] });
     project.roles = project.roles.filter(role => role.id !== roleId);
     return await project.save();
   }
 
   public static async getRoles(projectId: number): Promise<Role[]> {
-    return (await Project.findOne(projectId)).roles;
+    return (await Project.findOne(projectId, { relations: ["roles"] })).roles;
   }
 
   public static async addList(
@@ -126,9 +132,12 @@ export class ProjectManager {
     containedListId: number
   ): Promise<Project> {
     let containedList = await List.findOne(containedListId);
-    let project = await Project.findOne(projectId);
-    project.containedLists = project.containedLists || [];
-    project.containedLists.push(containedList);
+    let project = await Project.findOne(projectId, {
+      relations: ["containedLists"]
+    });
+    if (!project.containedLists.includes(containedList)) {
+      project.containedLists.push(containedList);
+    }
     return await project.save();
   }
 
@@ -136,7 +145,9 @@ export class ProjectManager {
     projectId: number,
     containedListId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, {
+      relations: ["containedLists"]
+    });
     project.containedLists = project.containedLists.filter(
       containedList => containedList.id !== containedListId
     );
@@ -144,7 +155,8 @@ export class ProjectManager {
   }
 
   public static async getLists(projectId: number): Promise<List[]> {
-    return (await Project.findOne(projectId)).containedLists;
+    return (await Project.findOne(projectId, { relations: ["containedLists"] }))
+      .containedLists;
   }
 
   public static async getTasks(projectId: number): Promise<Task[]> {
@@ -163,9 +175,10 @@ export class ProjectManager {
     tagId: number
   ): Promise<Project> {
     let tag = await Tag.findOne(tagId);
-    let project = await Project.findOne(projectId);
-    project.tags = project.tags || [];
-    project.tags.push(tag);
+    let project = await Project.findOne(projectId, { relations: ["tags"] });
+    if (!project.tags.includes(tag)) {
+      project.tags.push(tag);
+    }
     return await project.save();
   }
 
@@ -173,12 +186,12 @@ export class ProjectManager {
     projectId: number,
     tagId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, { relations: ["tags"] });
     project.tags = project.tags.filter(tag => tag.id !== tagId);
     return await project.save();
   }
 
   public static async getTags(projectId: number): Promise<Tag[]> {
-    return (await Project.findOne(projectId)).tags;
+    return (await Project.findOne(projectId, { relations: ["tags"] })).tags;
   }
 }

@@ -1,13 +1,13 @@
 import { List, Project, Task } from "../entity";
-import { Timestamp, getConnection } from "typeorm";
+import { getConnection } from "typeorm";
 
 export class ListManager {
   static async createList(
     name: string,
     description: string,
-    projectID: number
+    projectId: number
   ): Promise<List> {
-    const baseProject = await Project.findOne(projectID);
+    const baseProject = await Project.findOne(projectId);
     const list = await List.create({
       name,
       description,
@@ -16,8 +16,8 @@ export class ListManager {
     return list.save();
   }
 
-  static async getTasks(listID: number): Promise<Task[]> {
-    const list = await List.findOne(listID);
+  static async getTasks(listId: number): Promise<Task[]> {
+    const list = await List.findOne(listId, { relations: ["containedTasks"] });
     return list.containedTasks;
   }
 
@@ -26,7 +26,7 @@ export class ListManager {
       .createQueryBuilder()
       .update(List)
       .set({ name: name })
-      .where("id = :id", { id: listId })
+      .where("id = :listId", { listId })
       .execute();
   }
 
@@ -47,12 +47,12 @@ export class ListManager {
       .createQueryBuilder()
       .delete()
       .from(List)
-      .where("id =:id", { id: listId })
+      .where("id =:listId", { listId })
       .execute();
   }
 
   static async removeTask(taskId: number, listId: number): Promise<List> {
-    const list = await List.findOne(listId);
+    const list = await List.findOne(listId, { relations: ["containedTasks"] });
     list.containedTasks = list.containedTasks.filter(
       task => task.id !== taskId
     );
