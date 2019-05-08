@@ -7,7 +7,6 @@ import {
   UserHandler
 } from "./handlers";
 import SocketIO, { Socket } from "socket.io";
-import authenticate from "../middleware/authMiddleware";
 
 export class DousuruIO {
   private static _instance: DousuruIO;
