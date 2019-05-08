@@ -12,7 +12,7 @@ export class GetUserContact implements IService {
   public execute(): IMiddlewareFunction {
     return (request: Request, response: Response, __: NextFunction) => {
       const {
-        body: { ownerId }
+        params: { userId: ownerId }
       } = request;
       authenticate(
         request,

@@ -13,7 +13,7 @@ export class GetUserChatlogData implements IService {
   public execute(): IMiddlewareFunction {
     return (request: Request, response: Response, __: NextFunction) => {
       const {
-        body: { ownerId, receiverId }
+        params: { userId: ownerId, chatId: receiverId }
       } = request;
       authenticate(
         request,
