@@ -46,6 +46,10 @@ export class UserManager {
       .getRawOne();
   }
 
+  static async getUserInformationById(id: number): Promise<User> {
+    return await User.findOne(id, { select: ["displayName", "icon"] });
+  }
+
   //update password for user
   static async updatePassword(id: number, password: string): Promise<void> {
     await getConnection()
