@@ -5,8 +5,10 @@ import {
   Project,
   Message,
   Role,
-  Tag
+  Tag,
+  Task
 } from "../entity";
+import { ListManager } from "./ListManager";
 
 export class ProjectManager {
   public static async createProject(
@@ -143,6 +145,17 @@ export class ProjectManager {
 
   public static async getLists(projectId: number): Promise<List[]> {
     return (await Project.findOne(projectId)).containedLists;
+  }
+
+  public static async getTasks(projectId: number): Promise<Task[]> {
+    let lists: List[] = (await Project.findOne(projectId, {
+      relations: ["containedLists"]
+    })).containedLists;
+    let tasks: Task[];
+    (await Promise.all(lists.map(list => ListManager.getTasks(list.id)))).map(
+      _tasks => tasks.concat(_tasks)
+    );
+    return tasks;
   }
 
   public static async addTag(

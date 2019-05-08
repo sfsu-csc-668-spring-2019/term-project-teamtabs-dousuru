@@ -1,6 +1,8 @@
-import { User, Project } from "../entity";
+import { User, Project, Task } from "../entity";
 import { getConnection, Like } from "typeorm";
 import { Organization } from "../entity";
+import { OrganizationManager } from "./OrganizationManager";
+import { ProjectManager } from "./ProjectManager";
 
 export class UserManager {
   static async createAccount(
@@ -105,6 +107,44 @@ export class UserManager {
       select: ["id", "displayName", "icon"],
       where: { displayName: Like(`%${displayName}%`) }
     });
+  }
+
+  public static async GetContentsByName(
+    userId: number,
+    name: string
+  ): Promise<JSON> {
+    let result: any = {};
+    let organizations = (await User.findOne(userId, {
+      relations: ["organizations"]
+    })).organizations;
+    result.organizations = UserManager.FilterCaseInsensitive(
+      organizations,
+      "name",
+      name
+    );
+    let projects: Project[];
+    (await Promise.all(
+      organizations.map(organization =>
+        UserManager.getOrganizationProjects(userId, organization.id)
+      )
+    )).map(_projects => projects.concat(_projects));
+    result.projects = UserManager.FilterCaseInsensitive(projects, "name", name);
+    let tasks: Task[];
+    (await Promise.all(
+      projects.map(project => ProjectManager.getTasks(project.id))
+    )).map(_tasks => tasks.concat(_tasks));
+    result.tasks = UserManager.FilterCaseInsensitive(tasks, "name", name);
+    return result;
+  }
+
+  private static FilterCaseInsensitive(
+    ary: any[],
+    attribute: string,
+    filter: string
+  ): any[] {
+    return ary.filter(e =>
+      e[attribute].toLowerCase().includes(filter.toLowerCase())
+    );
   }
 
   //static async signIn( userName: string, password: string)
