@@ -3,6 +3,7 @@ import { IService, IMiddlewareFunction } from "..";
 import { UserManager } from "../../controllers";
 import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
+import { User } from "../../entity";
 
 export class GetUserContact implements IService {
   public getRoute(): string {
@@ -26,7 +27,7 @@ export class GetUserContact implements IService {
     };
   }
 
-  public validate(ownerId: number, request: AuthRequest): Promise<JSON[]> {
+  public validate(ownerId: number, request: AuthRequest): Promise<User[]> {
     if (request.user && request.user.id === ownerId) {
       return Promise.resolve(UserManager.getContacts(ownerId));
     } else {

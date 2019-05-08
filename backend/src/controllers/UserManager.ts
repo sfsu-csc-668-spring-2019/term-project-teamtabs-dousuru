@@ -47,7 +47,7 @@ export class UserManager {
   }
 
   static async getUserInformationById(id: number): Promise<User> {
-    return await User.findOne(id, { select: ["displayName", "icon"] });
+    return await User.findOne(id, { select: ["id", "displayName", "icon"] });
   }
 
   //update password for user
@@ -60,16 +60,14 @@ export class UserManager {
       .execute();
   }
 
-  static async getContacts(id: number): Promise<JSON[]> {
+  static async getContacts(id: number): Promise<User[]> {
     let contacts = (await User.findOne(id, { relations: ["contacts"] }))
       .contacts;
     if (undefined === contacts) {
       return [];
     }
     return Promise.all(
-      contacts.map(contact =>
-        UserManager.getUserInformation(contact.displayName)
-      )
+      contacts.map(contact => UserManager.getUserInformationById(contact.id))
     );
   }
 
@@ -104,7 +102,7 @@ export class UserManager {
 
   public static async GetUsers(displayName: string): Promise<User[]> {
     return await User.find({
-      select: ["displayName", "icon"],
+      select: ["id", "displayName", "icon"],
       where: { displayName: Like(`%${displayName}%`) }
     });
   }
