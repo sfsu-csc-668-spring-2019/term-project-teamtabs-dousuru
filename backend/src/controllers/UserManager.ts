@@ -56,6 +56,19 @@ export class UserManager {
       .execute();
   }
 
+  static async getContacts(id: number): Promise<JSON[]> {
+    let contacts = (await User.findOne(id, { relations: ["contacts"] }))
+      .contacts;
+    if (undefined === contacts) {
+      return [];
+    }
+    return Promise.all(
+      contacts.map(contact =>
+        UserManager.getUserInformation(contact.displayName)
+      )
+    );
+  }
+
   //get all organizations user is in
   static async getOrganizations(id: number): Promise<Organization[]> {
     const user = await User.findOne(id, { relations: ["organizations"] });

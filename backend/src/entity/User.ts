@@ -33,6 +33,10 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 2083, nullable: true, unique: false })
   icon: string;
 
+  @ManyToMany(type => User, user => user.contacts)
+  @JoinTable()
+  contacts: User[];
+
   @OneToMany(type => Project, orgnanization => orgnanization.owner)
   ownedOrganizations: Organization[];
 

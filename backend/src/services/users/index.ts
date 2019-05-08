@@ -10,11 +10,13 @@ import { PostUserConfiguration } from "./PostUserConfiguration";
 import { PostUserNotification } from "./PostUserNotification";
 import { PostUserSearch } from "./PostUserSearch";
 import { PostUserSearchContents } from "./PostUserSearchContents";
+import { GetUserContact } from "./GetUserContact";
 
 export default [
   GetAuthValid,
   GetUserChatlogData,
   GetUserConfiguration,
+  GetUserContact,
   GetUserData,
   GetUserNotification,
   PostUserChatlog,
