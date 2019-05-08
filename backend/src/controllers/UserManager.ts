@@ -1,5 +1,5 @@
 import { User, Project } from "../entity";
-import { getConnection } from "typeorm";
+import { getConnection, Like } from "typeorm";
 import { Organization } from "../entity";
 
 export class UserManager {
@@ -99,6 +99,13 @@ export class UserManager {
         }
       });
       return false;
+    });
+  }
+
+  public static async GetUsers(displayName: string): Promise<User[]> {
+    return await User.find({
+      select: ["displayName", "icon"],
+      where: { displayName: Like(`%${displayName}%`) }
     });
   }
 

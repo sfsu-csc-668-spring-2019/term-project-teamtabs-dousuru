@@ -11,6 +11,7 @@ import { PostUserNotification } from "./PostUserNotification";
 import { PostUserSearch } from "./PostUserSearch";
 import { PostUserSearchContents } from "./PostUserSearchContents";
 import { GetUserContact } from "./GetUserContact";
+import { GetUserSearch } from "./GetUserSearch";
 
 export default [
   GetAuthValid,
@@ -19,6 +20,7 @@ export default [
   GetUserContact,
   GetUserData,
   GetUserNotification,
+  GetUserSearch,
   PostUserChatlog,
   PostUserChatlogSearch,
   PostUserConfiguration,
