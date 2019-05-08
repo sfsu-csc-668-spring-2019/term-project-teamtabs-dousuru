@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { IService, IMiddlewareFunction } from "..";
+import { UserManager } from "../../controllers";
+import { User } from "../../entity";
 
 export class PostUserSearch implements IService {
   public getRoute(): string {
@@ -7,8 +9,18 @@ export class PostUserSearch implements IService {
   }
 
   public execute(): IMiddlewareFunction {
-    return (_: Request, response: Response, __: NextFunction) => {
-      response.sendStatus(404);
+    return (
+      { body: { displayName } }: Request,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(displayName)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
+  }
+
+  public validate(displayName: string): Promise<User[]> {
+    return Promise.resolve(UserManager.GetUsers(displayName));
   }
 }
