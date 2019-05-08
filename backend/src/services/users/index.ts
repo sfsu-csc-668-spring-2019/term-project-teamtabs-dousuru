@@ -1,6 +1,6 @@
 import { PutUserSignup } from "./PutUserSignup";
 import { GetAuthValid } from "./GetAuthValid";
-import { GetUserChatlog } from "./GetUserChatlog";
+import { GetUserChatlogData } from "./GetUserChatlogData";
 import { GetUserConfiguration } from "./GetUserConfiguration";
 import { GetUserData } from "./GetUserData";
 import { GetUserNotification } from "./GetUserNotification";
@@ -13,7 +13,7 @@ import { PostUserSearchContents } from "./PostUserSearchContents";
 
 export default [
   GetAuthValid,
-  GetUserChatlog,
+  GetUserChatlogData,
   GetUserConfiguration,
   GetUserData,
   GetUserNotification,
