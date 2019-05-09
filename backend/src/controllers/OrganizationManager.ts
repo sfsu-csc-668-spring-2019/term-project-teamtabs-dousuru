@@ -43,7 +43,19 @@ export class OrganizationManager {
   public static async getOrganization(
     organizationId: number
   ): Promise<Organization> {
-    return await Organization.findOne(organizationId);
+    return await Organization.findOne(organizationId, {
+      select: [
+        "id",
+        "name",
+        "description",
+        "icon",
+        "owner",
+        "users",
+        "containedProjects",
+        "roles"
+      ],
+      relations: ["users", "containedProjects", "roles"]
+    });
   }
 
   public static async addOrganizationUser(
