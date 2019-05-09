@@ -7,7 +7,7 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class PutOrganizationChatlogData implements IService {
   public getRoute(): string {
-    return "POST /id/:organizationId/chatlog";
+    return "PUT /id/:organizationId/chatlog";
   }
 
   public execute(): IMiddlewareFunction {
