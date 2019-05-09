@@ -3,7 +3,6 @@ import { GetOrganizationConfiguration } from "./GetOrganizationConfiguration";
 import { GetOrganizationData } from "./GetOrganizationData";
 import { GetOrganizationNotification } from "./GetOrganizationNotification";
 import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
-import { PostOrganizationChatlogSearch } from "./PostOrganizationChatlogSearch";
 import { PostOrganizationConfiguration } from "./PostOrganizationConfiguration";
 import { PostOrganizationCreate } from "./PostOrganizationCreate";
 import { PostOrganizationDelete } from "./PostOrganizationDelete";
@@ -20,7 +19,6 @@ export default [
   GetOrganizationData,
   GetOrganizationNotification,
   PutOrganizationChatlogData,
-  PostOrganizationChatlogSearch,
   PostOrganizationConfiguration,
   PostOrganizationCreate,
   PostOrganizationDelete,
