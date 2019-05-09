@@ -90,18 +90,30 @@ export class UserManager {
     const organization = await Organization.findOne(organizationID, {
       relations: ["containedProjects", "containedProjects.roles"]
     });
-    return organization.containedProjects.filter(project => {
-      if (project.isPublic) {
+    return organization.containedProjects.filter(project =>
+      UserManager.userHasAccessToProject(user, project)
+    );
+  }
+
+  public static async getUserHasAccessToProject(
+    userId: number,
+    projectId: number
+  ): Promise<boolean> {
+    let user = await User.findOne(userId, { relations: ["roles"] });
+    let project = await Project.findOne(projectId, { relations: ["roles"] });
+    return UserManager.userHasAccessToProject(user, project);
+  }
+
+  private static userHasAccessToProject(user: User, project: Project): boolean {
+    if (project.isPublic) {
+      return true;
+    }
+    user.roles.forEach(role => {
+      if (project.roles.includes(role)) {
         return true;
       }
-
-      user.roles.forEach(role => {
-        if (project.roles.includes(role)) {
-          return true;
-        }
-      });
-      return false;
     });
+    return false;
   }
 
   public static async getUsers(displayName: string): Promise<User[]> {

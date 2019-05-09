@@ -1,4 +1,4 @@
-import { GetProjectChatlog } from "./GetProjectChatlog";
+import { GetProjectChatlogData } from "./GetProjectChatlogData";
 import { GetProjectConfiguration } from "./GetProjectConfiguration";
 import { GetProjectCreate } from "./GetProjectCreate";
 import { GetProjectData } from "./GetProjectData";
@@ -12,7 +12,7 @@ import { PostProjectNotification } from "./PostProjectNotification";
 import { PostProjectSearch } from "./PostProjectSearch";
 
 export default [
-  GetProjectChatlog,
+  GetProjectChatlogData,
   GetProjectConfiguration,
   GetProjectCreate,
   GetProjectData,
