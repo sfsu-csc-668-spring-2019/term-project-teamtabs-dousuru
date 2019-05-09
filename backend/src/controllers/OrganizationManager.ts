@@ -18,7 +18,11 @@ export class OrganizationManager {
       owner
     });
     await organization.save();
-    return OrganizationManager.addOrganizationUser(organization.id, ownerId);
+    return OrganizationManager.addOrganizationUser(
+      organization.id,
+      ownerId,
+      inviteLink
+    );
   }
 
   public static async updateOrganization(
@@ -66,12 +70,16 @@ export class OrganizationManager {
 
   public static async addOrganizationUser(
     organizationId: number,
-    userId: number
+    userId: number,
+    inviteLink: string
   ): Promise<Organization> {
     let user = await User.findOne(userId);
     let organization = await Organization.findOne(organizationId, {
       relations: ["users"]
     });
+    if (organization.inviteLink != inviteLink) {
+      throw new Error("Error: organization invite link doesn't match");
+    }
     if (!organization.users.includes(user)) {
       organization.users.push(user);
     }
