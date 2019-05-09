@@ -6,7 +6,7 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class DeleteOrganization implements IService {
   public getRoute(): string {
-    return "DELETE /id/:organizationId/delete";
+    return "DELETE /id/:organizationId";
   }
 
   public execute(): IMiddlewareFunction {
