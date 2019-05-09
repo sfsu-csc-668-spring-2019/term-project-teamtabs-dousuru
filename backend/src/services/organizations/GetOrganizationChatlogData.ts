@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IService, IMiddlewareFunction } from "..";
-import { MessageManager } from "../../controllers";
+import { MessageManager, OrganizationManager } from "../../controllers";
 import { Message } from "../../entity";
 import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
@@ -18,20 +18,33 @@ export class GetOrganizationChatlogData implements IService {
       authenticate(
         request,
         response,
-        (request: AuthRequest, response: Response) => {
-          if (request.user) {
-            this.validate(organizationId).then(response.json);
-          } else {
-            response.sendStatus(500);
-          }
-        }
-      ).catch(_ => response.sendStatus(500));
+        (request: AuthRequest, response: Response) =>
+          this.validate(request, organizationId)
+            .then(response.json)
+            .catch(_ => response.sendStatus(500))
+      );
     };
   }
 
-  public validate(organizationId: number): Promise<Message[]> {
-    return Promise.resolve(
-      MessageManager.getOrganizationMessages(organizationId)
-    );
+  public validate(
+    request: AuthRequest,
+    organizationId: number
+  ): Promise<Message[]> {
+    if (request.user) {
+      OrganizationManager.UserBelongsToOrganization(
+        request.user.id,
+        organizationId
+      ).then(userIsMember => {
+        if (userIsMember) {
+          return Promise.resolve(
+            MessageManager.getOrganizationMessages(organizationId)
+          );
+        } else {
+          return Promise.reject();
+        }
+      });
+    } else {
+      return Promise.reject();
+    }
   }
 }

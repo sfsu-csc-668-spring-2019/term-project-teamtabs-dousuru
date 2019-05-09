@@ -180,4 +180,16 @@ export class OrganizationManager {
     organization.organizationMessages.push(message);
     await organization.save();
   }
+
+  public static async UserBelongsToOrganization(
+    userId: number,
+    organizationId: number
+  ): Promise<boolean> {
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["users"]
+    });
+    return !!organization.users.filter(
+      organizationUser => organizationUser.id === userId
+    ).length;
+  }
 }
