@@ -104,42 +104,35 @@ export class UserManager {
     });
   }
 
-  public static async GetUsers(displayName: string): Promise<User[]> {
+  public static async getUsers(displayName: string): Promise<User[]> {
     return await User.find({
       select: ["id", "displayName", "icon"],
       where: { displayName: Like(`%${displayName}%`) }
     });
   }
 
-  public static async GetContentsByName(
+  public static async getContentsByName(
     userId: number,
     name: string
   ): Promise<JSON> {
-    let result: any = {};
+    let result1: any = {};
     let organizations = (await User.findOne(userId, {
       relations: ["organizations"]
     })).organizations;
-    result.organizations = UserManager.FilterCaseInsensitive(
+    result1.organizations = UserManager.filterCaseInsensitive(
       organizations,
       "name",
       name
     );
-    let projects: Project[];
-    (await Promise.all(
+    let result2 = await Promise.all(
       organizations.map(organization =>
-        UserManager.getOrganizationProjects(userId, organization.id)
+        OrganizationManager.getContentsByName(userId, organization.id, name)
       )
-    )).map(_projects => projects.concat(_projects));
-    result.projects = UserManager.FilterCaseInsensitive(projects, "name", name);
-    let tasks: Task[];
-    (await Promise.all(
-      projects.map(project => ProjectManager.getTasks(project.id))
-    )).map(_tasks => tasks.concat(_tasks));
-    result.tasks = UserManager.FilterCaseInsensitive(tasks, "name", name);
-    return result;
+    );
+    return Object.assign(result1, result2);
   }
 
-  private static FilterCaseInsensitive(
+  public static filterCaseInsensitive(
     ary: any[],
     attribute: string,
     filter: string

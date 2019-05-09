@@ -31,7 +31,7 @@ export class GetOrganizationData implements IService {
     organizationId: number
   ): Promise<Organization> {
     if (request.user) {
-      OrganizationManager.UserBelongsToOrganization(
+      OrganizationManager.userBelongsToOrganization(
         request.user.id,
         organizationId
       ).then(userIsMember => {

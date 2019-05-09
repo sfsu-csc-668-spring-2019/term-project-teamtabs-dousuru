@@ -31,7 +31,7 @@ export class GetOrganizationChatlogData implements IService {
     organizationId: number
   ): Promise<Message[]> {
     if (request.user) {
-      OrganizationManager.UserBelongsToOrganization(
+      OrganizationManager.userBelongsToOrganization(
         request.user.id,
         organizationId
       ).then(userIsMember => {

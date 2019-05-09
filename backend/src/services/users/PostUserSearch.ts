@@ -21,6 +21,6 @@ export class PostUserSearch implements IService {
   }
 
   public validate(displayName: string): Promise<User[]> {
-    return Promise.resolve(UserManager.GetUsers(displayName));
+    return Promise.resolve(UserManager.getUsers(displayName));
   }
 }

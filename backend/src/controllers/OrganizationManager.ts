@@ -1,5 +1,7 @@
-import { Organization, User, Project, Message, Role } from "../entity";
+import { Organization, User, Project, Message, Role, Task } from "../entity";
 import { SecretsService } from "./SecretsService";
+import { UserManager } from "./UserManager";
+import { ProjectManager } from "./ProjectManager";
 
 export class OrganizationManager {
   public static async createOrganization(
@@ -79,6 +81,25 @@ export class OrganizationManager {
       ],
       relations: ["owner", "users", "containedProjects", "roles"]
     });
+  }
+
+  public static async getContentsByName(
+    userId: number,
+    organizationId: number,
+    name: string
+  ): Promise<JSON> {
+    let result: any = {};
+    let projects: Project[];
+    (await UserManager.getOrganizationProjects(userId, organizationId)).map(
+      _projects => projects.concat(_projects)
+    );
+    result.projects = UserManager.filterCaseInsensitive(projects, "name", name);
+    let tasks: Task[];
+    (await Promise.all(
+      projects.map(project => ProjectManager.getTasks(project.id))
+    )).map(_tasks => tasks.concat(_tasks));
+    result.tasks = UserManager.filterCaseInsensitive(tasks, "name", name);
+    return result;
   }
 
   public static async addOrganizationUser(
@@ -231,7 +252,7 @@ export class OrganizationManager {
     await organization.save();
   }
 
-  public static async UserBelongsToOrganization(
+  public static async userBelongsToOrganization(
     userId: number,
     organizationId: number
   ): Promise<boolean> {

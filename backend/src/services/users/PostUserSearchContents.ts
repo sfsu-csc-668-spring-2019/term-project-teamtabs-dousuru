@@ -24,6 +24,6 @@ export class PostUserSearchContents implements IService {
   }
 
   public validate(userId: number, name: string): Promise<JSON> {
-    return Promise.resolve(UserManager.GetContentsByName(userId, name));
+    return Promise.resolve(UserManager.getContentsByName(userId, name));
   }
 }
