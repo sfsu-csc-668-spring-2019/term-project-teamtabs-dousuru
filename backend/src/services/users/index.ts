@@ -3,7 +3,6 @@ import { GetUserChatlogData } from "./GetUserChatlogData";
 import { GetUserConfiguration } from "./GetUserConfiguration";
 import { GetUserData } from "./GetUserData";
 import { GetUserNotification } from "./GetUserNotification";
-import { PostUserChatlogSearch } from "./PostUserChatlogSearch";
 import { PostUserConfiguration } from "./PostUserConfiguration";
 import { PostUserNotification } from "./PostUserNotification";
 import { PostUserSearch } from "./PostUserSearch";
@@ -19,7 +18,6 @@ export default [
   GetUserContact,
   GetUserData,
   GetUserNotification,
-  PostUserChatlogSearch,
   PostUserConfiguration,
   PostUserNotification,
   PostUserSearch,
