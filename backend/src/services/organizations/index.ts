@@ -1,4 +1,4 @@
-import { GetOrganizationChatlog } from "./GetOrganizationChatlog";
+import { GetOrganizationChatlogData } from "./GetOrganizationChatlogData";
 import { GetOrganizationConfiguration } from "./GetOrganizationConfiguration";
 import { GetOrganizationData } from "./GetOrganizationData";
 import { GetOrganizationNotification } from "./GetORganizationNotification";
@@ -16,7 +16,7 @@ import { PostOrganizationNotification } from "./PostOrganizationNotification";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
 
 export default [
-  GetOrganizationChatlog,
+  GetOrganizationChatlogData,
   GetOrganizationConfiguration,
   GetOrganizationCreate,
   GetOrganizationData,
