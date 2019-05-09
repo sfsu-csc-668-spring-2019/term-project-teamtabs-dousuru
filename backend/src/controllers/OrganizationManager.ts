@@ -177,8 +177,19 @@ export class OrganizationManager {
     return await organization.save();
   }
 
-  public static async getInviteLink(organizationId: number): Promise<string> {
-    return (await Organization.findOne(organizationId)).inviteLink;
+  public static async getInviteLink(
+    ownerId: number,
+    organizationId: number
+  ): Promise<string> {
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["owner"]
+    });
+    if (organization.owner.id === ownerId) {
+      return organization.inviteLink;
+    }
+    throw new Error(
+      "Error: organization invite link is only accessable to owner"
+    );
   }
 
   public static async getMessages(organizationId: number): Promise<Message[]> {
