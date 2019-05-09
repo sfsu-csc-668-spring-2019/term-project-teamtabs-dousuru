@@ -5,7 +5,7 @@ import { GetOrganizationNotification } from "./GetOrganizationNotification";
 import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
 import { PostOrganizationConfiguration } from "./PostOrganizationConfiguration";
 import { PutOrganizationCreate } from "./PutOrganizationCreate";
-import { PostOrganizationDelete } from "./PostOrganizationDelete";
+import { DeleteOrganization } from "./DeleteOrganization";
 import { PostOrganizationInvite } from "./PostOrganizationInvite";
 import { PostOrganizationJoin } from "./PostOrganizationJoin";
 import { PostOrganizationLeave } from "./PostOrganizationLeave";
@@ -14,12 +14,12 @@ import { PostOrganizationNotification } from "./PostOrganizationNotification";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
 
 export default [
+  DeleteOrganization,
   GetOrganizationChatlogData,
   GetOrganizationConfiguration,
   GetOrganizationData,
   GetOrganizationNotification,
   PostOrganizationConfiguration,
-  PostOrganizationDelete,
   PostOrganizationInvite,
   PostOrganizationJoin,
   PostOrganizationLeave,

@@ -35,9 +35,15 @@ export class OrganizationManager {
   }
 
   public static async deleteOrganization(
+    ownerId: number,
     organizationId: number
   ): Promise<void> {
-    await Organization.delete(organizationId);
+    let organization = await Organization.findOne(organizationId, {
+      relations: ["owner"]
+    });
+    if (organization.owner.id === ownerId) {
+      await Organization.delete(organizationId);
+    }
   }
 
   public static async getOrganization(
@@ -54,7 +60,7 @@ export class OrganizationManager {
         "containedProjects",
         "roles"
       ],
-      relations: ["users", "containedProjects", "roles"]
+      relations: ["owner", "users", "containedProjects", "roles"]
     });
   }
 
