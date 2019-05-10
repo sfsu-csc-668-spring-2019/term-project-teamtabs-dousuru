@@ -64,9 +64,10 @@ export class RoleManager {
 
   public static async addUser(roleId: number, userId: number): Promise<Role> {
     let user = await User.findOne(userId);
-    let role = await Role.findOne(roleId);
-    role.users = role.users || [];
-    role.users.push(user);
+    let role = await Role.findOne(roleId, { relations: ["users"] });
+    if (!role.users.includes(user)) {
+      role.users.push(user);
+    }
     return await role.save();
   }
 
@@ -74,13 +75,13 @@ export class RoleManager {
     roleId: number,
     userId: number
   ): Promise<void> {
-    let role = await Role.findOne(roleId);
+    let role = await Role.findOne(roleId, { relations: ["users"] });
     role.users = role.users.filter(roleUser => roleUser.id !== userId);
     await role.save();
   }
 
   public static async getUsers(roleId: number): Promise<JSON[]> {
-    let users = (await Role.findOne(roleId)).users;
+    let users = (await Role.findOne(roleId, { relations: ["users"] })).users;
     return await Promise.all(
       users.map(user => UserManager.getUserInformation(user.displayName))
     );
