@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IService, IMiddlewareFunction } from "..";
-import { MessageManager } from "../../controllers";
+import { MessageManager, OrganizationManager } from "../../controllers";
 import { Message } from "../../entity";
 import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
@@ -35,18 +35,27 @@ export class PutOrganizationChatlogData implements IService {
     request: AuthRequest
   ): Promise<Message> {
     if (request.user) {
-      if (undefined !== updateId) {
-        return Promise.resolve(
-          MessageManager.updateMessage(updateId, partitions)
-        );
-      }
-      return Promise.resolve(
-        MessageManager.createOrganizationMessage(
-          request.user.id,
-          organizationId,
-          partitions
-        )
-      );
+      OrganizationManager.userBelongsToOrganization(
+        request.user.id,
+        organizationId
+      ).then(userIsMember => {
+        if (userIsMember) {
+          if (undefined !== updateId) {
+            return Promise.resolve(
+              MessageManager.updateMessage(updateId, partitions)
+            );
+          }
+          return Promise.resolve(
+            MessageManager.createOrganizationMessage(
+              request.user.id,
+              organizationId,
+              partitions
+            )
+          );
+        } else {
+          return Promise.reject();
+        }
+      });
     } else {
       return Promise.reject();
     }
