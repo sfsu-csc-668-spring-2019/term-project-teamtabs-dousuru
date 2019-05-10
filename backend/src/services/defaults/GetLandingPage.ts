@@ -36,7 +36,7 @@ export class GetLandingPage implements IService {
     //await OrganizationManager.createOrganization(orgName, orgDescription, orgIcon, 1)
 
     //get Organization
-    var orgResults = await OrganizationManager.getOrganization(1);
+    // var orgResults = await OrganizationManager.getOrganization(1);
 
     var userorgs = await UserManager.getOrganizations(1);
 
