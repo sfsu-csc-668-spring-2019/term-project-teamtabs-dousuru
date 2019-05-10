@@ -1,28 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
 import { Organization } from "../../entity";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PutOrganization implements IService {
+export class PutOrganization extends AuthenticatedService {
   public getRoute(): string {
     return "PUT /";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { name, description, icon, updatedId, newOwnerId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) =>
-          this.validate(name, description, icon, updatedId, newOwnerId, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500))
-      );
+      this.validate(name, description, icon, updatedId, newOwnerId, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 
