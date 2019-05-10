@@ -54,8 +54,14 @@ export class ProjectManager {
     return await project.save();
   }
 
-  public static async deleteProject(projectId: number): Promise<void> {
-    await Project.delete(projectId);
+  public static async deleteProject(
+    ownerId: number,
+    projectId: number
+  ): Promise<void> {
+    let project = await Project.findOne(projectId, { relations: ["owner"] });
+    if (project.owner.id === ownerId) {
+      await Project.delete(projectId);
+    }
   }
 
   public static async changeOwner(

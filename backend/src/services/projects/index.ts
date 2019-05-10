@@ -5,19 +5,19 @@ import { GetProjectNotification } from "./GetProjectNotification";
 import { PutProjectChatlogData } from "./PutProjectChatlogData";
 import { PostProjectConfiguration } from "./PostProjectConfiguration";
 import { PutProject } from "./PutProject";
-import { PostProjectDelete } from "./PostProjectDelete";
+import { DeleteProject } from "./DeleteProject";
 import { PostProjectNotification } from "./PostProjectNotification";
 import { PostProjectSearch } from "./PostProjectSearch";
 
 export default [
+  DeleteProject,
   GetProjectChatlogData,
   GetProjectConfiguration,
   GetProjectData,
   GetProjectNotification,
-  PutProjectChatlogData,
   PostProjectConfiguration,
-  PutProject,
-  PostProjectDelete,
   PostProjectNotification,
-  PostProjectSearch
+  PostProjectSearch,
+  PutProject,
+  PutProjectChatlogData
 ];
