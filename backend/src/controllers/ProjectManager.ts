@@ -31,15 +31,26 @@ export class ProjectManager {
   }
 
   public static async updateProject(
+    ownerId: number,
     projectId: number,
     name: string,
     description: string,
-    isPublic: boolean
+    isPublic: boolean,
+    newOwnerId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, { relations: ["owner"] });
+    if (project.owner.id !== ownerId) {
+      throw new Error(
+        "Error: project update is only accessable for organization owner"
+      );
+    }
     project.name = name;
     project.description = description;
     project.isPublic = isPublic;
+    if (newOwnerId !== ownerId) {
+      let newOwner = await User.findOne(newOwnerId);
+      project.owner = newOwner;
+    }
     return await project.save();
   }
 

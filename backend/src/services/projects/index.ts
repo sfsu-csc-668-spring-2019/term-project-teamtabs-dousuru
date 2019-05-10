@@ -4,7 +4,7 @@ import { GetProjectData } from "./GetProjectData";
 import { GetProjectNotification } from "./GetProjectNotification";
 import { PutProjectChatlogData } from "./PutProjectChatlogData";
 import { PostProjectConfiguration } from "./PostProjectConfiguration";
-import { PostProjectCreate } from "./PostProjectCreate";
+import { PutProject } from "./PutProject";
 import { PostProjectDelete } from "./PostProjectDelete";
 import { PostProjectNotification } from "./PostProjectNotification";
 import { PostProjectSearch } from "./PostProjectSearch";
@@ -16,7 +16,7 @@ export default [
   GetProjectNotification,
   PutProjectChatlogData,
   PostProjectConfiguration,
-  PostProjectCreate,
+  PutProject,
   PostProjectDelete,
   PostProjectNotification,
   PostProjectSearch
