@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class PostListDelete implements IService {
+export class PostListDelete extends Service {
   public getRoute(): string {
     return "POST /list/:listId/delete";
   }

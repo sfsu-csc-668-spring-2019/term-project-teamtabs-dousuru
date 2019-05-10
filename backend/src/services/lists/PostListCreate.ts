@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class PostListCreate implements IService {
+export class PostListCreate extends Service {
   public getRoute(): string {
     return "POST /create";
   }
