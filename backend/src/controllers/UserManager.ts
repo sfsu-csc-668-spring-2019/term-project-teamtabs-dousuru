@@ -52,6 +52,10 @@ export class UserManager {
     return await User.findOne(id, { select: ["id", "displayName", "icon"] });
   }
 
+  static async getUserInformationSignIn(userName: string): Promise<User> {
+    return await User.findOne(userName);
+  }
+
   //update password for user
   static async updatePassword(id: number, password: string): Promise<void> {
     await getConnection()
@@ -160,9 +164,4 @@ export class UserManager {
       e[attribute].toLowerCase().includes(filter.toLowerCase())
     );
   }
-
-  //static async signIn( userName: string, password: string)
-  //get all accounts in project
-
-  //find account by email
 }
