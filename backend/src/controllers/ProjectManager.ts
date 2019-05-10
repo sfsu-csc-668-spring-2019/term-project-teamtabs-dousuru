@@ -58,7 +58,16 @@ export class ProjectManager {
   }
 
   public static async getProject(projectId: number): Promise<Project> {
-    return await Project.findOne(projectId);
+    return await Project.findOne(projectId, {
+      relations: [
+        "owner",
+        "users",
+        "baseOrganization",
+        "containedList",
+        "roles",
+        "tags"
+      ]
+    });
   }
   public static async postMessage(
     projectId: number,
