@@ -66,21 +66,25 @@ export class OrganizationManager {
   }
 
   public static async getOrganization(
+    userId: number,
     organizationId: number
   ): Promise<Organization> {
-    return await Organization.findOne(organizationId, {
-      select: [
-        "id",
-        "name",
-        "description",
-        "icon",
-        "owner",
-        "users",
-        "containedProjects",
-        "roles"
-      ],
-      relations: ["owner", "users", "containedProjects", "roles"]
+    let user = await Organization.findOne(userId, { relations: ["role"] });
+    let organization = await Organization.findOne(organizationId, {
+      select: ["id", "name", "description", "icon", "owner"],
+      relations: ["owner"]
     });
+    organization.users = await OrganizationManager.getOrganizationUsers(
+      organizationId
+    );
+    organization.roles = await OrganizationManager.getOrganizationRoles(
+      organizationId
+    );
+    organization.containedProjects = await OrganizationManager.getOrganizationProjects(
+      userId,
+      organizationId
+    );
+    return organization;
   }
 
   public static async getContentsByName(
@@ -167,11 +171,15 @@ export class OrganizationManager {
   }
 
   public static async getOrganizationProjects(
+    userId: number,
     organizationId: number
   ): Promise<Project[]> {
     let organization = await Organization.findOne(organizationId, {
       relations: ["containedProjects"]
     });
+    organization.containedProjects = organization.containedProjects.filter(
+      project => UserManager.getUserHasAccessToProject(userId, project.id)
+    );
     return organization.containedProjects;
   }
 

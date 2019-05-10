@@ -37,7 +37,7 @@ export class GetOrganizationData implements IService {
       ).then(userIsMember => {
         if (userIsMember) {
           return Promise.resolve(
-            OrganizationManager.getOrganization(organizationId)
+            OrganizationManager.getOrganization(request.user.id, organizationId)
           );
         } else {
           return Promise.reject();
