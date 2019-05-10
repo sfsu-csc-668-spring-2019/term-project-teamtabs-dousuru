@@ -14,8 +14,10 @@ export class GetUserData implements IService {
       response: Response,
       __: NextFunction
     ) => {
-      this.validate(userId)
-        .then(response.json)
+      UserManager.getUserInformationById(userId)
+        .then(results => {
+          response.json(results);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
