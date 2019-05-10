@@ -127,21 +127,28 @@ export class UserManager {
     userId: number,
     name: string
   ): Promise<JSON> {
-    let result1: any = {};
+    let result: any = {};
     let organizations = (await User.findOne(userId, {
       relations: ["organizations"]
     })).organizations;
-    result1.organizations = UserManager.filterCaseInsensitive(
+    result.organizations = UserManager.filterCaseInsensitive(
       organizations,
       "name",
       name
     );
-    let result2 = await Promise.all(
+    let projectsAndTasks = await Promise.all(
       organizations.map(organization =>
         OrganizationManager.getContentsByName(userId, organization.id, name)
       )
     );
-    return Object.assign(result1, result2);
+    result.projects = [];
+    result.tasks = [];
+    projectsAndTasks.map((e: any) => {
+      result.projects.concat(e.projects);
+      result.tasks.concat(e.tasks);
+      return true;
+    });
+    return result;
   }
 
   public static filterCaseInsensitive(

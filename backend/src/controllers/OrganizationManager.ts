@@ -98,11 +98,13 @@ export class OrganizationManager {
       _projects => projects.concat(_projects)
     );
     result.projects = UserManager.filterCaseInsensitive(projects, "name", name);
-    let tasks: Task[];
-    (await Promise.all(
-      projects.map(project => ProjectManager.getTasks(project.id))
-    )).map(_tasks => tasks.concat(_tasks));
-    result.tasks = UserManager.filterCaseInsensitive(tasks, "name", name);
+    let tasksArray = await Promise.all(
+      projects.map(project =>
+        ProjectManager.getContentsByName(project.id, name)
+      )
+    );
+    result.tasks = [];
+    tasksArray.map((e: any) => result.tasks.concat(e.tasks));
     return result;
   }
 

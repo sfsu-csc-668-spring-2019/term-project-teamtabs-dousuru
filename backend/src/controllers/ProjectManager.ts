@@ -9,6 +9,7 @@ import {
   Task
 } from "../entity";
 import { ListManager } from "./ListManager";
+import { UserManager } from "./UserManager";
 
 export class ProjectManager {
   public static async createProject(
@@ -86,6 +87,20 @@ export class ProjectManager {
       ]
     });
   }
+
+  public static async getContentsByName(
+    projectId: number,
+    name: string
+  ): Promise<JSON> {
+    let result: any = {};
+    let tasks: Task[];
+    (await ProjectManager.getTasks(projectId)).map(_tasks =>
+      tasks.concat(_tasks)
+    );
+    result.tasks = UserManager.filterCaseInsensitive(tasks, "name", name);
+    return result;
+  }
+
   public static async postMessage(
     projectId: number,
     messageId: number
