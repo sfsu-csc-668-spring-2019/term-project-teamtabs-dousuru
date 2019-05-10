@@ -1,28 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { MessageManager, UserManager } from "../../controllers";
 import { Message } from "../../entity";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class GetProjectChatlogData implements IService {
+export class GetProjectChatlogData extends AuthenticatedService {
   public getRoute(): string {
     return "GET /id/:projectId/chatlog";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         params: { projectId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) =>
-          this.validate(request, projectId)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500))
-      );
+      this.validate(request, projectId)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 

@@ -1,37 +1,31 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager, ProjectManager } from "../../controllers";
 import { Project } from "../../entity";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PutProject implements IService {
+export class PutProject extends AuthenticatedService {
   public getRoute(): string {
     return "PUT /";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { name, description, isPublic, updatedId, newOwnerId },
         params: { organizationId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) =>
-          this.validate(
-            name,
-            description,
-            isPublic,
-            organizationId,
-            updatedId,
-            newOwnerId,
-            request
-          )
-            .then(response.json)
-            .catch(_ => response.sendStatus(500))
-      );
+      this.validate(
+        name,
+        description,
+        isPublic,
+        organizationId,
+        updatedId,
+        newOwnerId,
+        request
+      )
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 

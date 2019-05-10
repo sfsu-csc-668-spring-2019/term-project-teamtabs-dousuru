@@ -1,29 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { ProjectManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
-import authenticate from "../../middleware/authMiddleware";
 
-export class PostProjectSearch implements IService {
+export class PostProjectSearch extends AuthenticatedService {
   public getRoute(): string {
     return "POST /id/:projectId/search";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { name },
         params: { projectId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) => {
-          this.validate(projectId, name, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500));
-        }
-      );
+      this.validate(projectId, name, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 
