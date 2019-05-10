@@ -10,6 +10,7 @@ import { PostUserSearchContents } from "./PostUserSearchContents";
 import { GetUserContact } from "./GetUserContact";
 import { PutUserChatlogData } from "./PutUserChatlogData";
 import { PutUserSignup } from "./PutUserSignup";
+import { GetUserInformationByName } from "./GetUserInformationByName";
 
 export default [
   GetAuthValid,
@@ -23,5 +24,6 @@ export default [
   PostUserSearch,
   PostUserSearchContents,
   PutUserChatlogData,
-  PutUserSignup
+  PutUserSignup,
+  GetUserInformationByName
 ];
