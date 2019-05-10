@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { IMiddlewareFunction, Service } from "..";
 import { UserManager, OrganizationManager } from "../../controllers";
 
-export class GetLandingPage implements IService {
+export class GetLandingPage extends Service {
   public getRoute(): string {
     return "GET /";
   }
