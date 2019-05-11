@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 import { UserManager } from "../../controllers";
 import { User } from "../../entity";
 
-export class PostUserSearch implements IService {
+export class PostUserSearch extends Service {
   public getRoute(): string {
     return "POST /search";
   }

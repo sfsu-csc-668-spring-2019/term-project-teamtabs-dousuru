@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class PostUserConfiguration implements IService {
+export class PostUserConfiguration extends Service {
   public getRoute(): string {
     return "POST /id/:userId/configuration";
   }

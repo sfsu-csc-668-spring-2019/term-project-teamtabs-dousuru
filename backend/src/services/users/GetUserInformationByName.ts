@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 import { UserManager } from "../../controllers";
-import { User } from "../../entity";
 
-export class GetUserInformationByName implements IService {
+export class GetUserInformationByName extends Service {
   public getRoute(): string {
     return "GET /displayName/:displayName";
   }

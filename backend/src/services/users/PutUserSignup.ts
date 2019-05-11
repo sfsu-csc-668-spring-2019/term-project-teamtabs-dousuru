@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 import { SecretsService } from "../../controllers/SecretsService";
 import { UserManager } from "../../controllers";
 
-export class PutUserSignup implements IService {
+export class PutUserSignup extends Service {
   public getRoute(): string {
     return "PUT /signup";
   }

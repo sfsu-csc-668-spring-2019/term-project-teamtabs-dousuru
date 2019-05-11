@@ -1,30 +1,23 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { MessageManager } from "../../controllers";
 import { Message } from "../../entity";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PutUserChatlogData implements IService {
+export class PutUserChatlogData extends AuthenticatedService {
   public getRoute(): string {
     return "PUT /id/:userId/chatlog/id/:chatId";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { partitions, updateId },
         params: { userId: ownerId, chatId: receiverId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) => {
-          this.validate(ownerId, receiverId, partitions, updateId, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500));
-        }
-      );
+      this.validate(ownerId, receiverId, partitions, updateId, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 

@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
-import { SecretsService } from "../../controllers/SecretsService";
+import { Service, IMiddlewareFunction } from "..";
 import { UserManager } from "../../controllers";
 
-export class PutUserUpdate implements IService {
+export class PutUserUpdate extends Service {
   public getRoute(): string {
     return "PUT /update/userId/:id";
   }
