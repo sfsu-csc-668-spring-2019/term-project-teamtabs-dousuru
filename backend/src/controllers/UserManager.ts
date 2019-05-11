@@ -99,18 +99,17 @@ export class UserManager {
   }
 
   public static async checkListPermission(userId: number, listId: number) {
-    const user = await User.findOne(userId, { relations: ["roles"] });
     const list = await List.findOne(listId, { relations: ["baseProject"] });
     const project = list.baseProject;
-    return this.userHasAccessToProject(user, project);
+    return this.getUserHasAccessToProject(userId, project.id);
   }
 
   public static async getUserHasAccessToProject(
     userId: number,
     projectId: number
   ): Promise<boolean> {
-    let user = await User.findOne(userId, { relations: ["roles"] });
-    let project = await Project.findOne(projectId, { relations: ["roles"] });
+    let user = await User.findOne(userId, { relations: ["users"] });
+    let project = await Project.findOne(projectId, { relations: ["users"] });
     return UserManager.userHasAccessToProject(user, project);
   }
 
@@ -118,12 +117,7 @@ export class UserManager {
     if (project.isPublic) {
       return true;
     }
-    user.roles.forEach(role => {
-      if (project.roles.includes(role)) {
-        return true;
-      }
-    });
-    return false;
+    if (project.users.includes(user)) return true;
   }
 
   public static async getUsers(username: string): Promise<User[]> {
