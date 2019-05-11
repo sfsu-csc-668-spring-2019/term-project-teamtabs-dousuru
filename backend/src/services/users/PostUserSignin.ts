@@ -5,7 +5,7 @@ import { UserManager } from "../../controllers";
 
 export class PutUserSignin extends Service {
   public getRoute(): string {
-    return "Post /signin/:userId";
+    return "Post /signin";
   }
 
   public execute(): IMiddlewareFunction {

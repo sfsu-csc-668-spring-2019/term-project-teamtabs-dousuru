@@ -19,6 +19,12 @@ export class RegisterComponent {
   });
 
   onSubmit(): void {
-    console.log(this.registerForm.value);
+    const { email, username, password } = this.registerForm.value;
+    this.authService
+      .createAccount(username, email, password)
+      .toPromise()
+      .then(success => {
+        console.log(success);
+      });
   }
 }

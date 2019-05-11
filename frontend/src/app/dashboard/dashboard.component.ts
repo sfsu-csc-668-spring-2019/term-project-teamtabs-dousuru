@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
+import { ApiService } from "../networking/api.service";
 
 @Component({
   selector: "app-dashboard",
@@ -21,7 +22,15 @@ export class DashboardComponent {
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
 
+  constructor(private api: ApiService) {}
+
   toggleCollapsed() {
     this.collapsed = !this.collapsed;
+  }
+
+  test() {
+    this.api.getOrganizations().subscribe(data => {
+      console.log(data);
+    });
   }
 }

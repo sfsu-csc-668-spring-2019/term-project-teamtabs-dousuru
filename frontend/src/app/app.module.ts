@@ -6,12 +6,13 @@ import { AppComponent } from "./app.component";
 import { TodoModule } from "./todo/todo.module";
 import { ThemeModule } from "./theme/theme.module";
 import { HomepageComponent } from "./homepage/homepage.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NetworkTestingModule } from "./network-testing/network-testing.module";
 import { NavigationModule } from "./navigation/navigation.module";
 import { AuthModule } from "./auth/auth.module";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
+import { AuthInterceptor } from "./networking/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,9 @@ import { RegisterComponent } from "./register/register.component";
     NetworkTestingModule,
     AppRoutingModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ]
 })
 export class AppModule {}

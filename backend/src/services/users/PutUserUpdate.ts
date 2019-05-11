@@ -9,17 +9,15 @@ export class PutUserUpdate extends Service {
 
   public execute(): IMiddlewareFunction {
     return (
-      { body: { displayName, userName, icon, userId } }: Request,
+      { body: { displayName, userName, icon, id } }: Request,
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(displayName, userName, icon, userId)
+      this.validate(displayName, userName, icon, id)
         .then(_ => {
-          UserManager.updateAccount(displayName, userName, icon, userId).then(
-            results => {
-              response.send(results);
-            }
-          );
+          UserManager.updateAccount(displayName, icon, id).then(results => {
+            response.send(results);
+          });
         })
         .catch(_ => response.sendStatus(500));
     };
