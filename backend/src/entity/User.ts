@@ -9,7 +9,6 @@ import {
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
-import { List } from "./List";
 import { Message } from "./Message";
 import { Role } from "./Role";
 
