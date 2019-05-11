@@ -39,11 +39,11 @@ export class PutProject extends AuthenticatedService {
     request: AuthRequest
   ): Promise<Project> {
     if (request.user) {
-      OrganizationManager.userBelongsToOrganization(
+      OrganizationManager.userIsAuthorized(
         request.user.id,
         organizationId
-      ).then(userIsMember => {
-        if (userIsMember) {
+      ).then(userIsAuthorized => {
+        if (userIsAuthorized) {
           if (undefined !== updatedId) {
             return Promise.resolve(
               ProjectManager.updateProject(

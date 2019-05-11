@@ -262,7 +262,7 @@ export class OrganizationManager {
     await organization.save();
   }
 
-  public static async userBelongsToOrganization(
+  public static async userIsAuthorized(
     userId: number,
     organizationId: number
   ): Promise<boolean> {
