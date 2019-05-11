@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class PostTaskNotification implements IService {
+export class PostTaskNotification extends Service {
   public getRoute(): string {
     return "POST /id/:taskId/notification";
   }
