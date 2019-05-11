@@ -6,7 +6,7 @@ import { promises } from "fs";
 
 export class PutUserSignin implements IService {
   public getRoute(): string {
-    return "Post /signin/:userId";
+    return "Post /signin";
   }
 
   public execute(): IMiddlewareFunction {
