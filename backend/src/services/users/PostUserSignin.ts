@@ -10,13 +10,13 @@ export class PutUserSignin extends Service {
 
   public execute(): IMiddlewareFunction {
     return (
-      { body: { userName, password } }: Request,
+      { body: { username, password } }: Request,
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(userName, password).then(_ => {
+      this.validate(username, password).then(_ => {
         SecretsService.encrypt(password).then(encryptedPassword => {
-          UserManager.getUserInformationSignIn(userName)
+          UserManager.getUserInformationSignIn(username)
             .then(user => {
               if (!user) return Promise.reject;
               if (encryptedPassword == user.password)
@@ -30,8 +30,8 @@ export class PutUserSignin extends Service {
     };
   }
 
-  validate(userName: string, password: string): Promise<void> {
-    if (!userName || !password) {
+  validate(username: string, password: string): Promise<void> {
+    if (!username || !password) {
       return Promise.reject();
     } else {
       return Promise.resolve();

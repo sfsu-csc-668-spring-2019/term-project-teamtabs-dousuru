@@ -83,7 +83,7 @@ export class RoleManager {
   public static async getUsers(roleId: number): Promise<JSON[]> {
     let users = (await Role.findOne(roleId, { relations: ["users"] })).users;
     return await Promise.all(
-      users.map(user => UserManager.getUserInformation(user.userName))
+      users.map(user => UserManager.getUserInformation(user.username))
     );
   }
 }
