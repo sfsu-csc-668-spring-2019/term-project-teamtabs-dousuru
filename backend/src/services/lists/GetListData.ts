@@ -1,19 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { Service, IMiddlewareFunction } from "..";
-import { ListManager } from "../../controllers";
-import { List } from "../../entity";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
+import { ListManager, UserManager } from "../../controllers";
+import { AuthRequest } from "../../types/AuthRequest";
 
-export class GetListData extends Service {
+export class GetListData extends AuthenticatedService {
   public getRoute(): string {
     return "GET /list/:listId";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (
-      { params: { listId } }: Request,
-      response: Response,
-      __: NextFunction
-    ) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: Request, response: Response, __: NextFunction) => {
+      const {
+        params: { listId }
+      } = request;
+      this.validate(listId, request);
       ListManager.getListData(listId)
         .then(list => {
           response.json(list);
@@ -22,5 +22,16 @@ export class GetListData extends Service {
           response.json(err);
         });
     };
+  }
+
+  public validate(listId: number, request: AuthRequest): Promise<void> {
+    if (!request.user || !listId) {
+      return Promise.reject();
+    } else {
+      UserManager.checkListPermission(request.user.id, listId).then(results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      });
+    }
   }
 }

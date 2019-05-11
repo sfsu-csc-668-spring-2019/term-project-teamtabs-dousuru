@@ -1,4 +1,4 @@
-import { User, Project, Task } from "../entity";
+import { User, Project, Task, List } from "../entity";
 import { getConnection, Like } from "typeorm";
 import { Organization } from "../entity";
 import { OrganizationManager } from "./OrganizationManager";
@@ -96,6 +96,13 @@ export class UserManager {
     return organization.containedProjects.filter(project =>
       UserManager.userHasAccessToProject(user, project)
     );
+  }
+
+  public static async checkListPermission(userId: number, listId: number) {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const list = await List.findOne(listId, { relations: ["baseProject"] });
+    const project = list.baseProject;
+    return this.userHasAccessToProject(user, project);
   }
 
   public static async getUserHasAccessToProject(
