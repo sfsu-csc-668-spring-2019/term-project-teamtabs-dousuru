@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
+import { ListManager } from "../../controllers";
+import { List } from "../../entity";
 
 export class GetListData extends Service {
   public getRoute(): string {
@@ -7,8 +9,18 @@ export class GetListData extends Service {
   }
 
   public execute(): IMiddlewareFunction {
-    return (_: Request, response: Response, __: NextFunction) => {
-      response.sendStatus(404);
+    return (
+      { params: { listId } }: Request,
+      response: Response,
+      __: NextFunction
+    ) => {
+      ListManager.getListData(listId)
+        .then(list => {
+          response.json(list);
+        })
+        .catch(err => {
+          response.json(err);
+        });
     };
   }
 }

@@ -58,4 +58,9 @@ export class ListManager {
     );
     return await list.save();
   }
+
+  static async getListData(listId: number): Promise<List> {
+    const list = await List.findOne(listId);
+    return list;
+  }
 }

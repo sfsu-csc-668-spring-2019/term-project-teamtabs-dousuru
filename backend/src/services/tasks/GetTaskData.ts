@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
+import { TaskManager } from "../../controllers";
 
 export class GetTaskData extends Service {
   public getRoute(): string {
@@ -7,8 +8,18 @@ export class GetTaskData extends Service {
   }
 
   public execute(): IMiddlewareFunction {
-    return (_: Request, response: Response, __: NextFunction) => {
-      response.sendStatus(404);
+    return (
+      { params: { taskId } }: Request,
+      response: Response,
+      __: NextFunction
+    ) => {
+      TaskManager.getTaskData(taskId)
+        .then(task => {
+          response.json(list);
+        })
+        .catch(err => {
+          response.json(err);
+        });
     };
   }
 }

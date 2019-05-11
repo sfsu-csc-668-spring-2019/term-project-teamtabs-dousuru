@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
+import { ListManager } from "../../controllers";
 
 export class PostListCreate extends Service {
   public getRoute(): string {
@@ -7,8 +8,18 @@ export class PostListCreate extends Service {
   }
 
   public execute(): IMiddlewareFunction {
-    return (_: Request, response: Response, __: NextFunction) => {
-      response.sendStatus(404);
+    return (
+      { params: { name, description, projectId } }: Request,
+      response: Response,
+      __: NextFunction
+    ) => {
+      ListManager.createList(name, description, projectId)
+        .then(list => {
+          response.json(list);
+        })
+        .catch(err => {
+          response.json(err);
+        });
     };
   }
 }
