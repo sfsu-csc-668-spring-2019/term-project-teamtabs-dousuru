@@ -8,7 +8,6 @@ export class UserManager {
   static async createAccount(
     email: string,
     password: string,
-    displayName: string,
     userName: string,
     icon: string
   ): Promise<User> {
