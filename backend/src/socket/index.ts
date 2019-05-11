@@ -7,6 +7,9 @@ import {
   UserHandler
 } from "./handlers";
 import SocketIO, { Socket } from "socket.io";
+import authenticate from "../middleware/authMiddleware";
+import { AuthRequest } from "../types/AuthRequest";
+import { NextFunction, Response } from "express";
 
 export class DousuruIO {
   private static _instance: DousuruIO;
@@ -54,21 +57,27 @@ export class DousuruIO {
   private setIOConnection(): void {
     this.io.on("connection", socket => {
       try {
-        if (socket.request.user) {
-          console.log("yay");
-          const { user } = socket.request;
-          const userId = user.id;
-          this.userSockets.set(userId, socket);
-          socket.on("disconnect", () => {
-            this.deleteUserFromUserSocketList(userId);
-            this.deleteUserFromOrganizationUserSocketList(userId);
-            this.deleteUserFromProjectUserSocketList(userId);
-            this.deleteUserFromListUserSocketList(userId);
-            this.deleteUserFromTaskUserSocketList(userId);
-          });
-        } else {
-          console.log("welp");
-        }
+        authenticate(
+          socket.request,
+          null,
+          (request: AuthRequest, _: Response, __: NextFunction) => {
+            if (request.user) {
+              console.log("yay");
+              const { user } = socket.request;
+              const userId = user.id;
+              this.userSockets.set(userId, socket);
+              socket.on("disconnect", () => {
+                this.deleteUserFromUserSocketList(userId);
+                this.deleteUserFromOrganizationUserSocketList(userId);
+                this.deleteUserFromProjectUserSocketList(userId);
+                this.deleteUserFromListUserSocketList(userId);
+                this.deleteUserFromTaskUserSocketList(userId);
+              });
+            } else {
+              console.log("welp");
+            }
+          }
+        );
       } catch (error) {
         console.log(error);
       }
