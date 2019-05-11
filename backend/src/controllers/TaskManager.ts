@@ -63,19 +63,21 @@ export class TaskManager {
 
   static async addTag(tagId: number, taskId: number): Promise<Task> {
     let tag = await Tag.findOne(tagId);
-    let task = await Task.findOne(taskId);
-    task.tags.push(tag);
+    let task = await Task.findOne(taskId, { relations: ["tags"] });
+    if (!task.tags.includes(tag)) {
+      task.tags.push(tag);
+    }
     return await task.save();
   }
 
   static async removeTag(tagId: number, taskId: number): Promise<Task> {
-    let task = await Task.findOne(taskId);
+    let task = await Task.findOne(taskId, { relations: ["tags"] });
     task.tags = task.tags.filter(containTag => containTag.id !== tagId);
     return await task.save();
   }
 
   static async getTags(taskId: number): Promise<Tag[]> {
-    let task = await Task.findOne(taskId);
+    let task = await Task.findOne(taskId, { relations: ["tags"] });
     return task.tags;
   }
 }

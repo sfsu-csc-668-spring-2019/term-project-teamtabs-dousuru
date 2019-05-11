@@ -13,15 +13,16 @@ export class MessageManager {
     partitions: any[]
   ): Promise<Message> {
     let timeCreated = new Date();
-    let owner = await User.findOne(ownerId);
-    let receiver = await User.findOne(receiverId);
+    let owner = await User.findOne(ownerId, { relations: ["contacts"] });
+    let receiver = await User.findOne(receiverId, { relations: ["contacts"] });
+    MessageManager.RegisterContact(owner, receiver);
+    MessageManager.RegisterContact(receiver, owner);
     let messagePartitions = await Promise.all(
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -35,6 +36,19 @@ export class MessageManager {
       messagePartitions
     });
     return await message.save();
+  }
+
+  private static async RegisterContact(
+    user1: User,
+    user2: User
+  ): Promise<void> {
+    if (undefined === user1.contacts) {
+      user1.contacts = [user2];
+      await user1.save();
+    } else if (!user1.contacts.includes(user2)) {
+      user1.contacts.push(user2);
+      await user1.save();
+    }
   }
 
   public static async getUserMessages(
@@ -60,9 +74,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -97,9 +110,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );
@@ -131,9 +143,8 @@ export class MessageManager {
       partitions.map(partition =>
         MessagePartition.create({
           index: partition.index,
-          displayedValue: partition.displayedValue,
-          type: partition.type,
-          url: partition.url
+          associatedValue: partition.associatedValue,
+          type: partition.type
         })
       )
     );

@@ -1,0 +1,29 @@
+.chat-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: green;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+
+  &.collapsed {
+    height: unset;
+    .chat-body {
+      transform: translateY(100%);
+      transition: all 1s;
+      height: 0;
+    }
+  }
+}
+
+.chat-header {
+  display: flex;
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  max-height: 100%;
+}

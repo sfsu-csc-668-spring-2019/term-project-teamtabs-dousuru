@@ -32,7 +32,7 @@ export class Project extends BaseEntity {
   @ManyToOne(type => User, user => user.ownedProjects)
   owner: User;
 
-  @ManyToMany(type => User, user => user.ownedProjects, { onDelete: "CASCADE" })
+  @ManyToMany(type => User, user => user.projects, { onDelete: "CASCADE" })
   @JoinTable()
   users: User[];
 
@@ -52,6 +52,6 @@ export class Project extends BaseEntity {
   @ManyToMany(type => Message, message => message.baseProject)
   projectMessages: Message[];
 
-  @OneToMany(type => Tag, tag => tag.basedProject)
+  @OneToMany(type => Tag, tag => tag.baseProject)
   tags: Tag[];
 }

@@ -7,13 +7,13 @@ export class TagManager {
     color: string,
     projectId: number
   ): Promise<Tag> {
-    let basedProject = await getConnection()
+    let baseProject = await getConnection()
       .createQueryBuilder()
       .select("project")
       .from(Project, "project")
       .where("project.id = :projectId", { projectId })
       .getOne();
-    let tag = await Tag.create({ name, color, basedProject });
+    let tag = await Tag.create({ name, color, baseProject });
     return await tag.save();
   }
 
@@ -41,7 +41,7 @@ export class TagManager {
   }
 
   public static async getTasks(tagId: number): Promise<Task[]> {
-    let tag = await Tag.findOne(tagId);
+    let tag = await Tag.findOne(tagId, { relations: ["tasks"] });
     return tag.tasks;
   }
 

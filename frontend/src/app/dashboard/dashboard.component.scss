@@ -8,15 +8,18 @@
 
 .organizations {
   grid-area: organizations;
+  overflow: scroll;
 }
 
 .projects {
   grid-area: projects;
+  overflow: scroll;
 }
 
 .main {
   grid-area: main;
   position: relative;
+  overflow: scroll;
 
   .collapse-button {
     position: absolute;
@@ -26,5 +29,6 @@
     height: 1.3rem;
     width: 1.3rem;
     box-shadow: 2px 2px 2px #444;
+    z-index: 9999;
   }
 }

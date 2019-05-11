@@ -9,7 +9,6 @@ import {
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
-import { List } from "./List";
 import { Message } from "./Message";
 import { Role } from "./Role";
 
@@ -24,23 +23,21 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 100, unique: false, nullable: false })
   password: string;
 
-  @Column({ type: "varchar", nullable: false, unique: false })
-  displayName: string;
-
   @Column({ type: "varchar", length: 200, unique: true, nullable: false })
   email: string;
 
   @Column({ type: "varchar", length: 2083, nullable: true, unique: false })
   icon: string;
 
+  @ManyToMany(type => User, user => user.contacts)
+  @JoinTable()
+  contacts: User[];
+
   @OneToMany(type => Project, orgnanization => orgnanization.owner)
   ownedOrganizations: Organization[];
 
   @OneToMany(type => Project, project => project.owner)
   ownedProjects: Project[];
-
-  @OneToMany(type => Project, list => list.owner)
-  ownedLists: List[];
 
   @ManyToMany(type => Organization, organization => organization.users)
   organizations: Organization[];

@@ -21,6 +21,7 @@ export class RoleManager {
       project
     })).save();
   }
+
   public static async createOrganizationRole(
     name: string,
     canInvite: boolean,
@@ -37,6 +38,7 @@ export class RoleManager {
       organization
     })).save();
   }
+
   public static async updateRole(
     roleId: number,
     name: string,
@@ -51,31 +53,37 @@ export class RoleManager {
     role.canPost = canPost;
     return await role.save();
   }
+
   public static async deleteRole(roleId: number): Promise<void> {
     await Role.delete(roleId);
   }
+
   public static async getRole(roleId: number): Promise<Role> {
     return await Role.findOne(roleId);
   }
 
   public static async addUser(roleId: number, userId: number): Promise<Role> {
     let user = await User.findOne(userId);
-    let role = await Role.findOne(roleId);
-    role.users.push(user);
+    let role = await Role.findOne(roleId, { relations: ["users"] });
+    if (!role.users.includes(user)) {
+      role.users.push(user);
+    }
     return await role.save();
   }
+
   public static async removeUser(
     roleId: number,
     userId: number
   ): Promise<void> {
-    let role = await Role.findOne(roleId);
+    let role = await Role.findOne(roleId, { relations: ["users"] });
     role.users = role.users.filter(roleUser => roleUser.id !== userId);
     await role.save();
   }
+
   public static async getUsers(roleId: number): Promise<JSON[]> {
-    let users = (await Role.findOne(roleId)).users;
+    let users = (await Role.findOne(roleId, { relations: ["users"] })).users;
     return await Promise.all(
-      users.map(user => UserManager.getUserInformation(user.displayName))
+      users.map(user => UserManager.getUserInformation(user.userName))
     );
   }
 }
