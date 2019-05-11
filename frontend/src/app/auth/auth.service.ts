@@ -34,7 +34,7 @@ export class AuthService {
     return this.api.login(identifier, password).pipe(
       map(({ token }) => {
         if (!token) {
-          this.authToken = null;
+          this.authToken = undefined;
           return false;
         } else {
           this.authToken = token;
@@ -52,7 +52,7 @@ export class AuthService {
     return this.api.createAccount(username, email, password).pipe(
       map(({ token }) => {
         if (!token) {
-          this.authToken = null;
+          this.authToken = undefined;
           return false;
         } else {
           this.authToken = token;
@@ -60,5 +60,9 @@ export class AuthService {
         }
       })
     );
+  }
+
+  signout() {
+    this.authToken = undefined;
   }
 }
