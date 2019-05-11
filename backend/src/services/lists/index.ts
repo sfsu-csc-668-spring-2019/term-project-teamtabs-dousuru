@@ -5,6 +5,9 @@ import { PostListCreate } from "./PostListCreate";
 import { PostListDelete } from "./PostListDelete";
 import { PostListNotification } from "./PostListNotification";
 import { PostListSearch } from "./PostListSearch";
+import { PostListUpdate } from "./PostListUpdate";
+import { PostListUpdateDescription } from "./PostListUpdateDescription";
+import { PostListUpdateName } from "./PostListUpdateName";
 
 export default [
   GetListConfiguration,
@@ -13,5 +16,8 @@ export default [
   PostListCreate,
   PostListDelete,
   PostListNotification,
-  PostListSearch
+  PostListSearch,
+  PostListUpdate,
+  PostListUpdateDescription,
+  PostListUpdateName
 ];
