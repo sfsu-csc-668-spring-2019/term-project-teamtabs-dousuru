@@ -17,6 +17,12 @@ export class LoginComponent {
   });
 
   onSubmit(): void {
-    console.log(this.loginForm.value);
+    const { identifier, password } = this.loginForm.value;
+    this.authService
+      .login(identifier, password)
+      .toPromise()
+      .then(success => {
+        console.log(success);
+      });
   }
 }

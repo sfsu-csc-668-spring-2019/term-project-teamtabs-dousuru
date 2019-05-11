@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { ResourcesService } from "src/app/networking/resources.service";
-import { Organization } from "src/app/networking/Organization";
-
+import { Organization } from "../../models";
 @Component({
   selector: "app-organization-list",
   templateUrl: "./organization-list.component.html",
@@ -10,9 +8,7 @@ import { Organization } from "src/app/networking/Organization";
 })
 export class OrganizationListComponent implements OnInit {
   organizations: Observable<Organization[]>;
-  constructor(private resources: ResourcesService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.organizations = this.resources.getOrganizations();
-  }
+  ngOnInit() {}
 }
