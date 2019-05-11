@@ -25,11 +25,11 @@ export class GetOrganizationData extends AuthenticatedService {
     organizationId: number
   ): Promise<Organization> {
     if (request.user) {
-      OrganizationManager.userBelongsToOrganization(
+      OrganizationManager.userIsAuthorized(
         request.user.id,
         organizationId
-      ).then(userIsMember => {
-        if (userIsMember) {
+      ).then(userIsAuthorized => {
+        if (userIsAuthorized) {
           return Promise.resolve(
             OrganizationManager.getOrganization(request.user.id, organizationId)
           );

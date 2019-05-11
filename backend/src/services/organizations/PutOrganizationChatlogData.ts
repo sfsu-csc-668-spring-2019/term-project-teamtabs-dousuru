@@ -28,11 +28,11 @@ export class PutOrganizationChatlogData extends AuthenticatedService {
     request: AuthRequest
   ): Promise<Message> {
     if (request.user) {
-      OrganizationManager.userBelongsToOrganization(
+      OrganizationManager.userIsAuthorized(
         request.user.id,
         organizationId
-      ).then(userIsMember => {
-        if (userIsMember) {
+      ).then(userIsAuthorized => {
+        if (userIsAuthorized) {
           if (undefined !== updateId) {
             return Promise.resolve(
               MessageManager.updateMessage(updateId, partitions)

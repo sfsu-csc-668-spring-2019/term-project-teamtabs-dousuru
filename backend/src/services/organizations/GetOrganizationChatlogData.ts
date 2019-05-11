@@ -25,11 +25,11 @@ export class GetOrganizationChatlogData extends AuthenticatedService {
     organizationId: number
   ): Promise<Message[]> {
     if (request.user) {
-      OrganizationManager.userBelongsToOrganization(
+      OrganizationManager.userIsAuthorized(
         request.user.id,
         organizationId
-      ).then(userIsMember => {
-        if (userIsMember) {
+      ).then(userIsAuthorized => {
+        if (userIsAuthorized) {
           return Promise.resolve(
             MessageManager.getOrganizationMessages(organizationId)
           );
