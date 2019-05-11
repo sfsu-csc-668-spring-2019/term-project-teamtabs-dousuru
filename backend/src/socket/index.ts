@@ -28,7 +28,7 @@ export class DousuruIO {
       );
     }
     this.setDefaultValues();
-    this.attachServer(server);
+    this.listenServer(server);
     this.setIOConnection();
     this.initializeHandlers();
     DousuruIO._instance = this;
@@ -47,14 +47,15 @@ export class DousuruIO {
     this.userTasks = new Map();
   }
 
-  private attachServer(server: Server): void {
-    this.io.attach(server);
+  private listenServer(server: Server): void {
+    this.io.listen(server);
   }
 
   private setIOConnection(): void {
     this.io.on("connection", socket => {
       try {
         if (socket.request.user) {
+          console.log("yay");
           const { user } = socket.request;
           const userId = user.id;
           this.userSockets.set(userId, socket);
@@ -65,6 +66,8 @@ export class DousuruIO {
             this.deleteUserFromListUserSocketList(userId);
             this.deleteUserFromTaskUserSocketList(userId);
           });
+        } else {
+          console.log("welp");
         }
       } catch (error) {
         console.log(error);
