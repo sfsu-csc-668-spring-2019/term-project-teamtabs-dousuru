@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authService.autenticated.pipe(
+    return this.authService.authenticated.pipe(
       map(authenticated => {
         if (authenticated) {
           return true;
@@ -33,6 +33,6 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   canLoad(route: Route, segments: UrlSegment[]) {
-    return this.authService.autenticated;
+    return this.authService.authenticated;
   }
 }
