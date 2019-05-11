@@ -1,4 +1,2 @@
-import io from "socket.io-client";
-import { default as serverAddress } from "./serverAddress";
-
-export default io.connect(serverAddress);
+export { default as io } from "socket.io-client";
+export { default as serverAddress } from "./serverAddress";

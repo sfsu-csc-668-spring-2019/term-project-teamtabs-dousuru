@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import socket from "../../../api/socket";
+import { io, serverAddress } from "../../../api/socket";
+import { AuthService } from "src/app/auth/auth.service";
 @Component({
   selector: "app-socket-test",
   templateUrl: "./socket-test.component.html",
@@ -8,13 +8,20 @@ import socket from "../../../api/socket";
 })
 export class SocketTestComponent implements OnInit, OnDestroy {
   messages: string[] = [];
-  constructor() {
-    socket.on("messageReceived", this.onMessageReceived);
+  socket: any = null;
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.authToken;
+    this.socket = io.connect(serverAddress, {
+      query: `token=${this.authService.authToken}`
+    });
+    this.socket.on("messageReceived", this.onMessageReceived);
   }
 
-  ngOnInit() {}
-
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.socket.off("messageReceived");
+  }
 
   onMessageReceived = message => {
     this.messages.push(message);

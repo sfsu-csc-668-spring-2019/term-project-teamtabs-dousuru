@@ -10,6 +10,9 @@ import SocketIO, { Socket } from "socket.io";
 import authenticate from "../middleware/authMiddleware";
 import { AuthRequest } from "../types/AuthRequest";
 import { NextFunction, Response } from "express";
+import authenticateSocket from "../middleware/socketAuthMiddleware";
+import { User } from "../entity";
+import { stringify } from "querystring";
 
 export class DousuruIO {
   private static _instance: DousuruIO;
@@ -31,7 +34,7 @@ export class DousuruIO {
       );
     }
     this.setDefaultValues();
-    this.listenServer(server);
+    this.attachServer(server);
     this.setIOConnection();
     this.initializeHandlers();
     DousuruIO._instance = this;
@@ -50,37 +53,28 @@ export class DousuruIO {
     this.userTasks = new Map();
   }
 
-  private listenServer(server: Server): void {
-    this.io.listen(server);
+  private attachServer(server: Server): void {
+    this.io.attach(server);
   }
 
   private setIOConnection(): void {
     this.io.on("connection", socket => {
-      try {
-        authenticate(
-          socket.request,
-          null,
-          (request: AuthRequest, _: Response, __: NextFunction) => {
-            if (request.user) {
-              console.log("yay");
-              const { user } = socket.request;
-              const userId = user.id;
-              this.userSockets.set(userId, socket);
-              socket.on("disconnect", () => {
-                this.deleteUserFromUserSocketList(userId);
-                this.deleteUserFromOrganizationUserSocketList(userId);
-                this.deleteUserFromProjectUserSocketList(userId);
-                this.deleteUserFromListUserSocketList(userId);
-                this.deleteUserFromTaskUserSocketList(userId);
-              });
-            } else {
-              console.log("welp");
-            }
+      authenticateSocket(socket.handshake.query.token)
+        .then((user: User) => {
+          if (user) {
+            socket.emit("messageReceived", JSON.stringify(user));
+            const userId = user.id.toString();
+            this.userSockets.set(userId, socket);
+            socket.on("disconnect", () => {
+              this.deleteUserFromUserSocketList(userId);
+              this.deleteUserFromOrganizationUserSocketList(userId);
+              this.deleteUserFromProjectUserSocketList(userId);
+              this.deleteUserFromListUserSocketList(userId);
+              this.deleteUserFromTaskUserSocketList(userId);
+            });
           }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+        })
+        .catch((error: string) => console.log(error));
     });
   }
 
