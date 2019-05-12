@@ -32,7 +32,7 @@ export class PostListUpdateDescription extends AuthenticatedService {
     if (!request.user || !listId || !description) {
       return Promise.reject();
     } else {
-      UserManager.checkListPermission(request.user.id, listId).then(results => {
+      UserManager.checkListManage(request.user.id, listId).then(results => {
         if (results) return Promise.resolve();
         return Promise.reject();
       });

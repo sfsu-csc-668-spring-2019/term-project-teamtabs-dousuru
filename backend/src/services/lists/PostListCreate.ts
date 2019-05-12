@@ -34,12 +34,10 @@ export class PostListCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !projectId) {
       return Promise.reject();
     } else {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
-        results => {
-          if (results) return Promise.resolve();
-          return Promise.reject();
-        }
-      );
+      UserManager.checkListManage(request.user.id, projectId).then(results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      });
     }
   }
 }
