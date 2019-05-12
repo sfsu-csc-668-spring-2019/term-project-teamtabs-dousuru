@@ -5,7 +5,7 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostListDelete extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /list/:listId/delete";
+    return "POST /delete/:listId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {

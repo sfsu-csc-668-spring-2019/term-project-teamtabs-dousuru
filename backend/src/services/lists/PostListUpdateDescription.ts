@@ -5,7 +5,7 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostListUpdateDescription extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /list/updateDescription/:listId";
+    return "POST /updateDescription/:listId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {

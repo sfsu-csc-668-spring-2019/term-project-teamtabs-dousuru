@@ -20,7 +20,12 @@ export class TaskManager {
     return task.save();
   }
 
-  static async updateDescriptionTask(
+  static async getTaskData(taskId: number): Promise<Task> {
+    const task = await Task.findOne(taskId);
+    return task;
+  }
+
+  static async updateDescription(
     description: string,
     taskId: number
   ): Promise<any> {

@@ -2,9 +2,11 @@ import { GetTaskConfiguration } from "./GetTaskConfiguration";
 import { GetTaskData } from "./GetTaskData";
 import { GetTaskNotification } from "./GetTaskNotification";
 import { PostTaskConfiguration } from "./PostTaskConfiguration";
-import { PostTaskCreate } from "./postTaskCreate";
+import { PostTaskCreate } from "./PostTaskCreate";
 import { PostTaskDelete } from "./PostTaskDelete";
 import { PostTaskNotification } from "./PostTaskNotification";
+import { PostUpdateTaskDescription } from "./PostUpdateTaskDescription";
+import { PostUpdateTaskDueDate } from "./PostUpdateTaskDueDate";
 
 export default [
   GetTaskConfiguration,
@@ -13,5 +15,7 @@ export default [
   PostTaskConfiguration,
   PostTaskCreate,
   PostTaskDelete,
-  PostTaskNotification
+  PostTaskNotification,
+  PostUpdateTaskDescription,
+  PostUpdateTaskDueDate
 ];

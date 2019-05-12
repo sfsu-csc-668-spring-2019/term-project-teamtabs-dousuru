@@ -157,6 +157,15 @@ export class UserManager {
     return this.checkListManage(userId, listId);
   }
 
+  //checks if user has permission to view task
+  public static async checkTaskPermission(
+    userId: number,
+    taskId: number
+  ): Promise<boolean> {
+    const task = await Task.findOne(taskId, { relations: ["baseList"] });
+    return this.checkListPermission(userId, taskId);
+  }
+
   //check if user has permission to view list, possibly not needed
   public static async checkListPermission(
     userId: number,

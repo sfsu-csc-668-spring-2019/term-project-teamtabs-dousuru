@@ -5,7 +5,7 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class GetListData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /list/:listId";
+    return "GET /id/:listId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
