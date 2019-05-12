@@ -2,6 +2,7 @@ import { Organization, User, Project, Message, Role, Task } from "../entity";
 import { SecretsService } from "./SecretsService";
 import { UserManager } from "./UserManager";
 import { ProjectManager } from "./ProjectManager";
+import { RoleManager } from "./RoleManager";
 
 export class OrganizationManager {
   public static async createOrganization(
@@ -50,7 +51,12 @@ export class OrganizationManager {
       let newOwner = await User.findOne(newOwnerId);
       organization.owner = newOwner;
     }
-    return await organization.save();
+    organization = await organization.save();
+    organization.roles = await RoleManager.createDefaultOrganizationRoles(
+      organizationId,
+      ownerId
+    );
+    return organization;
   }
 
   public static async deleteOrganization(

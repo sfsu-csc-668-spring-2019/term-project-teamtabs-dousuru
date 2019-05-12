@@ -18,9 +18,9 @@ export class RoleManager {
   };
 
   //should be called when a project or organization is made to instantiate default roles
-  public static async createDefaultRoles(
+  public static async createDefaultProjectRoles(
     projectId: number,
-    organizationId: number
+    ownerId: number
   ): Promise<Role[]> {
     let addedRoles = [];
     addedRoles.push(
@@ -29,7 +29,6 @@ export class RoleManager {
         RoleManager.memberConfiguration.canInvite,
         RoleManager.memberConfiguration.canManage,
         RoleManager.memberConfiguration.canPost,
-        organizationId,
         projectId
       )
     );
@@ -39,10 +38,37 @@ export class RoleManager {
         RoleManager.ownerConfiguration.canInvite,
         RoleManager.ownerConfiguration.canManage,
         RoleManager.ownerConfiguration.canPost,
-        organizationId,
         projectId
       )
     );
+    await this.addUser(addedRoles[1].id, ownerId);
+    return addedRoles;
+  }
+
+  public static async createDefaultOrganizationRoles(
+    organizationId: number,
+    ownerId: number
+  ): Promise<Role[]> {
+    let addedRoles = [];
+    addedRoles.push(
+      await this.createOrganizationRole(
+        RoleManager.memberConfiguration.name,
+        RoleManager.memberConfiguration.canInvite,
+        RoleManager.memberConfiguration.canManage,
+        RoleManager.memberConfiguration.canPost,
+        organizationId
+      )
+    );
+    addedRoles.push(
+      await this.createOrganizationRole(
+        RoleManager.ownerConfiguration.name,
+        RoleManager.ownerConfiguration.canInvite,
+        RoleManager.ownerConfiguration.canManage,
+        RoleManager.ownerConfiguration.canPost,
+        organizationId
+      )
+    );
+    await this.addUser(addedRoles[1].id, ownerId);
     return addedRoles;
   }
 
@@ -51,11 +77,12 @@ export class RoleManager {
     canInvite: boolean,
     canManage: boolean,
     canPost: boolean,
-    organizationId: number,
     projectId: number
   ): Promise<Role> {
-    let organization = await Organization.findOne(organizationId);
-    let project = await Project.findOne(projectId);
+    let project = await Project.findOne(projectId, {
+      relations: ["baseOrganization"]
+    });
+    let organization = await Organization.findOne(project.baseOrganization.id);
     return await (await Role.create({
       name,
       canInvite,
