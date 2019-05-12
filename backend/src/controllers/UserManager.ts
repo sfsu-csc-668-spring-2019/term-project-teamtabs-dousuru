@@ -98,6 +98,59 @@ export class UserManager {
     );
   }
 
+  //checks if user has management permission for organization
+  public static async checkOrganizationManage(
+    userId: number,
+    organizationId: number
+  ) {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
+    user.roles.forEach(role => {
+      if (organization.roles.includes(role)) {
+        if (role.canManage) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+  //checks if user has management permission for project
+  public static async checkProjectManage(userId: number, projectId: number) {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const project = await Project.findOne(projectId, {
+      relations: ["roles", "baseOrganization"]
+    });
+    if (project.isPublic) {
+      return this.checkOrganizationManage(userId, project.baseOrganization.id);
+    }
+    user.roles.forEach(role => {
+      if (project.roles.includes(role)) {
+        if (role.canManage) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+  //checks if user can manage list
+  public static async checkListManage(userId: number, listId: number) {
+    const list = await List.findOne(listId, { relations: ["baseProject"] });
+    const projectId = list.baseProject.id;
+    return this.checkProjectManage(userId, projectId);
+  }
+
+  //checks if user can manage task
+  public static async checkTaskManage(userId: number, taskId: number) {
+    const task = await Task.findOne(taskId, { relations: ["baseList"] });
+    const listId = task.baseList.id;
+    return this.checkListManage(userId, listId);
+  }
+
+  //check if user has permission to view list, possibly not needed
   public static async checkListPermission(userId: number, listId: number) {
     const list = await List.findOne(listId, { relations: ["baseProject"] });
     const project = list.baseProject;

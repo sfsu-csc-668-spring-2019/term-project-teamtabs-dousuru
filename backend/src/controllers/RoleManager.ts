@@ -2,6 +2,50 @@ import { Role, Organization, Project, User } from "../entity";
 import { UserManager } from "./UserManager";
 
 export class RoleManager {
+  //Roles that should be added by default on creation
+  private static ownerConfiguration = {
+    name: "Owner",
+    canInvite: true,
+    canManage: true,
+    canPost: true
+  };
+
+  private static memberConfiguration = {
+    name: "Member",
+    canInvite: true,
+    canManage: false,
+    canPost: true
+  };
+
+  //should be called when a project or organization is made to instantiate default roles
+  public static async createDefaultRoles(
+    projectId: number,
+    organizationId: number
+  ): Promise<Role[]> {
+    let addedRoles = [];
+    addedRoles.push(
+      await this.createProjectRole(
+        RoleManager.memberConfiguration.name,
+        RoleManager.memberConfiguration.canInvite,
+        RoleManager.memberConfiguration.canManage,
+        RoleManager.memberConfiguration.canPost,
+        organizationId,
+        projectId
+      )
+    );
+    addedRoles.push(
+      await this.createProjectRole(
+        RoleManager.ownerConfiguration.name,
+        RoleManager.ownerConfiguration.canInvite,
+        RoleManager.ownerConfiguration.canManage,
+        RoleManager.ownerConfiguration.canPost,
+        organizationId,
+        projectId
+      )
+    );
+    return addedRoles;
+  }
+
   public static async createProjectRole(
     name: string,
     canInvite: boolean,
