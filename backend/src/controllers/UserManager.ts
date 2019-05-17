@@ -8,14 +8,13 @@ export class UserManager {
   static async createAccount(
     email: string,
     password: string,
-    displayName: string,
-    userName: string,
+    username: string,
     icon: string
   ): Promise<User> {
     const user = await User.create({
       email,
       password,
-      userName,
+      username,
       icon
     });
     return await user.save();
@@ -23,36 +22,36 @@ export class UserManager {
 
   //update displayname, username, icon
   static async updateAccount(
-    userName: string,
+    username: string,
     icon: string,
     id: number
   ): Promise<JSON> {
     await getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ userName, icon })
+      .set({ username, icon })
       .where("id = :id", { id })
       .execute();
-    return await this.getUserInformation(userName);
+    return await this.getUserInformation(username);
   }
 
   //gets display name and icon
-  static async getUserInformation(userName: string): Promise<JSON> {
+  static async getUserInformation(username: string): Promise<JSON> {
     return await getConnection()
       .createQueryBuilder()
-      .select("user.userName", "user.icon")
+      .select("user.username", "user.icon")
       .from(User, "user")
-      .where("user.userName = :userName", { userName })
+      .where("user.username = :username", { username })
       .getRawOne();
   }
 
   static async getUserInformationById(userId: number): Promise<User> {
-    return await User.findOne(userId, { select: ["id", "userName", "icon"] });
+    return await User.findOne(userId, { select: ["id", "username", "icon"] });
   }
 
   static async getUserInformationSignIn(identifier: string): Promise<User> {
     return await User.findOne({
-      where: [{ userName: identifier }, { password: identifier }]
+      where: [{ username: identifier }, { password: identifier }]
     });
   }
 
@@ -120,10 +119,10 @@ export class UserManager {
     return false;
   }
 
-  public static async getUsers(userName: string): Promise<User[]> {
+  public static async getUsers(username: string): Promise<User[]> {
     return await User.find({
-      select: ["id", "userName", "icon"],
-      where: { displayName: Like(`%${userName}%`) }
+      select: ["id", "username", "icon"],
+      where: { displayName: Like(`%${username}%`) }
     });
   }
 

@@ -9,11 +9,11 @@ export class PutUserUpdate extends Service {
 
   public execute(): IMiddlewareFunction {
     return (
-      { body: { displayName, userName, icon, id } }: Request,
+      { body: { displayName, username, icon, id } }: Request,
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(displayName, userName, icon, id)
+      this.validate(displayName, username, icon, id)
         .then(_ => {
           UserManager.updateAccount(displayName, icon, id).then(results => {
             response.send(results);
@@ -25,11 +25,11 @@ export class PutUserUpdate extends Service {
 
   validate(
     displayName: string,
-    userName: string,
+    username: string,
     icon: string,
     userId: number
   ): Promise<any> {
-    if (!displayName || !userName || !icon || !userId) {
+    if (!displayName || !username || !icon || !userId) {
       return Promise.reject();
     } else {
       return Promise.resolve();

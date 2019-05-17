@@ -42,7 +42,7 @@ export class ProjectHandler {
     return ProjectHandler._instance;
   }
 
-  public join(projectId: string, userId: string, userName: string): void {
+  public join(projectId: string, userId: string, username: string): void {
     if (undefined === this.projectSockets.get(projectId)) {
       this.projectSockets.set(projectId, new Map());
     }
@@ -58,15 +58,15 @@ export class ProjectHandler {
     this.projectSockets
       .get(projectId)
       .forEach(userSocket =>
-        userSocket.emit(`project:${projectId}:join`, { userId, userName })
+        userSocket.emit(`project:${projectId}:join`, { userId, username })
       );
   }
 
-  public leave(projectId: string, userId: string, userName: string): void {
+  public leave(projectId: string, userId: string, username: string): void {
     this.projectSockets
       .get(projectId)
       .forEach(userSocket =>
-        userSocket.emit(`project:${projectId}:leave`, { userId, userName })
+        userSocket.emit(`project:${projectId}:leave`, { userId, username })
       );
   }
 

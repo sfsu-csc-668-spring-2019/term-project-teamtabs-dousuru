@@ -8,7 +8,7 @@ export default async function authenticate(
   res: Response,
   next: Function
 ) {
-  let token = req.header("Authorization");
+  let token = req.headers.authorization;
   if (!token) {
     return next(req, res);
   }
