@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
-import { Organization } from "../../entity";
+import { Organization, User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PutOrganization extends AuthenticatedService {
@@ -12,10 +12,18 @@ export class PutOrganization extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        body: { name, description, icon, updatedId, newOwnerId }
+        body: { name, description, icon }
       } = request;
-      this.validate(name, description, icon, updatedId, newOwnerId, request)
-        .then(response.json)
+      this.validate(name, description, icon, request)
+        .then(user =>
+          OrganizationManager.createOrganization(
+            name,
+            description,
+            icon,
+            user.id
+          )
+        )
+        .then(org => response.json(org))
         .catch(_ => response.sendStatus(500));
     };
   }
@@ -24,32 +32,10 @@ export class PutOrganization extends AuthenticatedService {
     name: string,
     description: string,
     icon: string,
-    updatedId: number,
-    newOwnerId: number,
     request: AuthRequest
-  ): Promise<Organization> {
-    if (request.user) {
-      if (undefined !== updatedId) {
-        return Promise.resolve(
-          OrganizationManager.updateOrganization(
-            request.user.id,
-            updatedId,
-            name,
-            description,
-            icon,
-            newOwnerId
-          )
-        );
-      } else {
-        return Promise.resolve(
-          OrganizationManager.createOrganization(
-            name,
-            description,
-            icon,
-            request.user.id
-          )
-        );
-      }
+  ): Promise<User> {
+    if (request.user && name && description && icon) {
+      return Promise.resolve(request.user);
     } else {
       return Promise.reject();
     }

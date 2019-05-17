@@ -42,6 +42,19 @@ export class ListManager {
       .execute();
   }
 
+  static async update(
+    name: string,
+    description: string,
+    listId: number
+  ): Promise<any> {
+    return await getConnection()
+      .createQueryBuilder()
+      .update(List)
+      .set({ description: description, name: name })
+      .where("id =:id", { id: listId })
+      .execute();
+  }
+
   static async remove(listId: number): Promise<any> {
     return await getConnection()
       .createQueryBuilder()
@@ -57,5 +70,10 @@ export class ListManager {
       task => task.id !== taskId
     );
     return await list.save();
+  }
+
+  static async getListData(listId: number): Promise<List> {
+    const list = await List.findOne(listId);
+    return list;
   }
 }

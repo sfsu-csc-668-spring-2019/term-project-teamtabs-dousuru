@@ -28,9 +28,15 @@ export class DashboardComponent {
     this.collapsed = !this.collapsed;
   }
 
-  test() {
+  printOrgs() {
     this.api.getOrganizations().subscribe(data => {
       console.log(data);
+    });
+  }
+
+  createOrg() {
+    this.api.createOrganization().subscribe(org => {
+      console.log(org);
     });
   }
 }

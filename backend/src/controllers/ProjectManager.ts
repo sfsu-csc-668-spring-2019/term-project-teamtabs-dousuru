@@ -10,6 +10,7 @@ import {
 } from "../entity";
 import { ListManager } from "./ListManager";
 import { UserManager } from "./UserManager";
+import { RoleManager } from "./RoleManager";
 
 export class ProjectManager {
   public static async createProject(
@@ -27,8 +28,12 @@ export class ProjectManager {
       isPublic,
       owner,
       baseOrganization
-    });
-    return project.save();
+    }).save();
+    project.roles = await RoleManager.createDefaultProjectRoles(
+      project.id,
+      ownerId
+    );
+    return project;
   }
 
   public static async updateProject(

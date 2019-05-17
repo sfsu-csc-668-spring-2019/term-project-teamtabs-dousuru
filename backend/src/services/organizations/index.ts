@@ -12,6 +12,7 @@ import { PostOrganizationLeave } from "./PostOrganizationLeave";
 import { PostOrganizationLog } from "./PostOrganizationLog";
 import { PostOrganizationNotification } from "./PostOrganizationNotification";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
+import { ListOrganizations } from "./ListOrganizations";
 
 export default [
   DeleteOrganization,
@@ -27,5 +28,6 @@ export default [
   PostOrganizationNotification,
   PostOrganizationSearch,
   PutOrganizationChatlogData,
-  PutOrganization
+  PutOrganization,
+  ListOrganizations
 ];
