@@ -3,10 +3,11 @@
     <li *ngFor="let organization of organizations | async">
       <div class="image-wrapper">
         <img
-          [src]="organization.thumbnailUrl"
+          [src]="organization.icon"
           [alt]="organization.name"
           class="org-image"
           [ngClass]="{ active: organization.active }"
+          (click)="selectOrganization(organization.id)"
         />
       </div>
     </li>
