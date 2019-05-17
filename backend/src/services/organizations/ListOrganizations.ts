@@ -19,9 +19,8 @@ export class ListOrganizations implements IService {
         (request: AuthRequest, response: Response) =>
           this.validate(request)
             .then(user => UserManager.getOrganizations(user.id))
-            .then(response.json)
-            .catch(err => {
-              console.log(err);
+            .then(orgs => response.json(orgs))
+            .catch(_ => {
               response.sendStatus(400);
             })
       );

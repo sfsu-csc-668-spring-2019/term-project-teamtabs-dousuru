@@ -12,7 +12,7 @@ export class ApiService {
   private apiURL: string = environment.apiRoot;
 
   getOrganizations(): Observable<Organization[]> {
-    const url = `${this.apiURL}/organization`;
+    const url = `${this.apiURL}/organization/list`;
     return this.http.get<Organization[]>(url);
   }
 
