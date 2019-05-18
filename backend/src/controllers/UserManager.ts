@@ -204,10 +204,10 @@ export class UserManager {
 
   public static async checkOrganizationPermission(
     userId: number,
-    projectId: number
+    organizationId: number
   ): Promise<boolean> {
     let user = await User.findOne(userId, { relations: ["users"] });
-    let project = await Organization.findOne(projectId, {
+    let project = await Organization.findOne(organizationId, {
       relations: ["users"]
     });
     if (project.users.includes(user)) return true;
