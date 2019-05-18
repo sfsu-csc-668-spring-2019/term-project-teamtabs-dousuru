@@ -2,6 +2,7 @@ import { Organization, User, Project, Message, Role, Task } from "../entity";
 import { SecretsService } from "./SecretsService";
 import { UserManager } from "./UserManager";
 import { ProjectManager } from "./ProjectManager";
+import { RoleManager } from "./RoleManager";
 
 export class OrganizationManager {
   public static async createOrganization(
@@ -18,8 +19,11 @@ export class OrganizationManager {
       inviteLink,
       icon,
       owner
-    });
-    await organization.save();
+    }).save();
+    organization.roles = await RoleManager.createDefaultOrganizationRoles(
+      organization.id,
+      ownerId
+    );
     return OrganizationManager.addOrganizationUser(
       organization.id,
       ownerId,
@@ -50,7 +54,8 @@ export class OrganizationManager {
       let newOwner = await User.findOne(newOwnerId);
       organization.owner = newOwner;
     }
-    return await organization.save();
+    organization = await organization.save();
+    return organization;
   }
 
   public static async deleteOrganization(
@@ -66,24 +71,12 @@ export class OrganizationManager {
   }
 
   public static async getOrganization(
-    userId: number,
     organizationId: number
   ): Promise<Organization> {
-    let user = await Organization.findOne(userId, { relations: ["role"] });
     let organization = await Organization.findOne(organizationId, {
       select: ["id", "name", "description", "icon", "owner"],
       relations: ["owner"]
     });
-    organization.users = await OrganizationManager.getOrganizationUsers(
-      organizationId
-    );
-    organization.roles = await OrganizationManager.getOrganizationRoles(
-      organizationId
-    );
-    organization.containedProjects = await OrganizationManager.getOrganizationProjects(
-      userId,
-      organizationId
-    );
     return organization;
   }
 
@@ -115,13 +108,17 @@ export class OrganizationManager {
   ): Promise<Organization> {
     let user = await User.findOne(userId);
     let organization = await Organization.findOne(organizationId, {
-      relations: ["users"]
+      relations: ["users", "roles"]
     });
     if (organization.inviteLink != inviteLink) {
       throw new Error("Error: organization invite link doesn't match");
     }
     if (!organization.users.includes(user)) {
       organization.users.push(user);
+      let memberRole = organization.roles.filter(
+        role => role.name == "member"
+      )[0]; //should only have one result
+      RoleManager.addUser(memberRole.id, userId);
     }
     return await organization.save();
   }
@@ -131,7 +128,7 @@ export class OrganizationManager {
     userId: number
   ): Promise<Organization> {
     let organization = await Organization.findOne(organizationId, {
-      relations: ["users"]
+      relations: ["users", "roles"]
     });
     organization.users = organization.users.filter(user => user.id !== userId);
     return await organization.save();
@@ -180,7 +177,7 @@ export class OrganizationManager {
       relations: ["containedProjects"]
     });
     organization.containedProjects = organization.containedProjects.filter(
-      project => UserManager.getUserHasAccessToProject(userId, project.id)
+      project => UserManager.checkProjectManage(userId, project.id)
     );
     return organization.containedProjects;
   }

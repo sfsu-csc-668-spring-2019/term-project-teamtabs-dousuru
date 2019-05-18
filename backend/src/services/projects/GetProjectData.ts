@@ -23,7 +23,7 @@ export class GetProjectData extends AuthenticatedService {
 
   public validate(request: AuthRequest, projectId: number): Promise<Project> {
     if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
+      UserManager.checkProjectPermission(request.user.id, projectId).then(
         userCanAccess => {
           if (userCanAccess) {
             return Promise.resolve(ProjectManager.getProject(projectId));

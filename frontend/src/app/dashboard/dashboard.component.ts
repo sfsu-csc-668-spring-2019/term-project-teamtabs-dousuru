@@ -16,7 +16,7 @@ export class DashboardComponent {
   collapsed = false;
   gridInfo: ToggleDescriptor = {
     on: { gridTemplateColumns: "0rem 0% 1fr" },
-    off: { gridTemplateColumns: "5rem 20% 1fr" }
+    off: { gridTemplateColumns: "6rem 20% 1fr" }
   };
 
   faChevronLeft = faChevronLeft;
@@ -28,9 +28,17 @@ export class DashboardComponent {
     this.collapsed = !this.collapsed;
   }
 
-  test() {
+  printOrgs() {
     this.api.getOrganizations().subscribe(data => {
       console.log(data);
     });
+  }
+
+  createOrg() {
+    this.api
+      .createOrganization("name", "desc", "https://picsum.photos/200")
+      .subscribe(org => {
+        console.log(org);
+      });
   }
 }

@@ -1,30 +1,39 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager } from "../../controllers";
+import { TaskManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PostListDelete extends AuthenticatedService {
+export class PostTaskCreate extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /delete/:listId";
+    return "POST /create";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { listId }
+        body: { name, description, listId, dueDate }
       } = request;
-      this.validate(listId, request)
+      this.validate(name, description, listId, request)
         .then(_ => {
-          ListManager.remove(listId).then(results => {
-            response.json(results);
-          });
+          TaskManager.createTask(name, description, listId, dueDate).then(
+            task => {
+              response.json(task);
+            }
+          );
         })
-        .catch(err => response.json(err));
+        .catch(err => {
+          response.json(err);
+        });
     };
   }
 
-  public validate(listId: number, request: AuthRequest): Promise<void> {
-    if (!request.user || !listId) {
+  public validate(
+    dueDate: Date,
+    description: string,
+    listId: number,
+    request: AuthRequest
+  ): Promise<void> {
+    if (!request.user || !name || !description || !listId) {
       return Promise.reject();
     } else {
       UserManager.checkListManage(request.user.id, listId).then(results => {

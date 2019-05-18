@@ -1,44 +1,36 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import { UserManager, OrganizationManager } from "../../controllers";
 import { Organization } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class GetOrganizationData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /id/:organizationId";
+    return "GET /:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { organizationId }
+        params: { id }
       } = request;
-      this.validate(request, organizationId)
-        .then(response.json)
+      this.validate(request, id)
+        .then(_ => OrganizationManager.getOrganization(id))
+        .then(organization => response.json(organization))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(
-    request: AuthRequest,
-    organizationId: number
-  ): Promise<Organization> {
-    if (request.user) {
-      OrganizationManager.userIsAuthorized(
-        request.user.id,
-        organizationId
-      ).then(userIsAuthorized => {
-        if (userIsAuthorized) {
-          return Promise.resolve(
-            OrganizationManager.getOrganization(request.user.id, organizationId)
-          );
-        } else {
+  public validate(request: AuthRequest, id: number): Promise<any> {
+    if (!request.user || !id) {
+      return Promise.reject();
+    } else {
+      UserManager.checkOrganizationPermission(request.user.id, id).then(
+        results => {
+          if (results) return Promise.resolve();
           return Promise.reject();
         }
-      });
-    } else {
-      return Promise.reject();
+      );
     }
   }
 }

@@ -26,7 +26,7 @@ export class PostProjectSearch extends AuthenticatedService {
     request: AuthRequest
   ): Promise<JSON> {
     if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
+      UserManager.checkProjectPermission(request.user.id, projectId).then(
         userHasAccess => {
           if (userHasAccess) {
             return Promise.resolve(
