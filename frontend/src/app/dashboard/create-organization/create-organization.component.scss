@@ -1,0 +1,21 @@
+.form {
+  background-color: #222;
+  color: #efefef;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+}
+
+fieldset {
+  border: none;
+  margin: 1rem;
+}
+
+.block {
+  display: block;
+}

@@ -6,17 +6,13 @@ import { RegisterComponent } from "./register/register.component";
 import { HomepageComponent } from "./homepage/homepage.component";
 import { TodoComponent } from "./todo/todo/todo.component";
 import { AuthGuard } from "./auth/auth.guard";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "todo", component: TodoComponent },
-  {
-    path: "dashboard",
-    loadChildren: "./dashboard/dashboard.module#DashboardModule",
-    canLoad: [AuthGuard]
-  }
+  { path: "todo", component: TodoComponent }
 ];
 
 @NgModule({

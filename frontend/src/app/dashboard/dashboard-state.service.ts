@@ -50,12 +50,8 @@ export class DashboardStateService {
     this.selectedOrganization.next(selectedOrg);
   }
 
-  createOrganization(): Observable<Organization> {
-    return this.apiService.createOrganization(
-      "name",
-      "desc",
-      "https://picsum.photos/200"
-    );
+  createOrganization(name, description, icon): Observable<Organization> {
+    return this.apiService.createOrganization(name, description, icon);
   }
 
   createProject(): Observable<Project> {

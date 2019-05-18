@@ -13,6 +13,7 @@ import { AuthModule } from "./auth/auth.module";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { AuthInterceptor } from "./networking/auth.interceptor";
+import { DashboardModule } from "./dashboard/dashboard.module";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AuthInterceptor } from "./networking/auth.interceptor";
     AuthModule,
     TodoModule,
     ThemeModule,
+    DashboardModule,
     NetworkTestingModule,
     AppRoutingModule
   ],

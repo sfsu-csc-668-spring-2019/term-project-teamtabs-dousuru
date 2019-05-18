@@ -12,9 +12,12 @@ import { TitleComponent } from "./project-detail/title/title.component";
 import { ListDetailComponent } from "./project-detail/list-detail/list-detail.component";
 import { TaskComponent } from "./project-detail/task/task.component";
 import { TaskDetailComponent } from "./project-detail/task-detail/task-detail.component";
+import { CreateOrganizationComponent } from "./create-organization/create-organization.component";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
+    CreateOrganizationComponent,
     DashboardComponent,
     OrganizationListComponent,
     ProjectsListComponent,
@@ -29,8 +32,10 @@ import { TaskDetailComponent } from "./project-detail/task-detail/task-detail.co
     CommonModule,
     SharedModule,
     FontAwesomeModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    ReactiveFormsModule
   ],
-  exports: [DashboardComponent]
+  exports: [DashboardComponent],
+  entryComponents: [CreateOrganizationComponent]
 })
 export class DashboardModule {}
