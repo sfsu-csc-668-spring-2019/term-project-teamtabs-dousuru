@@ -28,7 +28,7 @@ export class PutProjectChatlogData extends AuthenticatedService {
     request: AuthRequest
   ): Promise<Message> {
     if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
+      UserManager.checkOrganizationPost(request.user.id, projectId).then(
         userIsMember => {
           if (userIsMember) {
             if (undefined !== updateId) {
