@@ -15,7 +15,6 @@ export class ProjectsListComponent implements OnInit {
 
   ngOnInit() {
     this.projects = this.dashboardStateService.projectsSubject.asObservable();
-    this.dashboardStateService.fetchProjects();
   }
 
   selectProject(id: number) {

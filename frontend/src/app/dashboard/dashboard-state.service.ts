@@ -34,6 +34,15 @@ export class DashboardStateService {
     this.projectsSubject.next(newValue);
   }
 
+  setSelectedOrganization(id: number): void {
+    this.selectedOrganization = this.organizations.find(org => org.id === id);
+    this.fetchProjects();
+  }
+
+  setSelectedProject(id: number): void {
+    this.selectedProject = this.projects.find(project => project.id === id);
+  }
+
   fetchOrganizations(): void {
     this.apiService
       .getOrganizations()
@@ -46,13 +55,5 @@ export class DashboardStateService {
       .getProjects(this.selectedOrganization)
       .toPromise()
       .then(projects => (this.projects = projects));
-  }
-
-  setSelectedOrganization(id: number): void {
-    this.selectedOrganization = this.organizations.find(org => org.id === id);
-  }
-
-  setSelectedProject(id: number): void {
-    this.selectedProject = this.projects.find(project => project.id === id);
   }
 }
