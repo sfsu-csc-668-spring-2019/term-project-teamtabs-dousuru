@@ -2,7 +2,6 @@ import { DashboardStateService } from "./../dashboard-state.service";
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Organization } from "../../models";
-import { ApiService } from "src/app/networking/api.service";
 
 @Component({
   selector: "app-organization-list",
@@ -14,10 +13,11 @@ export class OrganizationListComponent implements OnInit {
   constructor(private dashboardStateService: DashboardStateService) {}
 
   ngOnInit() {
-    this.organizations = this.dashboardStateService.getOrganizations();
+    this.organizations = this.dashboardStateService.organizationsSubject.asObservable();
+    this.dashboardStateService.fetchOrganizations();
   }
 
   selectOrganization(id: number) {
-    console.log("selectOrganization");
+    this.dashboardStateService.setSelectedOrganization(id);
   }
 }

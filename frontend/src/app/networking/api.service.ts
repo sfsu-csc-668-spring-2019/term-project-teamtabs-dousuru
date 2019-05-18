@@ -22,7 +22,11 @@ export class ApiService {
     icon: string
   ): Observable<Organization> {
     const url = `${this.apiURL}/organization/`;
-    const body = { name, description, icon };
+    const body = {
+      name: name,
+      description: description,
+      icon: icon ? icon : "https://picsum.photos/200"
+    };
     return this.http.put<Organization>(url, body);
   }
 
