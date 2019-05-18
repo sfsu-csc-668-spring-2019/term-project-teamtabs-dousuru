@@ -4,6 +4,7 @@ import { PutProjectChatlogData } from "./PutProjectChatlogData";
 import { PutProject } from "./PutProject";
 import { DeleteProject } from "./DeleteProject";
 import { PostProjectSearch } from "./PostProjectSearch";
+import { GetProjectsByOrganization } from "./GetProjectsByOrganization";
 
 export default [
   DeleteProject,
@@ -11,5 +12,6 @@ export default [
   GetProjectData,
   PostProjectSearch,
   PutProject,
-  PutProjectChatlogData
+  PutProjectChatlogData,
+  GetProjectsByOrganization
 ];

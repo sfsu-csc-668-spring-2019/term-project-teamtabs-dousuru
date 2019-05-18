@@ -8,6 +8,10 @@ import { ProjectDetailComponent } from "./project-detail/project-detail.componen
 import { SharedModule } from "../shared/shared.module";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ChatComponent } from "./project-detail/chat/chat.component";
+import { TitleComponent } from "./project-detail/title/title.component";
+import { ListDetailComponent } from "./project-detail/list-detail/list-detail.component";
+import { TaskComponent } from "./project-detail/task/task.component";
+import { TaskDetailComponent } from "./project-detail/task-detail/task-detail.component";
 
 @NgModule({
   declarations: [
@@ -15,7 +19,11 @@ import { ChatComponent } from "./project-detail/chat/chat.component";
     OrganizationListComponent,
     ProjectsListComponent,
     ProjectDetailComponent,
-    ChatComponent
+    ChatComponent,
+    TitleComponent,
+    ListDetailComponent,
+    TaskComponent,
+    TaskDetailComponent
   ],
   imports: [
     CommonModule,
