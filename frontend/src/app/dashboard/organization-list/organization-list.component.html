@@ -5,7 +5,7 @@
         [src]="organization.icon"
         [alt]="organization.name"
         class="org-image"
-        [ngClass]="{ active: organization.active }"
+        [ngClass]="{ selected: isSelected(organization) | async }"
         (click)="selectOrganization(organization.id)"
       />
     </li>

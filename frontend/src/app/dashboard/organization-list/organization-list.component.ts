@@ -5,6 +5,7 @@ import { DashboardStateService } from "./../dashboard-state.service";
 import { Organization } from "../../models";
 import { ModalService } from "src/app/shared/modal.service";
 import { CreateOrganizationComponent } from "../create-organization/create-organization.component";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "app-organization-list",
@@ -14,6 +15,7 @@ import { CreateOrganizationComponent } from "../create-organization/create-organ
 export class OrganizationListComponent implements OnInit {
   plusIcon = faPlus;
   organizations: Observable<Organization[]>;
+  selectedOrganization: Observable<Organization>;
   constructor(
     private dashboardStateService: DashboardStateService,
     private modal: ModalService
@@ -21,6 +23,7 @@ export class OrganizationListComponent implements OnInit {
 
   ngOnInit() {
     this.organizations = this.dashboardStateService.organizationsSubject.asObservable();
+    this.selectedOrganization = this.dashboardStateService.selectedOrganization.asObservable();
     this.dashboardStateService.fetchOrganizations();
   }
 
@@ -28,13 +31,18 @@ export class OrganizationListComponent implements OnInit {
     this.dashboardStateService.setSelectedOrganization(id);
   }
 
+  isSelected(organization: Organization): Observable<boolean> {
+    return this.selectedOrganization.pipe(
+      map(selected => {
+        if (!selected) {
+          return false;
+        }
+        return selected.id === organization.id;
+      })
+    );
+  }
+
   addOrganization() {
     this.modal.open(CreateOrganizationComponent);
-    // this.dashboardStateService
-    //   .createOrganization()
-    //   .toPromise()
-    //   .then(newOrg => {
-    //     console.log(newOrg);
-    //   });
   }
 }

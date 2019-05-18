@@ -22,8 +22,11 @@ $border-thickness: 3px;
   @extend %list-item;
   object-fit: cover;
 
-  &:hover,
-  &:active {
+  &:hover {
+    border-color: rgba($color: white, $alpha: 0.5);
+  }
+
+  &.selected {
     border-color: white;
   }
 }
