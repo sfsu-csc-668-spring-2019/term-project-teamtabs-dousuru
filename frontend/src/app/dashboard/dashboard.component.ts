@@ -27,18 +27,4 @@ export class DashboardComponent {
   toggleCollapsed() {
     this.collapsed = !this.collapsed;
   }
-
-  printOrgs() {
-    this.api.getOrganizations().subscribe(data => {
-      console.log(data);
-    });
-  }
-
-  createOrg() {
-    this.api
-      .createOrganization("name", "desc", "https://picsum.photos/200")
-      .subscribe(org => {
-        console.log(org);
-      });
-  }
 }

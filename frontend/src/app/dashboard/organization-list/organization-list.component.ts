@@ -1,6 +1,7 @@
-import { DashboardStateService } from "./../dashboard-state.service";
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { DashboardStateService } from "./../dashboard-state.service";
 import { Organization } from "../../models";
 
 @Component({
@@ -9,6 +10,7 @@ import { Organization } from "../../models";
   styleUrls: ["./organization-list.component.scss"]
 })
 export class OrganizationListComponent implements OnInit {
+  plusIcon = faPlus;
   organizations: Observable<Organization[]>;
   constructor(private dashboardStateService: DashboardStateService) {}
 
@@ -19,5 +21,14 @@ export class OrganizationListComponent implements OnInit {
 
   selectOrganization(id: number) {
     this.dashboardStateService.setSelectedOrganization(id);
+  }
+
+  addOrganization() {
+    this.dashboardStateService
+      .createOrganization()
+      .toPromise()
+      .then(newOrg => {
+        console.log(newOrg);
+      });
   }
 }

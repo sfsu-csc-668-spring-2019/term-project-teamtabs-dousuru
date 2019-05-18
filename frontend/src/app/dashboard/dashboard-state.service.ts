@@ -1,7 +1,7 @@
 import { ApiService } from "./../networking/api.service";
 import { Injectable } from "@angular/core";
 import { Organization } from "../models";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -42,5 +42,13 @@ export class DashboardStateService {
       .then(proj => {
         console.log(proj);
       });
+  }
+
+  createOrganization(): Observable<Organization> {
+    return this.apiService.createOrganization(
+      "name",
+      "desc",
+      "https://picsum.photos/200"
+    );
   }
 }
