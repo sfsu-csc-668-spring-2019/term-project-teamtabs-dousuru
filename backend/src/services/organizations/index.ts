@@ -12,12 +12,12 @@ import { ListOrganizations } from "./ListOrganizations";
 export default [
   DeleteOrganization,
   GetOrganizationChatlogData,
+  ListOrganizations,
   GetOrganizationData,
   PostOrganizationInvite,
   PostOrganizationJoin,
   PostOrganizationLeave,
   PostOrganizationSearch,
   PutOrganizationChatlogData,
-  PutOrganization,
-  ListOrganizations
+  PutOrganization
 ];
