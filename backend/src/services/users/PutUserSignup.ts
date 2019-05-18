@@ -1,29 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 import { SecretsService } from "../../controllers/SecretsService";
 import { UserManager } from "../../controllers";
 
-export class PutUserSignup implements IService {
+export class PutUserSignup extends Service {
   public getRoute(): string {
     return "PUT /signup";
   }
 
   public execute(): IMiddlewareFunction {
     return (
-      { body: { email, password, displayName, userName, icon } }: Request,
+      { body: { email, password, username, icon } }: Request,
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(email, password, displayName, userName)
+      this.validate(email, password, username)
         .then(_ => SecretsService.encrypt(password))
         .then(encryptedPassword =>
-          UserManager.createAccount(
-            email,
-            encryptedPassword,
-            displayName,
-            userName,
-            icon
-          )
+          UserManager.createAccount(email, encryptedPassword, username, icon)
         )
         .then(({ id }) =>
           response.json({ token: SecretsService.createToken(id) })
@@ -32,13 +26,8 @@ export class PutUserSignup implements IService {
     };
   }
 
-  validate(
-    email: string,
-    password: string,
-    displayName: string,
-    username: string
-  ): Promise<void> {
-    if (!email || !password || !displayName || !username) {
+  validate(email: string, password: string, username: string): Promise<void> {
+    if (!email || !password || !username) {
       return Promise.reject();
     } else {
       return Promise.resolve();

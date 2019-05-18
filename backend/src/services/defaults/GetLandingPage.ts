@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { IMiddlewareFunction, Service } from "..";
 import { UserManager, OrganizationManager } from "../../controllers";
 
-export class GetLandingPage implements IService {
+export class GetLandingPage extends Service {
   public getRoute(): string {
     return "GET /";
   }
@@ -11,7 +11,7 @@ export class GetLandingPage implements IService {
   password = "not encrypted";
   email = "test@test.com";
   displayName = "Irik";
-  userName = "Irik";
+  username = "Irik";
   icon = "nifty Ikon";
 
   public execute(): IMiddlewareFunction {
@@ -24,7 +24,7 @@ export class GetLandingPage implements IService {
     //res.send("The thing is working!");
 
     //Make account
-    //UserManager.createAccount(this.email, this.password, this.displayName, this.userName, this.icon)
+    //UserManager.createAccount(this.email, this.password, this.displayName, this.username, this.icon)
     //Get User info
     var results = await UserManager.getUserInformation(this.displayName);
     //Make Org
@@ -46,7 +46,7 @@ export class GetLandingPage implements IService {
 
   private async userTests(): Promise<any> {
     //Make account
-    //UserManager.createAccount(this.email, this.password, this.displayName, this.userName, this.icon)
+    //UserManager.createAccount(this.email, this.password, this.displayName, this.username, this.icon)
     var results = [];
     //Get User info
     var userInformation = await UserManager.getUserInformation(

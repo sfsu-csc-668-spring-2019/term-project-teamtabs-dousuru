@@ -42,7 +42,7 @@ export class TaskHandler {
     return TaskHandler._instance;
   }
 
-  public join(taskId: string, userId: string, userName: string): void {
+  public join(taskId: string, userId: string, username: string): void {
     if (undefined === this.taskSockets.get(taskId)) {
       this.taskSockets.set(taskId, new Map());
     }
@@ -56,15 +56,15 @@ export class TaskHandler {
     this.taskSockets
       .get(taskId)
       .forEach(userSocket =>
-        userSocket.emit(`task:${taskId}:join`, { userId, userName })
+        userSocket.emit(`task:${taskId}:join`, { userId, username })
       );
   }
 
-  public leave(taskId: string, userId: string, userName: string): void {
+  public leave(taskId: string, userId: string, username: string): void {
     this.taskSockets
       .get(taskId)
       .forEach(userSocket =>
-        userSocket.emit(`task:${taskId}:leave`, { userId, userName })
+        userSocket.emit(`task:${taskId}:leave`, { userId, username })
       );
   }
 

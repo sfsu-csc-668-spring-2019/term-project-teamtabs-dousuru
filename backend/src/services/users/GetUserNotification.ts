@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class GetUserNotification implements IService {
+export class GetUserNotification extends Service {
   public getRoute(): string {
     return "GET /id/:userId/notification";
   }

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class GetTaskConfiguration implements IService {
+export class GetTaskConfiguration extends Service {
   public getRoute(): string {
     return "GET /id/:taskId/configuration";
   }

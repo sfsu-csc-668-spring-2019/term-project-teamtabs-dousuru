@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class GetTaskChatlog implements IService {
+export class GetTaskChatlog extends Service {
   public getRoute(): string {
     return "GET /id/:taskId/chatlog";
   }

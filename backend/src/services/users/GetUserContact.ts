@@ -1,29 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { UserManager } from "../../controllers";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 import { User } from "../../entity";
 
-export class GetUserContact implements IService {
+export class GetUserContact extends AuthenticatedService {
   public getRoute(): string {
     return "GET /id/:userId/chatlog/";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         params: { userId: ownerId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) => {
-          this.validate(ownerId, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500));
-        }
-      );
+      this.validate(ownerId, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 

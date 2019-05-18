@@ -8,15 +8,13 @@ export class UserManager {
   static async createAccount(
     email: string,
     password: string,
-    displayName: string,
-    userName: string,
+    username: string,
     icon: string
   ): Promise<User> {
     const user = await User.create({
       email,
       password,
-      displayName,
-      userName,
+      username,
       icon
     });
     return await user.save();
@@ -24,50 +22,51 @@ export class UserManager {
 
   //update displayname, username, icon
   static async updateAccount(
-    displayName: string,
-    userName: string,
+    username: string,
     icon: string,
     id: number
   ): Promise<JSON> {
     await getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ displayName, userName, icon })
+      .set({ username, icon })
       .where("id = :id", { id })
       .execute();
-    return await this.getUserInformation(displayName);
+    return await this.getUserInformation(username);
   }
 
   //gets display name and icon
-  static async getUserInformation(displayName: string): Promise<JSON> {
+  static async getUserInformation(username: string): Promise<JSON> {
     return await getConnection()
       .createQueryBuilder()
-      .select("user.displayName", "user.icon")
+      .select("user.username", "user.icon")
       .from(User, "user")
-      .where("user.displayName = :displayName", { displayName })
+      .where("user.username = :username", { username })
       .getRawOne();
   }
 
-  static async getUserInformationById(id: number): Promise<User> {
-    return await User.findOne(id, { select: ["id", "displayName", "icon"] });
+  static async getUserInformationById(userId: number): Promise<User> {
+    return await User.findOne(userId, { select: ["id", "username", "icon"] });
   }
 
-  static async getUserInformationSignIn(userName: string): Promise<User> {
-    return await User.findOne(userName);
+  static async getUserInformationSignIn(identifier: string): Promise<User> {
+    return await User.findOne({
+      where: [{ username: identifier }, { password: identifier }]
+    });
   }
 
   //update password for user
-  static async updatePassword(id: number, password: string): Promise<void> {
+  static async updatePassword(userId: number, password: string): Promise<void> {
     await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({ password })
-      .where("id = :id", { id })
+      .where("id = :id", { userId })
       .execute();
   }
 
-  static async getContacts(id: number): Promise<User[]> {
-    let contacts = (await User.findOne(id, { relations: ["contacts"] }))
+  static async getContacts(userId: number): Promise<User[]> {
+    let contacts = (await User.findOne(userId, { relations: ["contacts"] }))
       .contacts;
     if (undefined === contacts) {
       return [];
@@ -78,8 +77,8 @@ export class UserManager {
   }
 
   //get all organizations user is in
-  static async getOrganizations(id: number): Promise<Organization[]> {
-    const user = await User.findOne(id, { relations: ["organizations"] });
+  static async getOrganizations(userId: number): Promise<Organization[]> {
+    const user = await User.findOne(userId, { relations: ["organizations"] });
     console.log(user);
     const organizations = user.organizations;
     console.log(organizations);
@@ -120,10 +119,10 @@ export class UserManager {
     return false;
   }
 
-  public static async getUsers(displayName: string): Promise<User[]> {
+  public static async getUsers(username: string): Promise<User[]> {
     return await User.find({
-      select: ["id", "displayName", "icon"],
-      where: { displayName: Like(`%${displayName}%`) }
+      select: ["id", "username", "icon"],
+      where: { displayName: Like(`%${username}%`) }
     });
   }
 

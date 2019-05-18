@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { WebSocketService } from "../web-socket.service";
-import { Observable, Subscription } from "rxjs";
-
+import { io, serverAddress } from "../../../api/socket";
+import { AuthService } from "src/app/auth/auth.service";
 @Component({
   selector: "app-socket-test",
   templateUrl: "./socket-test.component.html",
@@ -9,21 +8,24 @@ import { Observable, Subscription } from "rxjs";
 })
 export class SocketTestComponent implements OnInit, OnDestroy {
   messages: string[] = [];
-  private subscription: Subscription;
-  constructor(private webSocketService: WebSocketService) {}
+  socket: any = null;
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.webSocketService.makeSocket();
-    this.subscription = this.webSocketService.messages$.subscribe(msg => {
-      this.messages.push(msg);
+    this.authService.authToken;
+    this.socket = io.connect(serverAddress, {
+      query: `token=${this.authService.authToken}`
     });
+    this.socket.on("messageReceived", this.onMessageReceived);
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.socket.off("messageReceived");
   }
 
-  onClick() {
-    this.webSocketService.sayHello();
-  }
+  onMessageReceived = message => {
+    this.messages.push(message);
+  };
+
+  onClick = message => {};
 }

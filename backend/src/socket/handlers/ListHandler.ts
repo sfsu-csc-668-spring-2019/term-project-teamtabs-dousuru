@@ -42,7 +42,7 @@ export class ListHandler {
     return ListHandler._instance;
   }
 
-  public join(listId: string, userId: string, userName: string): void {
+  public join(listId: string, userId: string, username: string): void {
     if (undefined === this.listSockets.get(listId)) {
       this.listSockets.set(listId, new Map());
     }
@@ -56,15 +56,15 @@ export class ListHandler {
     this.listSockets
       .get(listId)
       .forEach(userSocket =>
-        userSocket.emit(`list:${listId}:join`, { userId, userName })
+        userSocket.emit(`list:${listId}:join`, { userId, username })
       );
   }
 
-  public leave(listId: string, userId: string, userName: string): void {
+  public leave(listId: string, userId: string, username: string): void {
     this.listSockets
       .get(listId)
       .forEach(userSocket =>
-        userSocket.emit(`list:${listId}:leave`, { userId, userName })
+        userSocket.emit(`list:${listId}:leave`, { userId, username })
       );
   }
 

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Service, IMiddlewareFunction } from "..";
 
-export class GetListConfiguration implements IService {
+export class GetListConfiguration extends Service {
   public getRoute(): string {
     return "GET /list/:listId/configuration";
   }

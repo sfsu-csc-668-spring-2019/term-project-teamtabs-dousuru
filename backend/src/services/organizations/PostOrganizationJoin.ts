@@ -1,28 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 import { Organization } from "../../entity";
 
-export class PostOrganizationJoin implements IService {
+export class PostOrganizationJoin extends AuthenticatedService {
   public getRoute(): string {
     return "POST /id/:organizationId/join/:inviteLink";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         params: { organizationId, inviteLink }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) =>
-          this.validate(organizationId, inviteLink, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500))
-      );
+      this.validate(organizationId, inviteLink, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 

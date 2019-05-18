@@ -46,7 +46,7 @@ export class OrganizationHandler {
     return OrganizationHandler._instance;
   }
 
-  public join(organizationId: string, userId: string, userName: string): void {
+  public join(organizationId: string, userId: string, username: string): void {
     if (undefined === this.organizationSockets.get(organizationId)) {
       this.organizationSockets.set(organizationId, new Map());
     }
@@ -62,16 +62,16 @@ export class OrganizationHandler {
     this.organizationSockets.get(organizationId).forEach(userSocket =>
       userSocket.emit(`organization:${organizationId}:join`, {
         userId,
-        userName
+        username
       })
     );
   }
 
-  public leave(organizationId: string, userId: string, userName: string): void {
+  public leave(organizationId: string, userId: string, username: string): void {
     this.organizationSockets.get(organizationId).forEach(userSocket =>
       userSocket.emit(`organization:${organizationId}:leave`, {
         userId,
-        userName
+        username
       })
     );
   }

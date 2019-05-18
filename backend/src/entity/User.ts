@@ -9,7 +9,6 @@ import {
 } from "typeorm";
 import { Organization } from "./Organization";
 import { Project } from "./Project";
-import { List } from "./List";
 import { Message } from "./Message";
 import { Role } from "./Role";
 
@@ -19,13 +18,10 @@ export class User extends BaseEntity {
   id: number;
 
   @Column({ type: "varchar", length: 40, unique: true, nullable: false })
-  userName: string;
+  username: string;
 
   @Column({ type: "varchar", length: 100, unique: false, nullable: false })
   password: string;
-
-  @Column({ type: "varchar", nullable: false, unique: false })
-  displayName: string;
 
   @Column({ type: "varchar", length: 200, unique: true, nullable: false })
   email: string;

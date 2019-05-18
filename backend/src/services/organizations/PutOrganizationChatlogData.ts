@@ -1,30 +1,23 @@
-import { Request, Response, NextFunction } from "express";
-import { IService, IMiddlewareFunction } from "..";
+import { Response, NextFunction } from "express";
+import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { MessageManager, OrganizationManager } from "../../controllers";
 import { Message } from "../../entity";
-import authenticate from "../../middleware/authMiddleware";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PutOrganizationChatlogData implements IService {
+export class PutOrganizationChatlogData extends AuthenticatedService {
   public getRoute(): string {
     return "PUT /id/:organizationId/chatlog";
   }
 
-  public execute(): IMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+  public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { partitions, updateId },
         params: { organizationId }
       } = request;
-      authenticate(
-        request,
-        response,
-        (request: AuthRequest, response: Response) => {
-          this.validate(organizationId, partitions, updateId, request)
-            .then(response.json)
-            .catch(_ => response.sendStatus(500));
-        }
-      );
+      this.validate(organizationId, partitions, updateId, request)
+        .then(response.json)
+        .catch(_ => response.sendStatus(500));
     };
   }
 
@@ -35,11 +28,11 @@ export class PutOrganizationChatlogData implements IService {
     request: AuthRequest
   ): Promise<Message> {
     if (request.user) {
-      OrganizationManager.userBelongsToOrganization(
+      OrganizationManager.userIsAuthorized(
         request.user.id,
         organizationId
-      ).then(userIsMember => {
-        if (userIsMember) {
+      ).then(userIsAuthorized => {
+        if (userIsAuthorized) {
           if (undefined !== updateId) {
             return Promise.resolve(
               MessageManager.updateMessage(updateId, partitions)
