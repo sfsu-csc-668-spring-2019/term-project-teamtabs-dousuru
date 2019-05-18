@@ -49,6 +49,9 @@ export class DashboardStateService {
     const selectedOrg = this.organizations.find(org => {
       return org.id === id;
     });
+    if (selectedOrg !== this.selectedOrganization.value) {
+      this.selectedProject.next(null);
+    }
     this.selectedOrganization.next(selectedOrg);
   }
 
