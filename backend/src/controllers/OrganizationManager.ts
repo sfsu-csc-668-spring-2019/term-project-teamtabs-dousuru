@@ -115,9 +115,7 @@ export class OrganizationManager {
     }
     if (!organization.users.includes(user)) {
       organization.users.push(user);
-      let memberRole = organization.roles.filter(
-        role => role.name == "member"
-      )[0]; //should only have one result
+      let memberRole = organization.roles.find(role => role.name == "Member");
       RoleManager.addUser(memberRole.id, userId);
     }
     return await organization.save();
