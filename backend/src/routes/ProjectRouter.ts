@@ -11,6 +11,6 @@ export class ProjectRouter extends Router {
   }
 
   public getRoute(): string {
-    return "/organization/id/:organizationId/project";
+    return "/project";
   }
 }

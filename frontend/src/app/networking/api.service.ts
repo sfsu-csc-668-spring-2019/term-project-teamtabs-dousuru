@@ -53,13 +53,14 @@ export class ApiService {
   createProject(
     organization: number | Organization,
     name: string,
+    description: string,
     isPublic: boolean = true
   ): Observable<Project> {
     if (typeof organization !== "number") {
       organization = organization.id;
     }
     const url = `${this.apiURL}/project/${organization}`;
-    const body = { name, isPublic };
+    const body = { name, isPublic, description };
     return this.http.put<Project>(url, body);
   }
 }

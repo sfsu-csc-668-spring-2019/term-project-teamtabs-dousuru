@@ -20,20 +20,24 @@ export class ProjectManager {
     ownerId: number,
     organizationId: number
   ): Promise<Project> {
-    let owner = await User.findOne(ownerId);
-    let baseOrganization = await Organization.findOne(organizationId);
-    let project = await Project.create({
-      name,
-      description,
-      isPublic,
-      owner,
-      baseOrganization
-    }).save();
-    project.roles = await RoleManager.createDefaultProjectRoles(
-      project.id,
-      ownerId
-    );
-    return project;
+    try {
+      let owner = await User.findOne(ownerId);
+      let baseOrganization = await Organization.findOne(organizationId);
+      let project = await Project.create({
+        name,
+        description,
+        isPublic,
+        owner,
+        baseOrganization
+      }).save();
+      project.roles = await RoleManager.createDefaultProjectRoles(
+        project.id,
+        ownerId
+      );
+      return project;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public static async updateProject(

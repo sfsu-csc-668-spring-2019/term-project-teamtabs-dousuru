@@ -206,12 +206,18 @@ export class UserManager {
     userId: number,
     organizationId: number
   ): Promise<boolean> {
-    let user = await User.findOne(userId, { relations: ["users"] });
-    let project = await Organization.findOne(organizationId, {
-      relations: ["users"]
-    });
-    if (project.users.includes(user)) return true;
-    return false;
+    try {
+      let user = await User.findOne(userId);
+      let organization = await Organization.findOne(organizationId, {
+        relations: ["users"]
+      });
+      if (organization.users.find(u => u.id === user.id)) {
+        return true;
+      }
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   }
 
   public static async checkOrganizationInvite(

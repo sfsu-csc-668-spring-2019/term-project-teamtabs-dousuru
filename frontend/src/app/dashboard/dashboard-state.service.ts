@@ -36,5 +36,11 @@ export class DashboardStateService {
       return org.id === id;
     });
     this.selectedOrganization = selectedOrg;
+    this.apiService
+      .createProject(this.selectedOrganization, "new project", "desc", true)
+      .toPromise()
+      .then(proj => {
+        console.log(proj);
+      });
   }
 }
