@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
+import { DashboardStateService } from "../dashboard-state.service";
+import { Project } from "../../models";
 
 @Component({
   selector: "app-projects-list",
@@ -6,7 +9,16 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./projects-list.component.scss"]
 })
 export class ProjectsListComponent implements OnInit {
-  constructor() {}
+  projects: Observable<Project[]>;
 
-  ngOnInit() {}
+  constructor(private dashboardStateService: DashboardStateService) {}
+
+  ngOnInit() {
+    this.projects = this.dashboardStateService.projectsSubject.asObservable();
+    this.dashboardStateService.fetchProjects();
+  }
+
+  selectProject(id: number) {
+    this.dashboardStateService.setSelectedProject(id);
+  }
 }

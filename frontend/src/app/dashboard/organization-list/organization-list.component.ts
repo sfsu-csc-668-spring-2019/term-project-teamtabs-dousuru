@@ -1,6 +1,6 @@
-import { DashboardStateService } from "./../dashboard-state.service";
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { DashboardStateService } from "./../dashboard-state.service";
 import { Organization } from "../../models";
 
 @Component({
