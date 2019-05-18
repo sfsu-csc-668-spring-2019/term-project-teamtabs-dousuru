@@ -5,27 +5,26 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class DeleteProject extends AuthenticatedService {
   public getRoute(): string {
-    return "DELETE /id/:projectId";
+    return "DELETE /:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { projectId }
+        params: { id }
       } = request;
-      this.validate(projectId, request)
+      this.validate(id, request)
+        .then(_ => ProjectManager.deleteProject(request.user.id, id))
         .then(_ => response.sendStatus(200))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(projectId: number, request: AuthRequest): Promise<void> {
-    if (request.user) {
-      return Promise.resolve(
-        ProjectManager.deleteProject(request.user.id, projectId)
-      );
-    } else {
+  public validate(id: number, request: AuthRequest): Promise<void> {
+    if (!request.user || !id) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
   }
 }
