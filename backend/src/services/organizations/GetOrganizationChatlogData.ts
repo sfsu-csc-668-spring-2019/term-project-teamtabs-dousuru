@@ -1,6 +1,10 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager, OrganizationManager } from "../../controllers";
+import {
+  MessageManager,
+  OrganizationManager,
+  UserManager
+} from "../../controllers";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 
@@ -15,6 +19,7 @@ export class GetOrganizationChatlogData extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(request, id)
+        .then(_ => this.checkPermission(request, id))
         .then(_ => MessageManager.getOrganizationMessages(id))
         .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
@@ -25,14 +30,19 @@ export class GetOrganizationChatlogData extends AuthenticatedService {
     if (!request.user || !id) {
       return Promise.reject();
     } else {
-      OrganizationManager.userIsAuthorized(request.user.id, id).then(
-        userIsAuthorized => {
-          if (userIsAuthorized) {
-            return Promise.resolve();
-          }
+      return Promise.resolve();
+    }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return UserManager.checkOrganizationPermission(request.user.id, id).then(
+      results => {
+        if (results) {
+          return Promise.resolve();
+        } else {
           return Promise.reject();
         }
-      );
-    }
+      }
+    );
   }
 }

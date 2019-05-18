@@ -15,6 +15,7 @@ export class GetOrganizationData extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(request, id)
+        .then(_ => this.checkPermission(request, id))
         .then(_ => OrganizationManager.getOrganization(id))
         .then(organization => response.json(organization))
         .catch(_ => response.sendStatus(500));
@@ -25,12 +26,16 @@ export class GetOrganizationData extends AuthenticatedService {
     if (!request.user || !id) {
       return Promise.reject();
     } else {
-      UserManager.checkOrganizationPermission(request.user.id, id).then(
-        results => {
-          if (results) return Promise.resolve();
-          return Promise.reject();
-        }
-      );
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return UserManager.checkOrganizationPermission(request.user.id, id).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }
