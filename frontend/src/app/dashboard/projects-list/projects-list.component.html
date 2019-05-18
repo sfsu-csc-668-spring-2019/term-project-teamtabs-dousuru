@@ -1,6 +1,11 @@
 <ul class="projects">
   <ul>
-    <li *ngFor="let project of projects$ | async" class="project">
+    <li
+      *ngFor="let project of projects$ | async"
+      class="project"
+      [ngClass]="{ selected: isSelected(project) | async }"
+      (click)="select(project)"
+    >
       {{ project.name }}
     </li>
     <li class="add-project">

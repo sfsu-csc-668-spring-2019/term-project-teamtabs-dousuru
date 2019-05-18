@@ -11,6 +11,7 @@ export class DashboardStateService {
   selectedOrganization: BehaviorSubject<Organization>;
   organizationsSubject: BehaviorSubject<Organization[]>;
   projects: Observable<Project[]>;
+  selectedProject: BehaviorSubject<Project>;
 
   constructor(private apiService: ApiService) {
     this.selectedOrganization = new BehaviorSubject(null);
@@ -24,6 +25,7 @@ export class DashboardStateService {
       }),
       mergeAll()
     );
+    this.selectedProject = new BehaviorSubject(null);
   }
 
   get organizations(): Organization[] {
@@ -61,5 +63,9 @@ export class DashboardStateService {
     }
     const org = this.selectedOrganization.value;
     return this.apiService.createProject(org, "new project", "asdf", true);
+  }
+
+  setSelectedProject(project: Project) {
+    this.selectedProject.next(project);
   }
 }

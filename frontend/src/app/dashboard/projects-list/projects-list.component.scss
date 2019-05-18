@@ -21,8 +21,13 @@
   color: #222;
   border-radius: 0.5rem;
 
+  $focused-color: #1284e6;
   &:hover {
-    background-color: rgba($color: #1284e6, $alpha: 0.7);
+    background-color: rgba($color: $focused-color, $alpha: 0.3);
+  }
+
+  &.selected {
+    background-color: rgba($color: $focused-color, $alpha: 0.8);
   }
 }
 

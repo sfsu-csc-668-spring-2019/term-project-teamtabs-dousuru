@@ -50,8 +50,10 @@ export class ApiService {
     console.log("getting url: ", url);
     const mock = new Project();
     mock.name = "hm";
+    mock.id = 0;
     const mock2 = new Project();
     mock2.name = "hm2";
+    mock.id = 1;
     return of([mock, mock2]);
     return this.http.get<Project[]>(url);
   }
