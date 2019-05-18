@@ -3,38 +3,39 @@ import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
 import { Organization } from "../../entity";
+import { promises } from "fs";
 
 export class PostOrganizationJoin extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /id/:organizationId/join/:inviteLink";
+    return "POST /join/:id/:inviteLink";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { organizationId, inviteLink }
+        params: { id, inviteLink }
       } = request;
-      this.validate(organizationId, inviteLink, request)
-        .then(response.json)
+      this.validate(id, inviteLink, request)
+        .then(_ =>
+          OrganizationManager.addOrganizationUser(
+            request.user.id,
+            id,
+            inviteLink
+          )
+        )
+        .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
     };
   }
 
   public validate(
-    organizationId: number,
+    id: number,
     inviteLink: string,
     request: AuthRequest
-  ): Promise<Organization> {
-    if (request.user) {
-      return Promise.resolve(
-        OrganizationManager.addOrganizationUser(
-          request.user.id,
-          organizationId,
-          inviteLink
-        )
-      );
-    } else {
+  ): Promise<any> {
+    if (!request.user || !id || !inviteLink) {
       return Promise.reject();
     }
+    return Promise.resolve();
   }
 }

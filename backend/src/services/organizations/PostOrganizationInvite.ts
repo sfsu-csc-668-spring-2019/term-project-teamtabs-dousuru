@@ -1,34 +1,33 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import { OrganizationManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostOrganizationInvite extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /id/:organizationId/invite";
+    return "POST /inviteLink/:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { organizationId }
+        params: { id }
       } = request;
-      this.validate(organizationId, request)
-        .then(inviteLink => response.json({ inviteLink }))
+      this.validate(id, request)
+        .then(_ => OrganizationManager.getInviteLink(request.user.id, id))
+        .then(inviteLink => response.json(inviteLink))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(
-    organizationId: number,
-    request: AuthRequest
-  ): Promise<string> {
-    if (request.user) {
-      return Promise.resolve(
-        OrganizationManager.getInviteLink(request.user.id, organizationId)
-      );
-    } else {
+  public validate(id: number, request: AuthRequest): Promise<any> {
+    if (!request.user || !id) {
       return Promise.reject();
+    } else {
+      UserManager.checkProjectInvite(request.user.id, id).then(results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      });
     }
   }
 }

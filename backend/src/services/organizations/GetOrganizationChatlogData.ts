@@ -6,39 +6,33 @@ import { AuthRequest } from "../../types/AuthRequest";
 
 export class GetOrganizationChatlogData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /id/:organizationId/chatlog";
+    return "GET /chatlog/:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { organizationId }
+        params: { id }
       } = request;
-      this.validate(request, organizationId)
-        .then(response.json)
+      this.validate(request, id)
+        .then(_ => MessageManager.getOrganizationMessages(id))
+        .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(
-    request: AuthRequest,
-    organizationId: number
-  ): Promise<Message[]> {
-    if (request.user) {
-      OrganizationManager.userIsAuthorized(
-        request.user.id,
-        organizationId
-      ).then(userIsAuthorized => {
-        if (userIsAuthorized) {
-          return Promise.resolve(
-            MessageManager.getOrganizationMessages(organizationId)
-          );
-        } else {
+  public validate(request: AuthRequest, id: number): Promise<any> {
+    if (!request.user || !id) {
+      return Promise.reject();
+    } else {
+      OrganizationManager.userIsAuthorized(request.user.id, id).then(
+        userIsAuthorized => {
+          if (userIsAuthorized) {
+            return Promise.resolve();
+          }
           return Promise.reject();
         }
-      });
-    } else {
-      return Promise.reject();
+      );
     }
   }
 }

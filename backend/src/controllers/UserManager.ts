@@ -98,6 +98,23 @@ export class UserManager {
     );
   }
 
+  //checks if user has post permission for organization
+  public static async checkOrganizationPost(
+    userId: number,
+    organizationId: number
+  ): Promise<boolean> {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
+    user.roles.forEach(role => {
+      if (organization.roles.includes(role) && role.canPost) {
+        return true;
+      }
+    });
+    return false;
+  }
+
   //checks if user has management permission for organization
   public static async checkOrganizationManage(
     userId: number,
@@ -173,16 +190,60 @@ export class UserManager {
   ): Promise<boolean> {
     const list = await List.findOne(listId, { relations: ["baseProject"] });
     const project = list.baseProject;
-    return this.getUserHasAccessToProject(userId, project.id);
+    return this.checkProjectPermission(userId, project.id);
   }
 
-  public static async getUserHasAccessToProject(
+  public static async checkProjectPermission(
     userId: number,
     projectId: number
   ): Promise<boolean> {
     let user = await User.findOne(userId, { relations: ["users"] });
     let project = await Project.findOne(projectId, { relations: ["users"] });
-    return UserManager.userHasAccessToProject(user, project);
+    return this.userHasAccessToProject(user, project);
+  }
+
+  public static async checkOrganizationPermission(
+    userId: number,
+    projectId: number
+  ): Promise<boolean> {
+    let user = await User.findOne(userId, { relations: ["users"] });
+    let project = await Organization.findOne(projectId, {
+      relations: ["users"]
+    });
+    if (project.users.includes(user)) return true;
+    return false;
+  }
+
+  public static async checkOrganizationInvite(
+    userId: number,
+    organizationId: number
+  ): Promise<boolean> {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const organization = await Organization.findOne(organizationId, {
+      relations: ["roles"]
+    });
+    user.roles.forEach(role => {
+      if (organization.roles.includes(role) && role.canInvite) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  public static async checkProjectInvite(
+    userId: number,
+    projectId: number
+  ): Promise<boolean> {
+    const user = await User.findOne(userId, { relations: ["roles"] });
+    const project = await Project.findOne(projectId, {
+      relations: ["roles"]
+    });
+    user.roles.forEach(role => {
+      if (project.roles.includes(role) && role.canInvite) {
+        return true;
+      }
+    });
+    return false;
   }
 
   private static userHasAccessToProject(user: User, project: Project): boolean {
