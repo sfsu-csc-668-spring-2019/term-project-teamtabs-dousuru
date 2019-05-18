@@ -22,7 +22,7 @@ export class GetProjectChatlogData extends AuthenticatedService {
 
   public validate(request: AuthRequest, projectId: number): Promise<Message[]> {
     if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
+      UserManager.checkProjectPermission(request.user.id, projectId).then(
         userCanAccess => {
           if (userCanAccess) {
             return Promise.resolve(
