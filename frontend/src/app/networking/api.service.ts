@@ -18,7 +18,11 @@ export class ApiService {
 
   createOrganization(): Observable<Organization> {
     const url = `${this.apiURL}/organization/`;
-    const body = { name: "name", description: "description", icon: "icon" };
+    const body = {
+      name: "name",
+      description: "description",
+      icon: "https://picsum.photos/200"
+    };
     return this.http.put<Organization>(url, body);
   }
 
