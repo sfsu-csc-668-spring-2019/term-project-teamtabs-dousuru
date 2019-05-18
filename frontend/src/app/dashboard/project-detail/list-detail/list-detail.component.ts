@@ -12,6 +12,7 @@ import { Task } from "src/app/models/Task";
 })
 export class ListDetailComponent implements OnInit {
   tasks: Task[];
+  selectedTask: Task;
 
   constructor(private projectDetailService: ProjectDetailService) {}
 
@@ -32,5 +33,21 @@ export class ListDetailComponent implements OnInit {
     this.projectDetailService.getLists().subscribe(list => {
       if (list[id - 1].id === id) this.list = list[id - 1];
     });
+  }
+
+  selectedId(): number {
+    if (this.selectedTask) {
+      return this.selectedTask.id;
+    } else {
+      return null;
+    }
+  }
+
+  selectTask(task: Task) {
+    if (this.selectedTask && this.selectedTask.id === task.id) {
+      this.selectedTask = null;
+      return;
+    }
+    this.selectedTask = task;
   }
 }

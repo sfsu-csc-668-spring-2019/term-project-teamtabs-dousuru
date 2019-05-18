@@ -10,6 +10,7 @@ export class TaskDetailComponent implements OnInit {
   constructor() {}
 
   @Input() task: Task;
+  @Input() selected: boolean = true;
 
   ngOnInit() {
     console.log("inside of task");

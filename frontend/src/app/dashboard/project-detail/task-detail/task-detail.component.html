@@ -1,2 +1,5 @@
-<p>{{ task.name }}</p>
-<p>{{ task.description }}</p>
+<div class="row">
+  <input type="checkbox" />
+  <p>{{ task.name }}</p>
+</div>
+<p [hidden]="!selected">{{ task.description }}</p>

@@ -1,8 +1,10 @@
 <div class="project-detail">
-  <app-title></app-title>
-  <app-list-detail
-    *ngFor="let list of lists | async"
-    [list]="list"
-  ></app-list-detail>
+  <app-title class="title"></app-title>
+  <div class="list">
+    <app-list-detail
+      *ngFor="let list of lists | async"
+      [list]="list"
+    ></app-list-detail>
+  </div>
   <app-chat class="chat"></app-chat>
 </div>
