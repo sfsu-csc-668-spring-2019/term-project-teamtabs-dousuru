@@ -13,11 +13,8 @@
   height: 5rem;
   border: $border-radius solid transparent;
 
-  &.active {
+  &:hover,
+  &:active {
     border-color: white;
-  }
-
-  &:hover {
-    border-color: #ddd;
   }
 }
