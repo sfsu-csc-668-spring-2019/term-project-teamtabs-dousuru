@@ -1,5 +1,5 @@
 <div class="row">
   <input type="checkbox" />
-  <p>{{ task.name }}</p>
+  <p (click)="toggleExpanded()">{{ task.name }}</p>
 </div>
-<p [hidden]="!selected">{{ task.description }}</p>
+<p [hidden]="!expanded">{{ task.description }}</p>

@@ -3,11 +3,6 @@
 <hr />
 <ul>
   <li>
-    <app-task-detail
-      *ngFor="let task of tasks"
-      [task]="task"
-      [selected]="task.id === selectedId()"
-      (click)="selectTask(task)"
-    ></app-task-detail>
+    <app-task-detail *ngFor="let task of tasks" [task]="task"></app-task-detail>
   </li>
 </ul>
