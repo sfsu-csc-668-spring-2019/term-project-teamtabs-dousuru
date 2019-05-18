@@ -1,17 +1,29 @@
-import { ApiService } from "./../networking/api.service";
 import { Injectable } from "@angular/core";
-import { Organization } from "../models";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { map, mergeAll } from "rxjs/operators";
+import { ApiService } from "./../networking/api.service";
+import { Organization, Project } from "../models";
 
 @Injectable({
   providedIn: "root"
 })
 export class DashboardStateService {
-  selectedOrganization: Organization;
+  selectedOrganization: BehaviorSubject<Organization>;
   organizationsSubject: BehaviorSubject<Organization[]>;
+  projects: Observable<Project[]>;
 
   constructor(private apiService: ApiService) {
+    this.selectedOrganization = new BehaviorSubject(null);
     this.organizationsSubject = new BehaviorSubject([]);
+    this.projects = this.selectedOrganization.asObservable().pipe(
+      map(org => {
+        if (!org) {
+          return [];
+        }
+        return this.apiService.getProjects(org);
+      }),
+      mergeAll()
+    );
   }
 
   get organizations(): Organization[] {
@@ -35,13 +47,7 @@ export class DashboardStateService {
     const selectedOrg = this.organizations.find(org => {
       return org.id === id;
     });
-    this.selectedOrganization = selectedOrg;
-    this.apiService
-      .createProject(this.selectedOrganization, "new project", "desc", true)
-      .toPromise()
-      .then(proj => {
-        console.log(proj);
-      });
+    this.selectedOrganization.next(selectedOrg);
   }
 
   createOrganization(): Observable<Organization> {
@@ -50,5 +56,14 @@ export class DashboardStateService {
       "desc",
       "https://picsum.photos/200"
     );
+  }
+
+  createProject(): Observable<Project> {
+    if (!this.selectedOrganization.value) {
+      // tslint:disable-next-line: deprecation
+      return of();
+    }
+    const org = this.selectedOrganization.value;
+    return this.apiService.createProject(org, "new project", "asdf", true);
   }
 }

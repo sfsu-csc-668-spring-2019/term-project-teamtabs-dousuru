@@ -46,7 +46,13 @@ export class ApiService {
     if (typeof organization !== "number") {
       organization = organization.id;
     }
-    const url = `${this.apiURL}/project/${organization}`;
+    const url = `${this.apiURL}/project/organizationProjects/${organization}`;
+    console.log("getting url: ", url);
+    const mock = new Project();
+    mock.name = "hm";
+    const mock2 = new Project();
+    mock2.name = "hm2";
+    return of([mock, mock2]);
     return this.http.get<Project[]>(url);
   }
 

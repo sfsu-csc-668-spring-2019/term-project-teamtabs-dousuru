@@ -1,5 +1,10 @@
-<div class="projects">
-  <p>
-    projects-list works! Source: app/dashboard/projects-list
-  </p>
-</div>
+<ul class="projects">
+  <ul>
+    <li *ngFor="let project of projects$ | async" class="project">
+      {{ project.name }}
+    </li>
+    <li class="add-project">
+      <button class="primary" (click)="addProject()">Add New</button>
+    </li>
+  </ul>
+</ul>
