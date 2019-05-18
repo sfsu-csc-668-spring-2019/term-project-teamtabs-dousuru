@@ -1,5 +1,6 @@
 import { Role, Organization, Project, User } from "../entity";
 import { UserManager } from "./UserManager";
+import { getConnection, Like } from "typeorm";
 
 export class RoleManager {
   //Roles that should be added by default on creation
@@ -131,6 +132,15 @@ export class RoleManager {
 
   public static async getRole(roleId: number): Promise<Role> {
     return await Role.findOne(roleId);
+  }
+
+  public static async getRoleByName(roleName: string): Promise<Role> {
+    return await getConnection()
+      .createQueryBuilder()
+      .select("*")
+      .from(Role, "role")
+      .where("role.name = :roleName", { roleName })
+      .getRawOne();
   }
 
   public static async addUser(roleId: number, userId: number): Promise<Role> {
