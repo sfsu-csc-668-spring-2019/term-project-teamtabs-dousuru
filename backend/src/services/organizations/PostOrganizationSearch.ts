@@ -15,6 +15,7 @@ export class PostOrganizationSearch extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(id, name, request)
+        .then(_ => this.checkPermission(request, id))
         .then(_ =>
           OrganizationManager.getContentsByName(request.user.id, id, name)
         )
@@ -27,16 +28,20 @@ export class PostOrganizationSearch extends AuthenticatedService {
     id: number,
     name: string,
     request: AuthRequest
-  ): Promise<JSON> {
+  ): Promise<any> {
     if (!request.user || !name) {
       return Promise.reject();
     } else {
-      UserManager.checkOrganizationPermission(request.user.id, id).then(
-        results => {
-          if (results) return Promise.resolve();
-          return Promise.reject();
-        }
-      );
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return UserManager.checkOrganizationPermission(request.user.id, id).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }

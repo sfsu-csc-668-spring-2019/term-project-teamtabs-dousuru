@@ -14,6 +14,7 @@ export class PostOrganizationInvite extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(id, request)
+        .then(_ => this.checkPermission(id, request))
         .then(_ => OrganizationManager.getInviteLink(request.user.id, id))
         .then(inviteLink => response.json(inviteLink))
         .catch(_ => response.sendStatus(500));
@@ -24,10 +25,14 @@ export class PostOrganizationInvite extends AuthenticatedService {
     if (!request.user || !id) {
       return Promise.reject();
     } else {
-      UserManager.checkProjectInvite(request.user.id, id).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(id: number, request: AuthRequest): Promise<any> {
+    return UserManager.checkProjectInvite(request.user.id, id).then(results => {
+      if (results) return Promise.resolve();
+      return Promise.reject();
+    });
   }
 }
