@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { DashboardStateService } from "../dashboard-state.service";
+import { ModalService } from "src/app/shared/modal.service";
 
 @Component({
   selector: "app-create-organization",
@@ -8,7 +9,13 @@ import { DashboardStateService } from "../dashboard-state.service";
   styleUrls: ["./create-organization.component.scss"]
 })
 export class CreateOrganizationComponent {
-  constructor(private fb: FormBuilder, private state: DashboardStateService) {}
+  constructor(
+    private fb: FormBuilder,
+    private state: DashboardStateService,
+    private modal: ModalService
+  ) {}
+
+  errorMessage: string;
 
   formGroup = this.fb.group({
     name: ["", Validators.required],
@@ -24,7 +31,10 @@ export class CreateOrganizationComponent {
         .toPromise()
         .then(org => {
           console.log(org);
+          this.modal.close();
         });
+    } else {
+      this.errorMessage = "Make sure all fields are valid";
     }
   }
 }

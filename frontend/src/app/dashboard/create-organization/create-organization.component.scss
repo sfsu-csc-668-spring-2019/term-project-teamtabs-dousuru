@@ -19,3 +19,12 @@ fieldset {
 .block {
   display: block;
 }
+
+.error {
+  text-align: center;
+  background-color: red;
+  color: white;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  padding: 0.5rem;
+}

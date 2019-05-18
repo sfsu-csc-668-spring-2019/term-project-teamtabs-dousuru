@@ -26,5 +26,8 @@
       />
     </label>
   </fieldset>
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
   <button class="primary block" type="submit">Create</button>
 </form>
