@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { Organization } from "../models";
+import { Organization, Project } from "../models";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -16,9 +16,13 @@ export class ApiService {
     return this.http.get<Organization[]>(url);
   }
 
-  createOrganization(): Observable<Organization> {
+  createOrganization(
+    name: string,
+    description: string,
+    icon: string
+  ): Observable<Organization> {
     const url = `${this.apiURL}/organization/`;
-    const body = { name: "name", description: "description", icon: "icon" };
+    const body = { name, description, icon };
     return this.http.put<Organization>(url, body);
   }
 
@@ -36,6 +40,27 @@ export class ApiService {
     const url = `${this.apiURL}/users/login`;
     const body = { password, identifier };
     return this.http.put<TokenResponse>(url, body);
+  }
+
+  getProjects(organization: number | Organization): Observable<Project[]> {
+    if (typeof organization !== "number") {
+      organization = organization.id;
+    }
+    const url = `${this.apiURL}/project/${organization}`;
+    return this.http.get<Project[]>(url);
+  }
+
+  createProject(
+    organization: number | Organization,
+    name: string,
+    isPublic: boolean = true
+  ): Observable<Project> {
+    if (typeof organization !== "number") {
+      organization = organization.id;
+    }
+    const url = `${this.apiURL}/project/${organization}`;
+    const body = { name, isPublic };
+    return this.http.put<Project>(url, body);
   }
 }
 
