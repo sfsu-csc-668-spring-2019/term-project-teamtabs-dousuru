@@ -25,7 +25,6 @@ export class ListDetailComponent implements OnInit {
 
   private getTask() {
     this.tasks = this.list.tasks;
-    console.log("inside of list detail", this.tasks);
   }
 
   // hacky af right now
