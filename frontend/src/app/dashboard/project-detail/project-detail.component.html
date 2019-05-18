@@ -1,6 +1,10 @@
 <div class="project-detail">
-  <p>
-    project-detail works! Source: app/dashboard/project-detail
-  </p>
+  <app-title class="title"></app-title>
+  <div class="list">
+    <app-list-detail
+      *ngFor="let list of lists | async"
+      [list]="list"
+    ></app-list-detail>
+  </div>
   <app-chat class="chat"></app-chat>
 </div>
