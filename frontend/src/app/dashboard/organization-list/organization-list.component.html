@@ -1,15 +1,13 @@
 <div class="organizations">
   <ul>
     <li *ngFor="let organization of organizations | async">
-      <div class="image-wrapper">
-        <img
-          [src]="organization.icon"
-          [alt]="organization.name"
-          class="org-image"
-          [ngClass]="{ active: organization.active }"
-          (click)="selectOrganization(organization.id)"
-        />
-      </div>
+      <img
+        [src]="organization.icon"
+        [alt]="organization.name"
+        class="org-image"
+        [ngClass]="{ active: organization.active }"
+        (click)="selectOrganization(organization.id)"
+      />
     </li>
   </ul>
 </div>

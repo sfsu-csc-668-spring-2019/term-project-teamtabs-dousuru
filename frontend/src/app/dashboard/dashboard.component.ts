@@ -35,8 +35,10 @@ export class DashboardComponent {
   }
 
   createOrg() {
-    this.api.createOrganization().subscribe(org => {
-      console.log(org);
-    });
+    this.api
+      .createOrganization("name", "desc", "https://picsum.photos/200")
+      .subscribe(org => {
+        console.log(org);
+      });
   }
 }
