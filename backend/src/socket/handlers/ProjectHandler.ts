@@ -43,6 +43,9 @@ export class ProjectHandler {
   }
 
   public join(projectId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.projectSockets.get(projectId)) {
       this.projectSockets.set(projectId, new Map());
     }

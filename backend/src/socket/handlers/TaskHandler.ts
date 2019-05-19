@@ -43,6 +43,9 @@ export class TaskHandler {
   }
 
   public join(taskId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.taskSockets.get(taskId)) {
       this.taskSockets.set(taskId, new Map());
     }
