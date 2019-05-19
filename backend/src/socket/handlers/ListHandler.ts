@@ -43,6 +43,9 @@ export class ListHandler {
   }
 
   public join(listId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.listSockets.get(listId)) {
       this.listSockets.set(listId, new Map());
     }

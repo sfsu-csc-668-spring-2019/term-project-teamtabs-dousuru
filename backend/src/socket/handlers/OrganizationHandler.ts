@@ -47,6 +47,9 @@ export class OrganizationHandler {
   }
 
   public join(organizationId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.organizationSockets.get(organizationId)) {
       this.organizationSockets.set(organizationId, new Map());
     }

@@ -29,10 +29,16 @@ export class UserHandler {
   }
 
   public chat(userId: string, room: string, message: any): void {
-    this.sockets.get(userId).emit(room, message);
+    const socket = this.sockets.get(userId);
+    if (socket) {
+      socket.emit(room, message);
+    }
   }
 
   public update(userId: string, component: string, data: any): void {
-    this.sockets.get(userId).emit(component + ":update", data);
+    const socket = this.sockets.get(userId);
+    if (socket) {
+      socket.emit(component + ":update", data);
+    }
   }
 }
