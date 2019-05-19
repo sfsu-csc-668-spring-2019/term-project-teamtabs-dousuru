@@ -22,6 +22,7 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
     this.project = this.dashboardStateService.selectedProject.asObservable();
-    this.lists = this.projectDetailService.getLists();
+    this.lists = this.dashboardStateService.lists;
+    //this.lists = this.projectDetailService.getLists();
   }
 }
