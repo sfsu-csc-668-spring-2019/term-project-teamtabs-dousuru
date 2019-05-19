@@ -90,4 +90,11 @@ export class OrganizationHandler {
         userSocket.emit(`organization:${organizationId}:update`, data)
       );
   }
+  public updateProjects(organizationId: string, data: any): void {
+    this.organizationSockets
+      .get(organizationId)
+      .forEach(userSocket =>
+        userSocket.emit(`organization:${organizationId}:update:projects`, data)
+      );
+  }
 }

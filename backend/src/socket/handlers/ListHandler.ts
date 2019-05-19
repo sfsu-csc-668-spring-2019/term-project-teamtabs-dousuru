@@ -79,4 +79,12 @@ export class ListHandler {
       .get(listId)
       .forEach(userSocket => userSocket.emit(`list:${listId}:update`, data));
   }
+
+  public updateTasks(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket =>
+        userSocket.emit(`list:${listId}:update:tasks`, data)
+      );
+  }
 }
