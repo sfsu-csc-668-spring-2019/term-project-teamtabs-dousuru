@@ -10,22 +10,27 @@ export class PutUserLogin extends Service {
 
   public execute(): IMiddlewareFunction {
     return (
-      { body: { identifier: username, password } }: Request,
+      { body: { identifier, password } }: Request,
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(username, password)
-        .then(_ => {
-          SecretsService.encrypt(password).then(encryptedPassword => {
-            UserManager.getUserInformationSignIn(username)
-              .then(user => {
-                if (!user) Promise.reject();
-                if (encryptedPassword == user.password)
-                  Promise.resolve(SecretsService.createToken(user.id));
-              })
-              .then(token => response.json({ token }));
-          });
-        })
+      this.validate(identifier, password)
+        .then(_ =>
+          UserManager.getUserInformationByLogin(identifier).then(user => {
+            if (!user) {
+              Promise.reject();
+            }
+            Promise.resolve(
+              SecretsService.compare(password, user.password)
+            ).then(isEqual => {
+              if (isEqual) {
+                response.json({ token: SecretsService.createToken(user.id) });
+              } else {
+                Promise.reject();
+              }
+            });
+          })
+        )
         .catch(_ => response.sendStatus(500));
     };
   }

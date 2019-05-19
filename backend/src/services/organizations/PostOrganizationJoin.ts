@@ -2,8 +2,7 @@ import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
-import { Organization } from "../../entity";
-import { promises } from "fs";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class PostOrganizationJoin extends AuthenticatedService {
   public getRoute(): string {
@@ -23,7 +22,10 @@ export class PostOrganizationJoin extends AuthenticatedService {
             inviteLink
           )
         )
-        .then(results => response.json(results))
+        .then(results => {
+          OrganizationHandler.getInstance().update(id, results);
+          response.json(results);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }

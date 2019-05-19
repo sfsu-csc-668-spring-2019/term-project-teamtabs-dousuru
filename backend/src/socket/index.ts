@@ -7,12 +7,8 @@ import {
   UserHandler
 } from "./handlers";
 import SocketIO, { Socket } from "socket.io";
-import authenticate from "../middleware/authMiddleware";
-import { AuthRequest } from "../types/AuthRequest";
-import { NextFunction, Response } from "express";
 import authenticateSocket from "../middleware/socketAuthMiddleware";
 import { User } from "../entity";
-import { stringify } from "querystring";
 
 export class DousuruIO {
   private static _instance: DousuruIO;

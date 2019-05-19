@@ -49,9 +49,9 @@ export class UserManager {
     return await User.findOne(userId, { select: ["id", "username", "icon"] });
   }
 
-  static async getUserInformationSignIn(identifier: string): Promise<User> {
+  static async getUserInformationByLogin(identifier: string): Promise<User> {
     return await User.findOne({
-      where: [{ username: identifier }, { password: identifier }]
+      where: [{ username: identifier }, { email: identifier }]
     });
   }
 
@@ -79,10 +79,7 @@ export class UserManager {
   //get all organizations user is in
   static async getOrganizations(userId: number): Promise<Organization[]> {
     const user = await User.findOne(userId, { relations: ["organizations"] });
-    console.log(user);
-    const organizations = user.organizations;
-    console.log(organizations);
-    return organizations;
+    return user.organizations;
   }
 
   public static async getOrganizationProjects(

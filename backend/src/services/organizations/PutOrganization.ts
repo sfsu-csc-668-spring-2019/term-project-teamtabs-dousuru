@@ -1,8 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
-import { Organization, User } from "../../entity";
+import { OrganizationManager, UserManager } from "../../controllers";
+import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { UserHandler } from "../../socket/handlers";
 
 export class PutOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -10,11 +11,12 @@ export class PutOrganization extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: AuthRequest, response: Response, __: NextFunction) => {
-      const {
-        body: { name, description, icon }
-      } = request;
-      this.validate(name, description, icon, request)
+    return (
+      { body: { name, description, icon }, user }: AuthRequest,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(name, description, icon, user)
         .then(user =>
           OrganizationManager.createOrganization(
             name,
@@ -24,6 +26,14 @@ export class PutOrganization extends AuthenticatedService {
           )
         )
         .then(org => response.json(org))
+        .then(_ => UserManager.getOrganizations(user.id))
+        .then(data =>
+          UserHandler.getInstance().update(
+            user.id.toString(),
+            "dashboard",
+            data
+          )
+        )
         .catch(_ => response.sendStatus(500));
     };
   }
@@ -32,10 +42,10 @@ export class PutOrganization extends AuthenticatedService {
     name: string,
     description: string,
     icon: string,
-    request: AuthRequest
+    user: User
   ): Promise<User> {
-    if (request.user && name && description && icon) {
-      return Promise.resolve(request.user);
+    if (user && name && description && icon) {
+      return Promise.resolve(user);
     } else {
       return Promise.reject();
     }

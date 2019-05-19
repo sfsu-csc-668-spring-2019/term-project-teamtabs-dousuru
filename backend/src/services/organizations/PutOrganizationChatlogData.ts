@@ -1,12 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import {
-  MessageManager,
-  OrganizationManager,
-  UserManager
-} from "../../controllers";
+import { MessageManager, UserManager } from "../../controllers";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class PutOrganizationChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -35,7 +32,10 @@ export class PutOrganizationChatlogData extends AuthenticatedService {
             );
           }
         })
-        .then(results => response.json(results))
+        .then(results => {
+          OrganizationHandler.getInstance().chat(id, results);
+          response.json(results);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }

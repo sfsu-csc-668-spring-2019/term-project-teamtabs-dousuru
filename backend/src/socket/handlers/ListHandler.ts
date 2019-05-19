@@ -68,9 +68,23 @@ export class ListHandler {
       );
   }
 
-  public chat(listId: string, message: string): void {
+  public chat(listId: string, message: any): void {
     this.listSockets
       .get(listId)
       .forEach(userSocket => userSocket.emit(`list:${listId}:chat`, message));
+  }
+
+  public update(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket => userSocket.emit(`list:${listId}:update`, data));
+  }
+
+  public updateTasks(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket =>
+        userSocket.emit(`list:${listId}:update:tasks`, data)
+      );
   }
 }
