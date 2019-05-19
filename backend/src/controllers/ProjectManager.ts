@@ -36,14 +36,43 @@ export class ProjectManager {
         project.id,
         ownerId
       );
+
       baseOrganization.containedProjects =
         baseOrganization.containedProjects || [];
       baseOrganization.containedProjects.push(project);
       baseOrganization.save();
+      ProjectManager.addProjectUser(project.id, owner.id);
       return project;
     } catch (err) {
       console.error(err);
     }
+  }
+  public static async addProjectUser(
+    projectId: number,
+    userId: number
+  ): Promise<Project> {
+    let user = await User.findOne(userId);
+    let project = await Project.findOne(projectId, {
+      relations: ["users", "roles"]
+    });
+    project.users = project.users || [];
+    if (!project.users.includes(user)) {
+      project.users.push(user);
+      let memberRole = await project.roles.find(role => role.name == "Member");
+      RoleManager.addUser(memberRole.id, userId);
+    }
+    return project.save();
+  }
+
+  public static async removeProjectUser(
+    projectId: number,
+    userId: number
+  ): Promise<Project> {
+    let project = await Project.findOne(projectId, {
+      relations: ["users", "roles"]
+    });
+    project.users = project.users.filter(user => user.id !== userId);
+    return await project.save();
   }
 
   public static async updateProject(
