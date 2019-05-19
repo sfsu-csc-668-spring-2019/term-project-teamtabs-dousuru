@@ -3,6 +3,7 @@ import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { MessageManager } from "../../controllers";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { UserHandler } from "../../socket/handlers";
 
 export class PutUserChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -16,7 +17,10 @@ export class PutUserChatlogData extends AuthenticatedService {
         params: { userId: ownerId, chatId: receiverId }
       } = request;
       this.validate(ownerId, receiverId, partitions, updateId, request)
-        .then(response.json)
+        .then(message => {
+          UserHandler.getInstance().chat(ownerId, receiverId, message);
+          response.json(message);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
