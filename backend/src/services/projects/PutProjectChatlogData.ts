@@ -3,6 +3,7 @@ import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { MessageManager, UserManager } from "../../controllers";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class PutProjectChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -16,7 +17,10 @@ export class PutProjectChatlogData extends AuthenticatedService {
         params: { projectId }
       } = request;
       this.validate(projectId, partitions, updateId, request)
-        .then(response.json)
+        .then(data => {
+          ProjectHandler.getInstance().chat(projectId, data);
+          response.sendStatus(200);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
