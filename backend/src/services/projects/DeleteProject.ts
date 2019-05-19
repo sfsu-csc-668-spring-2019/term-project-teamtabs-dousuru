@@ -12,14 +12,27 @@ export class DeleteProject extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { id, organizationId }
+        params: { id },
+        user
       } = request;
       this.validate(id, request)
-        .then(_ => ProjectManager.deleteProject(request.user.id, id))
-        .then(_ => OrganizationManager.getOrganization(organizationId))
-        .then(data => {
-          OrganizationHandler.getInstance().update(organizationId, data);
-          response.sendStatus(200);
+        .then(_ => ProjectManager.getProject(id))
+        .then(project => {
+          const organizationId = project.baseOrganization.id;
+          ProjectManager.deleteProject(user.id, id)
+            .then(_ =>
+              OrganizationManager.getOrganizationProjects(
+                user.id,
+                organizationId
+              )
+            )
+            .then(data => {
+              OrganizationHandler.getInstance().updateProjects(
+                organizationId.toString(),
+                data
+              );
+              response.sendStatus(200);
+            });
         })
         .catch(_ => response.sendStatus(500));
     };
