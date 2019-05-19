@@ -5,6 +5,7 @@ import { PostListSearch } from "./PostListSearch";
 import { PostListUpdate } from "./PostListUpdate";
 import { PostListUpdateDescription } from "./PostListUpdateDescription";
 import { PostListUpdateName } from "./PostListUpdateName";
+import { GetListByProject } from "./GetListByProject";
 
 export default [
   GetListData,
@@ -13,5 +14,6 @@ export default [
   PostListSearch,
   PostListUpdate,
   PostListUpdateDescription,
-  PostListUpdateName
+  PostListUpdateName,
+  GetListByProject
 ];
