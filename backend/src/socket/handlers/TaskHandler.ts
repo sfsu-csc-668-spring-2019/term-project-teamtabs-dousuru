@@ -73,4 +73,10 @@ export class TaskHandler {
       .get(taskId)
       .forEach(userSocket => userSocket.emit(`task:${taskId}:chat`, message));
   }
+
+  public update(taskId: string, data: any): void {
+    this.taskSockets
+      .get(taskId)
+      .forEach(userSocket => userSocket.emit(`task:${taskId}:update`, data));
+  }
 }

@@ -77,4 +77,12 @@ export class ProjectHandler {
         userSocket.emit(`project:${projectId}:chat`, message)
       );
   }
+
+  public update(projectId: string, data: any): void {
+    this.projectSockets
+      .get(projectId)
+      .forEach(userSocket =>
+        userSocket.emit(`project:${projectId}:update`, data)
+      );
+  }
 }

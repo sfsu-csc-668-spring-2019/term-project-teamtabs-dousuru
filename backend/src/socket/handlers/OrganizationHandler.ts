@@ -83,4 +83,11 @@ export class OrganizationHandler {
         userSocket.emit(`organization:${organizationId}:chat`, message)
       );
   }
+  public update(organizationId: string, data: any): void {
+    this.organizationSockets
+      .get(organizationId)
+      .forEach(userSocket =>
+        userSocket.emit(`organization:${organizationId}:update`, data)
+      );
+  }
 }
