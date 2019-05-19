@@ -8,13 +8,15 @@ import { TodoComponent } from "./todo/todo/todo.component";
 import { AuthGuard } from "./auth/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { LogoutComponent } from "./logout/logout.component";
 
 const routes: Routes = [
   { path: "", component: HomepageComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "todo", component: TodoComponent },
-  { path: "landing", component: LandingPageComponent }
+  { path: "landing", component: LandingPageComponent },
+  { path: "logout", component: LogoutComponent }
 ];
 
 @NgModule({

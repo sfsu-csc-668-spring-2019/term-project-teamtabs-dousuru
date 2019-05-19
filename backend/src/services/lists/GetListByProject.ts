@@ -2,12 +2,11 @@ import { Response, NextFunction } from "express";
 import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { OrganizationManager } from "../../controllers";
-import { OrganizationHandler } from "../../socket/handlers";
+import { UserManager } from "../../controllers/UserManager";
 
-export class GetProjectsByOrganization extends AuthenticatedService {
+export class GetListByProject extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /organizationProjects/:id";
+    return "GET /projectLists/:id";
   }
 
   public authenticatedExecute(): IMiddlewareFunction {
@@ -16,14 +15,9 @@ export class GetProjectsByOrganization extends AuthenticatedService {
       response: Response,
       _: NextFunction
     ) => {
-      this.validate(user)
-        .then(user => OrganizationManager.getOrganizationProjects(user.id, id))
+      this.validate(user, id)
+        .then(_ => UserManager.getProjectLists(id))
         .then(projs => {
-          OrganizationHandler.getInstance().join(
-            id,
-            user.id.toString(),
-            user.username
-          );
           response.json(projs);
         })
         .catch(_ => {
@@ -32,11 +26,10 @@ export class GetProjectsByOrganization extends AuthenticatedService {
     };
   }
 
-  public validate(user: User): Promise<User> {
-    if (user) {
-      return Promise.resolve(user);
-    } else {
+  public validate(user: User, id: number): Promise<User> {
+    if (!user || !id) {
       return Promise.reject();
     }
+    return Promise.resolve(user);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
+import { tap } from "rxjs/operators";
 import { Organization, Project } from "../models";
 import { environment } from "src/environments/environment";
 
@@ -47,14 +48,6 @@ export class ApiService {
       organization = organization.id;
     }
     const url = `${this.apiURL}/project/organizationProjects/${organization}`;
-    console.log("getting url: ", url);
-    const mock = new Project();
-    mock.name = "hm";
-    mock.id = 0;
-    const mock2 = new Project();
-    mock2.name = "hm2";
-    mock.id = 1;
-    return of([mock, mock2]);
     return this.http.get<Project[]>(url);
   }
 

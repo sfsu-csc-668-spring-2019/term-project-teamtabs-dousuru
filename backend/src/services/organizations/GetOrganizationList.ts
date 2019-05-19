@@ -4,14 +4,13 @@ import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserManager } from "../../controllers/UserManager";
 
-export class ListOrganizations extends AuthenticatedService {
+export class GetOrganizationList extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /list/";
+    return "GET /list";
   }
 
   public authenticatedExecute(): IMiddlewareFunction {
     return (request: Request, response: Response, _: NextFunction) => {
-      console.log("got list");
       this.validate(request)
         .then(user => UserManager.getOrganizations(user.id))
         .then(orgs => response.json(orgs))

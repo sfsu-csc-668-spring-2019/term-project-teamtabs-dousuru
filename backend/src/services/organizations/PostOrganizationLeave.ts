@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
-import { Organization } from "../../entity";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class PostOrganizationLeave extends AuthenticatedService {
   public getRoute(): string {
@@ -18,7 +18,10 @@ export class PostOrganizationLeave extends AuthenticatedService {
         .then(_ =>
           OrganizationManager.removeOrganizationUser(id, request.user.id)
         )
-        .then(_ => response.sendStatus(200))
+        .then(result => {
+          OrganizationHandler.getInstance().update(id, result);
+          response.sendStatus(200);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }

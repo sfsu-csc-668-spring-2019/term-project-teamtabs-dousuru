@@ -49,9 +49,9 @@ export class UserManager {
     return await User.findOne(userId, { select: ["id", "username", "icon"] });
   }
 
-  static async getUserInformationSignIn(identifier: string): Promise<User> {
+  static async getUserInformationByLogin(identifier: string): Promise<User> {
     return await User.findOne({
-      where: [{ username: identifier }, { password: identifier }]
+      where: [{ username: identifier }, { email: identifier }]
     });
   }
 
@@ -79,23 +79,34 @@ export class UserManager {
   //get all organizations user is in
   static async getOrganizations(userId: number): Promise<Organization[]> {
     const user = await User.findOne(userId, { relations: ["organizations"] });
-    console.log(user);
-    const organizations = user.organizations;
-    console.log(organizations);
-    return organizations;
+    return user.organizations;
   }
 
-  static async getOrganizationProjects(
-    userID: number,
-    organizationID: number
+  public static async getOrganizationProjects(
+    userId: number,
+    organizationId: number
   ): Promise<Project[]> {
-    const user = await User.findOne(userID, { relations: ["roles"] });
-    const organization = await Organization.findOne(organizationID, {
-      relations: ["containedProjects", "containedProjects.roles"]
+    try {
+      console.log("getting projects");
+      let organization = await Organization.findOne(organizationId, {
+        relations: ["containedProjects"]
+      });
+      console.log("organization", organization);
+      organization.containedProjects = organization.containedProjects.filter(
+        project => UserManager.checkProjectManage(userId, project.id)
+      );
+      console.log(organization.containedProjects);
+      return organization.containedProjects;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async getProjectLists(projectID: number): Promise<List[]> {
+    let project = await Project.findOne(projectID, {
+      relations: ["containedLists", "containedLists.containedTasks"]
     });
-    return organization.containedProjects.filter(project =>
-      UserManager.userHasAccessToProject(user, project)
-    );
+    return project.containedLists;
   }
 
   //checks if user has post permission for organization

@@ -15,6 +15,7 @@ import { RegisterComponent } from "./register/register.component";
 import { AuthInterceptor } from "./networking/auth.interceptor";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { LogoutComponent } from "./logout/logout.component";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LandingPageComponent } from "./landing-page/landing-page.component";
     HomepageComponent,
     LoginComponent,
     RegisterComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

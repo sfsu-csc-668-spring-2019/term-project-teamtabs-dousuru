@@ -1,8 +1,13 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ProjectManager, UserManager } from "../../controllers";
+import {
+  ProjectManager,
+  UserManager,
+  OrganizationManager
+} from "../../controllers";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class PutProject extends AuthenticatedService {
   public getRoute(): string {
@@ -13,7 +18,8 @@ export class PutProject extends AuthenticatedService {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { name, description, isPublic },
-        params: { organizationId }
+        params: { organizationId },
+        user
       } = request;
       this.validate(name, description, isPublic, organizationId, request)
         .then(() => this.checkPermission(request, organizationId))
@@ -26,7 +32,18 @@ export class PutProject extends AuthenticatedService {
             organizationId
           )
         )
-        .then(results => response.json(results))
+        .then(results =>
+          OrganizationManager.getOrganizationProjects(
+            user.id,
+            organizationId
+          ).then(data => {
+            OrganizationHandler.getInstance().updateProjects(
+              organizationId,
+              data
+            );
+            response.json(results);
+          })
+        )
         .catch(err => {
           console.error(err);
           response.sendStatus(500);
