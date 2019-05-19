@@ -11,7 +11,6 @@ export class ListOrganizations extends AuthenticatedService {
 
   public authenticatedExecute(): IMiddlewareFunction {
     return (request: Request, response: Response, _: NextFunction) => {
-      console.log("got list");
       this.validate(request)
         .then(user => UserManager.getOrganizations(user.id))
         .then(orgs => response.json(orgs))
