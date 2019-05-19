@@ -49,9 +49,9 @@ export class UserManager {
     return await User.findOne(userId, { select: ["id", "username", "icon"] });
   }
 
-  static async getUserInformationSignIn(identifier: string): Promise<User> {
+  static async getUserInformationByLogin(identifier: string): Promise<User> {
     return await User.findOne({
-      where: [{ username: identifier }, { password: identifier }]
+      where: [{ username: identifier }, { email: identifier }]
     });
   }
 

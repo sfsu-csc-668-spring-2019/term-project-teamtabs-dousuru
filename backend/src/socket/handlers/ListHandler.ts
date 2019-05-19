@@ -73,4 +73,10 @@ export class ListHandler {
       .get(listId)
       .forEach(userSocket => userSocket.emit(`list:${listId}:chat`, message));
   }
+
+  public update(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket => userSocket.emit(`list:${listId}:update`, data));
+  }
 }

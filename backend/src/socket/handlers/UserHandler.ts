@@ -28,7 +28,11 @@ export class UserHandler {
     return UserHandler._instance;
   }
 
-  public chat(userid: string, room: string, message: string): void {
-    this.sockets.get(userid).emit(room, message);
+  public chat(userId: string, room: string, message: string): void {
+    this.sockets.get(userId).emit(room, message);
+  }
+
+  public update(userId: string, component: string, data: any): void {
+    this.sockets.get(userId).emit(component + ":update", data);
   }
 }
