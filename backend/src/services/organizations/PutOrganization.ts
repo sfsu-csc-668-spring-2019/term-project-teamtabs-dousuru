@@ -10,11 +10,12 @@ export class PutOrganization extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: AuthRequest, response: Response, __: NextFunction) => {
-      const {
-        body: { name, description, icon }
-      } = request;
-      this.validate(name, description, icon, request)
+    return (
+      { body: { name, description, icon }, user }: AuthRequest,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(name, description, icon, user)
         .then(user =>
           OrganizationManager.createOrganization(
             name,
@@ -32,10 +33,10 @@ export class PutOrganization extends AuthenticatedService {
     name: string,
     description: string,
     icon: string,
-    request: AuthRequest
+    user: User
   ): Promise<User> {
-    if (request.user && name && description && icon) {
-      return Promise.resolve(request.user);
+    if (user && name && description && icon) {
+      return Promise.resolve(user);
     } else {
       return Promise.reject();
     }
