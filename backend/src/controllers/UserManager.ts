@@ -89,13 +89,15 @@ export class UserManager {
     userID: number,
     organizationID: number
   ): Promise<Project[]> {
-    const user = await User.findOne(userID, { relations: ["roles"] });
-    const organization = await Organization.findOne(organizationID, {
-      relations: ["containedProjects", "containedProjects.roles"]
-    });
-    return organization.containedProjects.filter(project =>
-      UserManager.userHasAccessToProject(user, project)
-    );
+    try {
+      const projects = await Project.getRepository().query(
+        'SELECT * FROM project WHERE "baseOrganizationId" = $1',
+        [organizationID]
+      );
+      return projects;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   //checks if user has post permission for organization

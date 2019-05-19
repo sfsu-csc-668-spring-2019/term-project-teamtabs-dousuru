@@ -16,8 +16,11 @@ export class GetProjectsByOrganization extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(request)
-        .then(user => OrganizationManager.getOrganizationProjects(user.id, id))
-        .then(orgs => response.json(orgs))
+        .then(user => UserManager.getOrganizationProjects(user.id, id))
+        .then(projs => {
+          console.log(projs);
+          response.json(projs);
+        })
         .catch(_ => {
           response.sendStatus(400);
         });
