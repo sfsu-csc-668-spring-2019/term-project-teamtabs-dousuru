@@ -79,10 +79,7 @@ export class UserManager {
   //get all organizations user is in
   static async getOrganizations(userId: number): Promise<Organization[]> {
     const user = await User.findOne(userId, { relations: ["organizations"] });
-    console.log(user);
-    const organizations = user.organizations;
-    console.log(organizations);
-    return organizations;
+    return user.organizations;
   }
 
   static async getOrganizationProjects(
