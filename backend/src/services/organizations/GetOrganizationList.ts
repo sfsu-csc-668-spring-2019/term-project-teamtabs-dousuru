@@ -4,9 +4,9 @@ import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserManager } from "../../controllers/UserManager";
 
-export class ListOrganizations extends AuthenticatedService {
+export class GetOrganizationList extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /list/";
+    return "GET /list";
   }
 
   public authenticatedExecute(): IMiddlewareFunction {

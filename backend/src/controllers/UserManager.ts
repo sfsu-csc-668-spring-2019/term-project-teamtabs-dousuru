@@ -79,25 +79,34 @@ export class UserManager {
   //get all organizations user is in
   static async getOrganizations(userId: number): Promise<Organization[]> {
     const user = await User.findOne(userId, { relations: ["organizations"] });
-    console.log(user);
-    const organizations = user.organizations;
-    console.log(organizations);
-    return organizations;
+    return user.organizations;
   }
 
-  static async getOrganizationProjects(
-    userID: number,
-    organizationID: number
+  public static async getOrganizationProjects(
+    userId: number,
+    organizationId: number
   ): Promise<Project[]> {
     try {
-      const projects = await Project.getRepository().query(
-        'SELECT * FROM project WHERE "baseOrganizationId" = $1',
-        [organizationID]
+      console.log("getting projects");
+      let organization = await Organization.findOne(organizationId, {
+        relations: ["containedProjects"]
+      });
+      console.log("organization", organization);
+      organization.containedProjects = organization.containedProjects.filter(
+        project => UserManager.checkProjectManage(userId, project.id)
       );
-      return projects;
+      console.log(organization.containedProjects);
+      return organization.containedProjects;
     } catch (err) {
       console.error(err);
     }
+  }
+
+  static async getProjectLists(projectID: number): Promise<List[]> {
+    let project = await Project.findOne(projectID, {
+      relations: ["containedLists", "containedLists.containedTasks"]
+    });
+    return project.containedLists;
   }
 
   //checks if user has post permission for organization

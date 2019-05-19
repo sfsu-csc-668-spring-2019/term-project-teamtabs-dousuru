@@ -1,12 +1,8 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import {
-  MessageManager,
-  OrganizationManager,
-  UserManager
-} from "../../controllers";
-import { Message } from "../../entity";
+import { MessageManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { User } from "../../entity";
 
 export class GetOrganizationChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -14,28 +10,29 @@ export class GetOrganizationChatlogData extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: AuthRequest, response: Response, __: NextFunction) => {
-      const {
-        params: { id }
-      } = request;
-      this.validate(request, id)
-        .then(_ => this.checkPermission(request, id))
+    return (
+      { params: { id }, user }: AuthRequest,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(user)
+        .then(_ => this.checkPermission(user, id))
         .then(_ => MessageManager.getOrganizationMessages(id))
         .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(request: AuthRequest, id: number): Promise<any> {
-    if (!request.user || !id) {
+  public validate(user: User): Promise<any> {
+    if (!user) {
       return Promise.reject();
     } else {
       return Promise.resolve();
     }
   }
 
-  public checkPermission(request: AuthRequest, id: number): Promise<any> {
-    return UserManager.checkOrganizationPermission(request.user.id, id).then(
+  public checkPermission(user: User, id: number): Promise<any> {
+    return UserManager.checkOrganizationPermission(user.id, id).then(
       results => {
         if (results) {
           return Promise.resolve();

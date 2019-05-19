@@ -70,7 +70,7 @@ export class ProjectHandler {
       );
   }
 
-  public chat(projectId: string, message: string): void {
+  public chat(projectId: string, message: any): void {
     this.projectSockets
       .get(projectId)
       .forEach(userSocket =>
@@ -83,6 +83,14 @@ export class ProjectHandler {
       .get(projectId)
       .forEach(userSocket =>
         userSocket.emit(`project:${projectId}:update`, data)
+      );
+  }
+
+  public updateLists(projectId: string, data: any): void {
+    this.projectSockets
+      .get(projectId)
+      .forEach(userSocket =>
+        userSocket.emit(`project:${projectId}:update:lists`, data)
       );
   }
 }

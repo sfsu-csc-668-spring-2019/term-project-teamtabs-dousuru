@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { UserManager } from "../../controllers/UserManager";
-import { OrganizationManager } from "../../controllers/OrganizationManager";
+import { OrganizationManager } from "../../controllers";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class GetProjectsByOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -11,14 +11,19 @@ export class GetProjectsByOrganization extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IMiddlewareFunction {
-    return (request: Request, response: Response, _: NextFunction) => {
-      const {
-        params: { id }
-      } = request;
-      this.validate(request)
-        .then(user => UserManager.getOrganizationProjects(user.id, id))
+    return (
+      { params: { id }, user }: AuthRequest,
+      response: Response,
+      _: NextFunction
+    ) => {
+      this.validate(user)
+        .then(user => OrganizationManager.getOrganizationProjects(user.id, id))
         .then(projs => {
-          console.log(projs);
+          OrganizationHandler.getInstance().join(
+            id,
+            user.id.toString(),
+            user.username
+          );
           response.json(projs);
         })
         .catch(_ => {
@@ -27,9 +32,9 @@ export class GetProjectsByOrganization extends AuthenticatedService {
     };
   }
 
-  public validate(request: AuthRequest): Promise<User> {
-    if (request.user) {
-      return Promise.resolve(request.user);
+  public validate(user: User): Promise<User> {
+    if (user) {
+      return Promise.resolve(user);
     } else {
       return Promise.reject();
     }
