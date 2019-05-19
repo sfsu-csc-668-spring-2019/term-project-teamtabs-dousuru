@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { ListManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ListHandler } from "../../socket/handlers";
 
 export class PostListUpdate extends AuthenticatedService {
   public getRoute(): string {
@@ -17,6 +18,7 @@ export class PostListUpdate extends AuthenticatedService {
       this.validate(listId, name, description, request)
         .then(_ => {
           ListManager.update(name, description, listId).then(results => {
+            ListHandler.getInstance().update(results.id, results);
             response.json(results);
           });
         })

@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { ListManager, UserManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ListHandler } from "../../socket/handlers";
 
 export class GetListData extends AuthenticatedService {
   public getRoute(): string {
@@ -9,13 +10,19 @@ export class GetListData extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: Request, response: Response, __: NextFunction) => {
+    return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { listId }
+        params: { listId },
+        user
       } = request;
       this.validate(listId, request);
       ListManager.getListData(listId)
         .then(list => {
+          ListHandler.getInstance().join(
+            listId,
+            user.id.toString(),
+            user.username
+          );
           response.json(list);
         })
         .catch(err => {
