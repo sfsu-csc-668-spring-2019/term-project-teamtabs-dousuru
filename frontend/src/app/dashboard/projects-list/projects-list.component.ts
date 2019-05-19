@@ -21,7 +21,12 @@ export class ProjectsListComponent implements OnInit {
   }
 
   addProject() {
-    this.state.createProject();
+    this.state
+      .createProject()
+      .toPromise()
+      .then(proj => {
+        console.log(proj);
+      });
   }
 
   select(project: Project) {

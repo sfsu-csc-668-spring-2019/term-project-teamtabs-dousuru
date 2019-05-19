@@ -22,7 +22,9 @@ export class ProjectManager {
   ): Promise<Project> {
     try {
       let owner = await User.findOne(ownerId);
-      let baseOrganization = await Organization.findOne(organizationId);
+      let baseOrganization = await Organization.findOne(organizationId, {
+        relations: ["containedProjects"]
+      });
       let project = await Project.create({
         name,
         description,
@@ -34,6 +36,10 @@ export class ProjectManager {
         project.id,
         ownerId
       );
+      baseOrganization.containedProjects =
+        baseOrganization.containedProjects || [];
+      baseOrganization.containedProjects.push(project);
+      baseOrganization.save();
       return project;
     } catch (err) {
       console.error(err);

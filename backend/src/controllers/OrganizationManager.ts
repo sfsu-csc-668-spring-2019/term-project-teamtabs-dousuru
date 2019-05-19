@@ -24,6 +24,7 @@ export class OrganizationManager {
       organization.id,
       ownerId
     );
+    organization.containedProjects = [];
     return OrganizationManager.addOrganizationUser(
       organization.id,
       ownerId,
@@ -171,13 +172,20 @@ export class OrganizationManager {
     userId: number,
     organizationId: number
   ): Promise<Project[]> {
-    let organization = await Organization.findOne(organizationId, {
-      relations: ["containedProjects"]
-    });
-    organization.containedProjects = organization.containedProjects.filter(
-      project => UserManager.checkProjectManage(userId, project.id)
-    );
-    return organization.containedProjects;
+    try {
+      console.log("getting projects");
+      let organization = await Organization.findOne(organizationId, {
+        relations: ["containedProjects"]
+      });
+      console.log("organization", organization);
+      organization.containedProjects = organization.containedProjects.filter(
+        project => UserManager.checkProjectManage(userId, project.id)
+      );
+      console.log(organization.containedProjects);
+      return organization.containedProjects;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public static async addOrganizationRole(
