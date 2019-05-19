@@ -3,7 +3,6 @@ import { getConnection, Like } from "typeorm";
 import { Organization } from "../entity";
 import { OrganizationManager } from "./OrganizationManager";
 import { ProjectManager } from "./ProjectManager";
-import { listenerCount } from "cluster";
 
 export class UserManager {
   static async createAccount(
@@ -100,42 +99,6 @@ export class UserManager {
       console.error(err);
     }
   }
-
-  static async getProjectLists(projectID: number): Promise<List[]> {
-    let project = await Project.findOne(projectID, {
-      relations: ["containedLists", "containedLists.containedTasks"]
-    });
-    return project.containedLists;
-  }
-  /*
-  static async getProjectLists(
-    projectID: number
-  ): Promise<List[]>{
-    try{ 
-      const lists = await List.getRepository().query(
-        'SELECT * FROM list WHERE "baseProjectId" = $1',
-        [projectID]
-      );
-      return lists;
-    } catch(err) {
-      console.error(err);
-    }
-  }
-
-  static async getListTasks(
-    listID: number
-  ): Promise<Task[]>{
-    try{
-      const tasks = await Task.getRepository().query(
-        'SELECT * FROM task WHERE "baseListId" = $1',
-        [listID]
-      );
-      return tasks;
-    } catch(err) {
-      console.error(err)
-    }
-  }
-  */
 
   //checks if user has post permission for organization
   public static async checkOrganizationPost(

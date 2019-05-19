@@ -9,10 +9,12 @@ export class TaskManager {
     dueDate: Date
   ): Promise<Task> {
     const baseList = await List.findOne(listID);
+    const startTime = Date.now();
     const task = await Task.create({
       name,
       description,
       baseList,
+      startTime,
       dueDate
     });
     return task.save();

@@ -20,13 +20,13 @@ export class Task extends BaseEntity {
   @Column({ type: "varchar", length: 5000, nullable: true })
   description: string;
 
-  @Column({ type: "time", nullable: true, default: () => `now()` })
+  @Column({ type: "timestamp" })
   startTime: Date;
 
-  @Column({ type: "time", nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   endTime: Date;
 
-  @Column({ type: "time", nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   dueDate: Date;
 
   @ManyToOne(type => List, list => list.containedTasks, { onDelete: "CASCADE" })

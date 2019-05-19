@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IMiddlewareFunction, Service } from "..";
-import {
-  UserManager,
-  OrganizationManager,
-  ListManager,
-  TaskManager
-} from "../../controllers";
+import { UserManager, OrganizationManager } from "../../controllers";
 
 export class GetLandingPage extends Service {
   public getRoute(): string {
@@ -43,13 +38,10 @@ export class GetLandingPage extends Service {
     //get Organization
     // var orgResults = await OrganizationManager.getOrganization(1);
 
-    //var userorgs = await UserManager.getOrganizations(1);
+    var userorgs = await UserManager.getOrganizations(1);
 
-    //var orgUsers = await OrganizationManager.getOrganizationUsers(1);
-    await ListManager.createList("TestList", "descriptionList", 5);
-    await TaskManager.createTask("TestTask", "descriptionTask", 1, undefined);
-    let projectLists = await UserManager.getProjectLists(5);
-    response.send(projectLists);
+    var orgUsers = await OrganizationManager.getOrganizationUsers(1);
+    response.send(userorgs);
   }
 
   private async userTests(): Promise<any> {
