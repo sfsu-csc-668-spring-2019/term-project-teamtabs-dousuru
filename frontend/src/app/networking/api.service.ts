@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
+import { tap } from "rxjs/operators";
 import { Organization, Project } from "../models";
 import { environment } from "src/environments/environment";
 
@@ -47,7 +48,6 @@ export class ApiService {
       organization = organization.id;
     }
     const url = `${this.apiURL}/project/organizationProjects/${organization}`;
-    console.log("getting url: ", url);
     return this.http.get<Project[]>(url);
   }
 

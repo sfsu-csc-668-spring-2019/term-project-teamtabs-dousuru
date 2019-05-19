@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { LoggingService } from "../logging.service";
-import { Observable, of } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import { ApiService } from "../networking/api.service";
 
@@ -8,25 +8,31 @@ import { ApiService } from "../networking/api.service";
   providedIn: "root"
 })
 export class AuthService {
-  private _authToken: string;
+  private _authToken: BehaviorSubject<string>;
   private localStorageKey = "authToken";
-
-  get authenticated(): Observable<boolean> {
-    return of(!!this.authToken);
-  }
+  authenticated: Observable<boolean>;
 
   constructor(private loggingService: LoggingService, private api: ApiService) {
-    this.authToken = localStorage.getItem(this.localStorageKey);
+    const authToken = localStorage.getItem(this.localStorageKey);
+    this._authToken = new BehaviorSubject(authToken);
     this.loggingService.logAuthChange(!!this.authToken);
+    this.authenticated = this._authToken
+      .asObservable()
+      .pipe(map(token => !!token));
   }
 
   get authToken(): string {
-    return this._authToken;
+    const value = this._authToken.value;
+    return value;
   }
 
   set authToken(newValue: string) {
-    this._authToken = newValue;
-    localStorage.setItem(this.localStorageKey, newValue);
+    this._authToken.next(newValue);
+    if (newValue) {
+      localStorage.setItem(this.localStorageKey, newValue);
+    } else {
+      localStorage.removeItem(this.localStorageKey);
+    }
     this.loggingService.logAuthChange(!!newValue);
   }
 
@@ -52,7 +58,7 @@ export class AuthService {
     return this.api.createAccount(username, email, password).pipe(
       map(({ token }) => {
         if (!token) {
-          this.authToken = undefined;
+          this.authToken = null;
           return false;
         } else {
           this.authToken = token;
@@ -63,6 +69,6 @@ export class AuthService {
   }
 
   signout() {
-    this.authToken = undefined;
+    this.authToken = null;
   }
 }

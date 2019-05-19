@@ -14,13 +14,15 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { AuthInterceptor } from "./networking/auth.interceptor";
 import { DashboardModule } from "./dashboard/dashboard.module";
+import { LogoutComponent } from "./logout/logout.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
