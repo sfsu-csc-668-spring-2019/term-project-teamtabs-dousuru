@@ -73,7 +73,7 @@ export class ListManager {
   }
 
   static async getListData(listId: number): Promise<List> {
-    const list = await List.findOne(listId);
+    const list = await List.findOne(listId, { relations: ["baseProject"] });
     return list;
   }
 }

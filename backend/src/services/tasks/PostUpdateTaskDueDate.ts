@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { TaskManager, UserManager } from "../../controllers";
+import { TaskManager, UserManager, ListManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ListHandler, TaskHandler } from "../../socket/handlers";
 
 export class PostUpdateTaskDueDate extends AuthenticatedService {
   public getRoute(): string {
@@ -17,7 +18,12 @@ export class PostUpdateTaskDueDate extends AuthenticatedService {
       this.validate(taskId, date, request)
         .then(_ => {
           TaskManager.updateDueDate(date, taskId).then(results => {
-            response.json(results);
+            const listId = results.baseListId;
+            ListManager.getTasks(listId).then(tasks => {
+              ListHandler.getInstance().updateTasks(listId, tasks);
+              TaskHandler.getInstance().update(taskId, results);
+              response.json(results);
+            });
           });
         })
         .catch(err => response.json(err));

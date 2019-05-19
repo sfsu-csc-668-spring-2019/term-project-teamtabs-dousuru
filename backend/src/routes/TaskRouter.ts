@@ -11,6 +11,6 @@ export class TaskRouter extends Router {
   }
 
   public getRoute(): string {
-    return "/organization/id/:organizationId/project/id/:projectId/list/id/:listId/task";
+    return "/task";
   }
 }

@@ -7,7 +7,7 @@ import {
 } from "../../controllers";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { OrganizationHandler } from "../../socket/handlers";
+import { OrganizationHandler, ProjectHandler } from "../../socket/handlers";
 
 export class PutProject extends AuthenticatedService {
   public getRoute(): string {
@@ -41,6 +41,7 @@ export class PutProject extends AuthenticatedService {
               organizationId,
               data
             );
+            ProjectHandler.getInstance().update(results.id.toString(), results);
             response.json(results);
           })
         )

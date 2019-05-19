@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager } from "../../controllers";
+import { ListManager, UserManager, ProjectManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class PostListCreate extends AuthenticatedService {
   public getRoute(): string {
@@ -15,9 +16,12 @@ export class PostListCreate extends AuthenticatedService {
       } = request;
       this.validate(name, description, projectId, request)
         .then(_ => {
-          ListManager.createList(name, description, projectId).then(list => {
-            response.json(list);
-          });
+          ListManager.createList(name, description, projectId).then(list =>
+            ProjectManager.getLists(projectId).then(lists => {
+              ProjectHandler.getInstance().updateLists(projectId, lists);
+              response.json(list);
+            })
+          );
         })
         .catch(err => {
           response.json(err);

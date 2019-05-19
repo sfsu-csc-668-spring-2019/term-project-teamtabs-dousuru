@@ -11,6 +11,6 @@ export class ListRouter extends Router {
   }
 
   public getRoute(): string {
-    return "list";
+    return "/list";
   }
 }
