@@ -1,8 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
-import { Organization, User } from "../../entity";
+import { OrganizationManager, UserManager } from "../../controllers";
+import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { UserHandler } from "../../socket/handlers";
 
 export class PutOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -25,6 +26,14 @@ export class PutOrganization extends AuthenticatedService {
           )
         )
         .then(org => response.json(org))
+        .then(_ => UserManager.getOrganizations(user.id))
+        .then(data =>
+          UserHandler.getInstance().update(
+            user.id.toString(),
+            "dashboard",
+            data
+          )
+        )
         .catch(_ => response.sendStatus(500));
     };
   }

@@ -76,7 +76,7 @@ export class OrganizationHandler {
     );
   }
 
-  public chat(organizationId: string, message: string): void {
+  public chat(organizationId: string, message: any): void {
     this.organizationSockets
       .get(organizationId)
       .forEach(userSocket =>

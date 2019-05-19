@@ -1,18 +1,18 @@
+import { DeleteOrganization } from "./DeleteOrganization";
 import { GetOrganizationChatlogData } from "./GetOrganizationChatlogData";
 import { GetOrganizationData } from "./GetOrganizationData";
-import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
-import { PutOrganization } from "./PutOrganization";
-import { DeleteOrganization } from "./DeleteOrganization";
+import { GetOrganizationList } from "./GetOrganizationList";
 import { PostOrganizationInvite } from "./PostOrganizationInvite";
 import { PostOrganizationJoin } from "./PostOrganizationJoin";
 import { PostOrganizationLeave } from "./PostOrganizationLeave";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
-import { ListOrganizations } from "./ListOrganizations";
+import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
+import { PutOrganization } from "./PutOrganization";
 
 export default [
   DeleteOrganization,
   GetOrganizationChatlogData,
-  ListOrganizations,
+  GetOrganizationList,
   GetOrganizationData,
   PostOrganizationInvite,
   PostOrganizationJoin,

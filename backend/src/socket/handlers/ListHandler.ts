@@ -68,7 +68,7 @@ export class ListHandler {
       );
   }
 
-  public chat(listId: string, message: string): void {
+  public chat(listId: string, message: any): void {
     this.listSockets
       .get(listId)
       .forEach(userSocket => userSocket.emit(`list:${listId}:chat`, message));
