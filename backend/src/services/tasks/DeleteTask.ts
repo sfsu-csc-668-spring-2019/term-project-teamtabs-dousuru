@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager } from "../../controllers";
+import { ListManager, UserManager, TaskManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ListHandler } from "../../socket/handlers";
 
-export class PostTaskDelete extends AuthenticatedService {
+export class DeleteTask extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /delete/:taskId";
+    return "DELETE :taskId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
@@ -15,8 +16,14 @@ export class PostTaskDelete extends AuthenticatedService {
       } = request;
       this.validate(taskId, request)
         .then(_ => {
-          ListManager.remove(taskId).then(results => {
-            response.json(results);
+          TaskManager.getTaskData(taskId).then(task => {
+            const listId = task.baseList.id;
+            TaskManager.remove(taskId).then(results => {
+              ListManager.getTasks(listId).then(tasks => {
+                ListHandler.getInstance().updateTasks(listId.toString(), tasks);
+                response.json(results);
+              });
+            });
           });
         })
         .catch(err => response.json(err));

@@ -1,13 +1,13 @@
 import { GetTaskData } from "./GetTaskData";
 import { PostTaskCreate } from "./PostTaskCreate";
-import { PostTaskDelete } from "./PostTaskDelete";
+import { DeleteTask } from "./DeleteTask";
 import { PostUpdateTaskDescription } from "./PostUpdateTaskDescription";
 import { PostUpdateTaskDueDate } from "./PostUpdateTaskDueDate";
 
 export default [
   GetTaskData,
   PostTaskCreate,
-  PostTaskDelete,
+  DeleteTask,
   PostUpdateTaskDescription,
   PostUpdateTaskDueDate
 ];

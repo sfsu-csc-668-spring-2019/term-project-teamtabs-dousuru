@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { TaskManager, UserManager } from "../../controllers";
+import { TaskManager, UserManager, ListManager } from "../../controllers";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ListHandler } from "../../socket/handlers";
 
 export class PostTaskCreate extends AuthenticatedService {
   public getRoute(): string {
@@ -17,7 +18,10 @@ export class PostTaskCreate extends AuthenticatedService {
         .then(_ => {
           TaskManager.createTask(name, description, listId, dueDate).then(
             task => {
-              response.json(task);
+              ListManager.getTasks(listId).then(tasks => {
+                ListHandler.getInstance().updateTasks(listId, tasks);
+                response.json(task);
+              });
             }
           );
         })
