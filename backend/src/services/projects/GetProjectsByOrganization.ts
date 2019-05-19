@@ -3,6 +3,7 @@ import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationManager } from "../../controllers";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class GetProjectsByOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -18,7 +19,11 @@ export class GetProjectsByOrganization extends AuthenticatedService {
       this.validate(user)
         .then(user => OrganizationManager.getOrganizationProjects(user.id, id))
         .then(projs => {
-          console.log(projs);
+          OrganizationHandler.getInstance().join(
+            id,
+            user.id.toString(),
+            user.username
+          );
           response.json(projs);
         })
         .catch(_ => {
