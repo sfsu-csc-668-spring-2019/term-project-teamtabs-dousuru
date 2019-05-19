@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { UserManager, ProjectManager } from "../../controllers";
-import { Project } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class GetProjectData extends AuthenticatedService {
   public getRoute(): string {
@@ -12,13 +12,21 @@ export class GetProjectData extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { id }
+        params: { id },
+        user
       } = request;
       (request: AuthRequest, response: Response) =>
         this.validate(request, id)
           .then(_ => this.checkPermission(request, id))
           .then(_ => ProjectManager.getProject(id))
-          .then(project => response.json(project))
+          .then(project => {
+            ProjectHandler.getInstance().join(
+              id,
+              user.id.toString(),
+              user.username
+            );
+            response.json(project);
+          })
           .catch(_ => response.sendStatus(500));
     };
   }
