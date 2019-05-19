@@ -3,6 +3,7 @@ import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserManager } from "../../controllers/UserManager";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class GetListByProject extends AuthenticatedService {
   public getRoute(): string {
@@ -17,8 +18,13 @@ export class GetListByProject extends AuthenticatedService {
     ) => {
       this.validate(user, id)
         .then(_ => UserManager.getProjectLists(id))
-        .then(projs => {
-          response.json(projs);
+        .then(lists => {
+          ProjectHandler.getInstance().join(
+            id,
+            user.id.toString(),
+            user.username
+          );
+          response.json(lists);
         })
         .catch(_ => {
           response.sendStatus(400);

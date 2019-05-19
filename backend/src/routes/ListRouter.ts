@@ -11,6 +11,6 @@ export class ListRouter extends Router {
   }
 
   public getRoute(): string {
-    return "/organization/id/:organizationId/project/id/:projectId/list";
+    return "/list";
   }
 }
