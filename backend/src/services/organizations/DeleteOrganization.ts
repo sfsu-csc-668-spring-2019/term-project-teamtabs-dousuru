@@ -1,6 +1,10 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager, UserManager } from "../../controllers";
+import {
+  OrganizationQueries,
+  UserQueries,
+  PermissionQueries
+} from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserHandler } from "../../socket/handlers";
 import { Organization, User } from "../../entity";
@@ -18,8 +22,8 @@ export class DeleteOrganization extends AuthenticatedService {
     ) => {
       this.validate(user)
         .then(_ => this.checkPermission(user, id))
-        .then(_ => OrganizationManager.deleteOrganization(user.id, id))
-        .then(_ => UserManager.getOrganizations(user.id))
+        .then(_ => OrganizationQueries.deleteOrganization(user.id, id))
+        .then(_ => UserQueries.getOrganizations(user.id))
         .then((data: Organization[]) => {
           UserHandler.getInstance().update(
             user.id.toString(),
@@ -41,9 +45,11 @@ export class DeleteOrganization extends AuthenticatedService {
   }
 
   public checkPermission(user: User, id: number): Promise<any> {
-    return UserManager.checkOrganizationManage(user.id, id).then(results => {
-      if (results) return Promise.resolve();
-      return Promise.reject();
-    });
+    return PermissionQueries.checkOrganizationManage(user.id, id).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }

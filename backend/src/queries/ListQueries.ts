@@ -1,7 +1,7 @@
 import { List, Project, Task } from "../entity";
 import { getConnection } from "typeorm";
 
-export class ListManager {
+export class ListQueries {
   static async createList(
     name: string,
     description: string,

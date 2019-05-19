@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { UserManager } from "../../controllers/UserManager";
+import { UserQueries } from "../../queries/UserQueries";
 import { ProjectHandler } from "../../socket/handlers";
 
 export class GetListByProject extends AuthenticatedService {
@@ -17,7 +17,7 @@ export class GetListByProject extends AuthenticatedService {
       _: NextFunction
     ) => {
       this.validate(user, id)
-        .then(_ => UserManager.getProjectLists(id))
+        .then(_ => UserQueries.getProjectLists(id))
         .then(lists => {
           ProjectHandler.getInstance().join(
             id,

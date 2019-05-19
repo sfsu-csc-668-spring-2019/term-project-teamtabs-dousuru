@@ -1,7 +1,7 @@
 import { Tag, Task, Project } from "../entity";
 import { getConnection } from "typeorm";
 
-export class TagManager {
+export class TagQueries {
   public static async createTag(
     name: string,
     color: string,

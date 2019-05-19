@@ -1,7 +1,7 @@
-import { List, Project, Task, Tag } from "../entity";
-import { Timestamp, getConnection } from "typeorm";
+import { List, Task, Tag } from "../entity";
+import { getConnection } from "typeorm";
 
-export class TaskManager {
+export class TaskQueries {
   static async createTask(
     name: string,
     description: string,

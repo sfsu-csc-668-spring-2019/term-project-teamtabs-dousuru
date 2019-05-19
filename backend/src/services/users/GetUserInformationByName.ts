@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 
 export class GetUserInformationByName extends Service {
   public getRoute(): string {
@@ -13,7 +13,7 @@ export class GetUserInformationByName extends Service {
       response: Response,
       __: NextFunction
     ) => {
-      Promise.resolve(UserManager.getUserInformation(displayName))
+      Promise.resolve(UserQueries.getUserInformation(displayName))
         .then(response.json)
         .catch(_ => response.sendStatus(500));
     };

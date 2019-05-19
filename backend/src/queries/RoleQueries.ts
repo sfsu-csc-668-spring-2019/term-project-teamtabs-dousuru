@@ -1,8 +1,8 @@
 import { Role, Organization, Project, User } from "../entity";
-import { UserManager } from "./UserManager";
-import { getConnection, Like } from "typeorm";
+import { UserQueries } from "./UserQueries";
+import { getConnection } from "typeorm";
 
-export class RoleManager {
+export class RoleQueries {
   //Roles that should be added by default on creation
   private static ownerConfiguration = {
     name: "Owner",
@@ -26,19 +26,19 @@ export class RoleManager {
     let addedRoles = [];
     addedRoles.push(
       await this.createProjectRole(
-        RoleManager.memberConfiguration.name,
-        RoleManager.memberConfiguration.canInvite,
-        RoleManager.memberConfiguration.canManage,
-        RoleManager.memberConfiguration.canPost,
+        RoleQueries.memberConfiguration.name,
+        RoleQueries.memberConfiguration.canInvite,
+        RoleQueries.memberConfiguration.canManage,
+        RoleQueries.memberConfiguration.canPost,
         projectId
       )
     );
     addedRoles.push(
       await this.createProjectRole(
-        RoleManager.ownerConfiguration.name,
-        RoleManager.ownerConfiguration.canInvite,
-        RoleManager.ownerConfiguration.canManage,
-        RoleManager.ownerConfiguration.canPost,
+        RoleQueries.ownerConfiguration.name,
+        RoleQueries.ownerConfiguration.canInvite,
+        RoleQueries.ownerConfiguration.canManage,
+        RoleQueries.ownerConfiguration.canPost,
         projectId
       )
     );
@@ -53,19 +53,19 @@ export class RoleManager {
     let addedRoles = [];
     addedRoles.push(
       await this.createOrganizationRole(
-        RoleManager.memberConfiguration.name,
-        RoleManager.memberConfiguration.canInvite,
-        RoleManager.memberConfiguration.canManage,
-        RoleManager.memberConfiguration.canPost,
+        RoleQueries.memberConfiguration.name,
+        RoleQueries.memberConfiguration.canInvite,
+        RoleQueries.memberConfiguration.canManage,
+        RoleQueries.memberConfiguration.canPost,
         organizationId
       )
     );
     addedRoles.push(
       await this.createOrganizationRole(
-        RoleManager.ownerConfiguration.name,
-        RoleManager.ownerConfiguration.canInvite,
-        RoleManager.ownerConfiguration.canManage,
-        RoleManager.ownerConfiguration.canPost,
+        RoleQueries.ownerConfiguration.name,
+        RoleQueries.ownerConfiguration.canInvite,
+        RoleQueries.ownerConfiguration.canManage,
+        RoleQueries.ownerConfiguration.canPost,
         organizationId
       )
     );
@@ -164,7 +164,7 @@ export class RoleManager {
   public static async getUsers(roleId: number): Promise<JSON[]> {
     let users = (await Role.findOne(roleId, { relations: ["users"] })).users;
     return await Promise.all(
-      users.map(user => UserManager.getUserInformation(user.username))
+      users.map(user => UserQueries.getUserInformation(user.username))
     );
   }
 }

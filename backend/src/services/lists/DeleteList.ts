@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager, ProjectManager } from "../../controllers";
+import { ListQueries, ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ProjectHandler } from "../../socket/handlers";
 
@@ -16,10 +16,10 @@ export class DeleteList extends AuthenticatedService {
       } = request;
       this.validate(listId, request)
         .then(_ =>
-          ListManager.getListData(listId).then(list => {
+          ListQueries.getListData(listId).then(list => {
             const projectId = list.baseProject.id;
-            ListManager.remove(listId).then(results =>
-              ProjectManager.getLists(projectId).then(lists => {
+            ListQueries.remove(listId).then(results =>
+              ProjectQueries.getLists(projectId).then(lists => {
                 ProjectHandler.getInstance().updateLists(
                   projectId.toString(),
                   lists
@@ -37,10 +37,12 @@ export class DeleteList extends AuthenticatedService {
     if (!request.user || !listId) {
       return Promise.reject();
     } else {
-      UserManager.checkListManage(request.user.id, listId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkListManage(request.user.id, listId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

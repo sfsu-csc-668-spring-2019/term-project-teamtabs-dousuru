@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { SecretsService } from "../../controllers/SecretsService";
-import { UserManager } from "../../controllers";
+import { SecretsService } from "../../middleware/SecretsService";
+import { UserQueries } from "../../queries";
 
 export class PutUserLogin extends Service {
   public getRoute(): string {
@@ -16,7 +16,7 @@ export class PutUserLogin extends Service {
     ) => {
       this.validate(identifier, password)
         .then(_ =>
-          UserManager.getUserInformationByLogin(identifier).then(user => {
+          UserQueries.getUserInformationByLogin(identifier).then(user => {
             if (!user) {
               Promise.reject();
             }

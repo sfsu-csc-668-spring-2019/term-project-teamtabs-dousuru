@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { UserManager, OrganizationManager } from "../../controllers";
+import { OrganizationQueries, PermissionQueries } from "../../queries";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
@@ -18,7 +18,7 @@ export class GetOrganizationData extends AuthenticatedService {
     ) => {
       this.validate(user)
         .then(_ => this.checkPermission(user, id))
-        .then(_ => OrganizationManager.getOrganization(id))
+        .then(_ => OrganizationQueries.getOrganization(id))
         .then(organization => {
           OrganizationHandler.getInstance().join(
             id,
@@ -40,7 +40,7 @@ export class GetOrganizationData extends AuthenticatedService {
   }
 
   public checkPermission(user: User, id: number): Promise<any> {
-    return UserManager.checkOrganizationPermission(user.id, id).then(
+    return PermissionQueries.checkOrganizationPermission(user.id, id).then(
       results => {
         if (results) return Promise.resolve();
         return Promise.reject();

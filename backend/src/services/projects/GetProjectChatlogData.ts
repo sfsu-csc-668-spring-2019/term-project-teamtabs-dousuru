@@ -1,7 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager, UserManager } from "../../controllers";
-import { Message } from "../../entity";
+import { MessageQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class GetProjectChatlogData extends AuthenticatedService {
@@ -16,7 +15,7 @@ export class GetProjectChatlogData extends AuthenticatedService {
       } = request;
       this.validate(request, id)
         .then(_ => this.checkPermission(request, id))
-        .then(_ => MessageManager.getProjectMessages(id))
+        .then(_ => MessageQueries.getProjectMessages(id))
         .then(messages => response.json(messages))
         .catch(_ => response.sendStatus(500));
     };
@@ -31,7 +30,7 @@ export class GetProjectChatlogData extends AuthenticatedService {
   }
 
   public checkPermission(request: AuthRequest, id: number): Promise<any> {
-    return UserManager.checkProjectPermission(request.user.id, id).then(
+    return PermissionQueries.checkProjectPermission(request.user.id, id).then(
       userHasPermission => {
         if (userHasPermission) {
           return Promise.resolve();

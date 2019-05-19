@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { OrganizationManager } from "../../controllers";
+import { OrganizationQueries } from "../../queries";
 import { OrganizationHandler } from "../../socket/handlers";
 
 export class GetProjectsByOrganization extends AuthenticatedService {
@@ -17,7 +17,7 @@ export class GetProjectsByOrganization extends AuthenticatedService {
       _: NextFunction
     ) => {
       this.validate(user)
-        .then(user => OrganizationManager.getOrganizationProjects(user.id, id))
+        .then(user => OrganizationQueries.getOrganizationProjects(user.id, id))
         .then(projs => {
           OrganizationHandler.getInstance().join(
             id,

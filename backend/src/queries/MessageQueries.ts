@@ -6,7 +6,7 @@ import {
   Project
 } from "../entity";
 
-export class MessageManager {
+export class MessageQueries {
   public static async createUserMessage(
     ownerId: number,
     receiverId: number,
@@ -15,8 +15,8 @@ export class MessageManager {
     let timeCreated = new Date();
     let owner = await User.findOne(ownerId, { relations: ["contacts"] });
     let receiver = await User.findOne(receiverId, { relations: ["contacts"] });
-    MessageManager.RegisterContact(owner, receiver);
-    MessageManager.RegisterContact(receiver, owner);
+    MessageQueries.RegisterContact(owner, receiver);
+    MessageQueries.RegisterContact(receiver, owner);
     let messagePartitions = await Promise.all(
       partitions.map(partition =>
         MessagePartition.create({

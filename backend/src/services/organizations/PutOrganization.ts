@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager, UserManager } from "../../controllers";
+import { OrganizationQueries, UserQueries } from "../../queries";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserHandler } from "../../socket/handlers";
@@ -18,7 +18,7 @@ export class PutOrganization extends AuthenticatedService {
     ) => {
       this.validate(name, description, icon, user)
         .then(user =>
-          OrganizationManager.createOrganization(
+          OrganizationQueries.createOrganization(
             name,
             description,
             icon,
@@ -26,7 +26,7 @@ export class PutOrganization extends AuthenticatedService {
           )
         )
         .then(org => response.json(org))
-        .then(_ => UserManager.getOrganizations(user.id))
+        .then(_ => UserQueries.getOrganizations(user.id))
         .then(data =>
           UserHandler.getInstance().update(
             user.id.toString(),

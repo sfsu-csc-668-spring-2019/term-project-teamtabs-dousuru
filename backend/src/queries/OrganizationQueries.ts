@@ -1,10 +1,11 @@
-import { Organization, User, Project, Message, Role, Task } from "../entity";
-import { SecretsService } from "./SecretsService";
-import { UserManager } from "./UserManager";
-import { ProjectManager } from "./ProjectManager";
-import { RoleManager } from "./RoleManager";
+import { Organization, User, Project, Message, Role } from "../entity";
+import { SecretsService } from "../middleware/SecretsService";
+import { UserQueries } from "./UserQueries";
+import { ProjectQueries } from "./ProjectQueries";
+import { RoleQueries } from "./RoleQueries";
+import { PermissionQueries } from "./PermissionQueries";
 
-export class OrganizationManager {
+export class OrganizationQueries {
   public static async createOrganization(
     name: string,
     description: string,
@@ -20,12 +21,12 @@ export class OrganizationManager {
       icon,
       owner
     }).save();
-    organization.roles = await RoleManager.createDefaultOrganizationRoles(
+    organization.roles = await RoleQueries.createDefaultOrganizationRoles(
       organization.id,
       ownerId
     );
     organization.containedProjects = [];
-    return OrganizationManager.addOrganizationUser(
+    return OrganizationQueries.addOrganizationUser(
       organization.id,
       ownerId,
       inviteLink
@@ -88,13 +89,13 @@ export class OrganizationManager {
   ): Promise<JSON> {
     let result: any = {};
     let projects: Project[];
-    (await UserManager.getOrganizationProjects(userId, organizationId)).map(
+    (await UserQueries.getOrganizationProjects(userId, organizationId)).map(
       _projects => projects.concat(_projects)
     );
-    result.projects = UserManager.filterCaseInsensitive(projects, "name", name);
+    result.projects = UserQueries.filterCaseInsensitive(projects, "name", name);
     let tasksArray = await Promise.all(
       projects.map(project =>
-        ProjectManager.getContentsByName(project.id, name)
+        ProjectQueries.getContentsByName(project.id, name)
       )
     );
     result.tasks = [];
@@ -117,7 +118,7 @@ export class OrganizationManager {
     if (!organization.users.includes(user)) {
       organization.users.push(user);
       let memberRole = organization.roles.find(role => role.name == "Member");
-      RoleManager.addUser(memberRole.id, userId);
+      RoleQueries.addUser(memberRole.id, userId);
     }
     return await organization.save();
   }
@@ -179,7 +180,7 @@ export class OrganizationManager {
       });
       console.log("organization", organization);
       organization.containedProjects = organization.containedProjects.filter(
-        project => UserManager.checkProjectManage(userId, project.id)
+        project => PermissionQueries.checkProjectManage(userId, project.id)
       );
       console.log(organization.containedProjects);
       return organization.containedProjects;

@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager, TaskManager } from "../../controllers";
+import { ListQueries, TaskQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler } from "../../socket/handlers";
 
@@ -16,10 +16,10 @@ export class DeleteTask extends AuthenticatedService {
       } = request;
       this.validate(taskId, request)
         .then(_ => {
-          TaskManager.getTaskData(taskId).then(task => {
+          TaskQueries.getTaskData(taskId).then(task => {
             const listId = task.baseList.id;
-            TaskManager.remove(taskId).then(results => {
-              ListManager.getTasks(listId).then(tasks => {
+            TaskQueries.remove(taskId).then(results => {
+              ListQueries.getTasks(listId).then(tasks => {
                 ListHandler.getInstance().updateTasks(listId.toString(), tasks);
                 response.json(results);
               });
@@ -34,10 +34,12 @@ export class DeleteTask extends AuthenticatedService {
     if (!request.user || !taskId) {
       return Promise.reject();
     } else {
-      UserManager.checkTaskManage(request.user.id, taskId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkTaskManage(request.user.id, taskId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager, ProjectManager } from "../../controllers";
+import { ListQueries, ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ProjectHandler } from "../../socket/handlers";
 
@@ -16,8 +16,8 @@ export class PostListCreate extends AuthenticatedService {
       } = request;
       this.validate(name, description, projectId, request)
         .then(_ => {
-          ListManager.createList(name, description, projectId).then(list =>
-            ProjectManager.getLists(projectId).then(lists => {
+          ListQueries.createList(name, description, projectId).then(list =>
+            ProjectQueries.getLists(projectId).then(lists => {
               ProjectHandler.getInstance().updateLists(projectId, lists);
               response.json(list);
             })
@@ -38,7 +38,7 @@ export class PostListCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !projectId) {
       return Promise.reject();
     } else {
-      UserManager.checkProjectManage(request.user.id, projectId).then(
+      PermissionQueries.checkProjectManage(request.user.id, projectId).then(
         results => {
           if (results) return Promise.resolve();
           return Promise.reject();

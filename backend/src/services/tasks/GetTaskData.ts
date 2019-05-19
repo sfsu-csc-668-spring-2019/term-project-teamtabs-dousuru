@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { TaskManager, UserManager } from "../../controllers";
+import { TaskQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { TaskHandler } from "../../socket/handlers";
 
@@ -16,7 +16,7 @@ export class GetTaskData extends AuthenticatedService {
         user
       } = request;
       this.validate(taskId, request);
-      TaskManager.getTaskData(taskId)
+      TaskQueries.getTaskData(taskId)
         .then(task => {
           TaskHandler.getInstance().join(
             taskId,
@@ -35,10 +35,12 @@ export class GetTaskData extends AuthenticatedService {
     if (!request.user || !taskId) {
       return Promise.reject();
     } else {
-      UserManager.checkTaskPermission(request.user.id, taskId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkTaskPermission(request.user.id, taskId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

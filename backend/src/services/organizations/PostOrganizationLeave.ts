@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import { OrganizationQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
 
@@ -16,7 +16,7 @@ export class PostOrganizationLeave extends AuthenticatedService {
       } = request;
       this.validate(id, request)
         .then(_ =>
-          OrganizationManager.removeOrganizationUser(id, request.user.id)
+          OrganizationQueries.removeOrganizationUser(id, request.user.id)
         )
         .then(result => {
           OrganizationHandler.getInstance().update(id, result);
