@@ -1,5 +1,5 @@
 <div class="project-detail">
-  <app-title class="title"></app-title>
+  <app-title class="title" [project]="project"></app-title>
   <div class="list">
     <app-list-detail
       *ngFor="let list of lists | async"

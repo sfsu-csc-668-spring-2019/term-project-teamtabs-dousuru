@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 import { Project } from "../../../models/Project";
 import { ProjectDetailService } from "../project-detail.service";
@@ -10,15 +10,9 @@ import { Observable } from "rxjs";
   styleUrls: ["./title.component.scss"]
 })
 export class TitleComponent implements OnInit {
-  project: Observable<Project>;
+  constructor() {}
 
-  constructor(private projectDetailService: ProjectDetailService) {}
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.getProject();
-  }
-
-  getProject(): void {
-    this.project = this.projectDetailService.getProject();
-  }
+  @Input() project: Project;
 }
