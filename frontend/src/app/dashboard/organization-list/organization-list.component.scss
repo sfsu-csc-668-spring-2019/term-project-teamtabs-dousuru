@@ -3,22 +3,27 @@ $foreground: #efefef;
 .organizations {
   width: 100%;
   height: 100%;
-  background-color: $background;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   text-align: center;
+
+  background-color: $background;
+
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
 $border-thickness: 3px;
 %list-item {
+  border: $border-thickness solid transparent;
   border-radius: 50%;
-  margin: 0.2rem auto;
+
   width: 5rem;
   height: 5rem;
-  border: $border-thickness solid transparent;
+  margin: 0.2rem auto;
 }
 
 .org-image {
@@ -52,5 +57,18 @@ $border-thickness: 3px;
     $hover-color: $foreground;
     background-color: $hover-color;
     color: $background;
+  }
+}
+
+.edit-button {
+  @extend %list-item;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 2rem;
+  &:hover {
+    color: $foreground;
   }
 }

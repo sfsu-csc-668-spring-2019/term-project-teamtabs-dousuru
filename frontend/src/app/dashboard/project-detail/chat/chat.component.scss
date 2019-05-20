@@ -1,10 +1,12 @@
+$foreground: #222;
+$background: #e4e4e4;
 .chat-container {
   position: absolute;
   bottom: 0;
   right: 0;
 
-  color: #222;
-  background-color: #e4e4e4;
+  color: $foreground;
+  background-color: $background;
 
   height: 100%;
   width: 25vw;
@@ -13,11 +15,11 @@
 
   resize: both;
 
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
   &.collapsed {
     height: 4rem;
-    color: #e4e4e4;
-    background-color: #222;
+    color: $background;
+    background-color: $foreground;
   }
 }
 

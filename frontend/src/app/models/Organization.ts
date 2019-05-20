@@ -10,24 +10,4 @@ export class Organization {
   description: string;
   inviteLink: string;
   icon: string;
-
-  getProjects(): Observable<Project[]> {
-    return of();
-  }
-
-  getUsers(): Observable<User[]> {
-    return of();
-  }
-
-  getOwner(): Observable<User> {
-    return of();
-  }
-
-  getRoles(): Observable<Role[]> {
-    return of();
-  }
-
-  getChat(): Observable<Chat> {
-    return of();
-  }
 }

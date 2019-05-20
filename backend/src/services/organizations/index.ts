@@ -8,6 +8,7 @@ import { PostOrganizationLeave } from "./PostOrganizationLeave";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
 import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
 import { PutOrganization } from "./PutOrganization";
+import { PostOrganization } from "./PostOrganization";
 
 export default [
   DeleteOrganization,
@@ -19,5 +20,6 @@ export default [
   PostOrganizationLeave,
   PostOrganizationSearch,
   PutOrganizationChatlogData,
-  PutOrganization
+  PutOrganization,
+  PostOrganization
 ];

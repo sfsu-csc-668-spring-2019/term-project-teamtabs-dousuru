@@ -8,18 +8,6 @@ export class User {
   displayName: string;
   email: string;
   icon: string;
-
-  getOrganizations(): Observable<Organization[]> {
-    return of();
-  }
-
-  getOwnedMessages(): Observable<Message[]> {
-    return of();
-  }
-
-  getReceivedMessages(): Observable<Message[]> {
-    return of();
-  }
 }
 
 export class OwnUser extends User {}
