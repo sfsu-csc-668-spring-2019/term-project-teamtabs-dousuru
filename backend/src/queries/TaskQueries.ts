@@ -5,17 +5,13 @@ export class TaskQueries {
   static async createTask(
     name: string,
     description: string,
-    listID: number,
-    dueDate: Date
+    listID: number
   ): Promise<Task> {
     const baseList = await List.findOne(listID);
-    const startTime = Date.now();
     const task = await Task.create({
       name,
       description,
-      baseList,
-      startTime,
-      dueDate
+      baseList
     });
     return task.save();
   }

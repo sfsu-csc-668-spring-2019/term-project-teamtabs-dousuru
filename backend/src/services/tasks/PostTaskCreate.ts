@@ -12,27 +12,19 @@ export class PostTaskCreate extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        body: { name, description, listId, dueDate }
+        body: { name, description, listId }
       } = request;
       this.validate(name, description, listId, request)
-        .then(_ => {
-          TaskQueries.createTask(name, description, listId, dueDate).then(
-            task => {
-              ListQueries.getTasks(listId).then(tasks => {
-                ListHandler.getInstance().updateTasks(listId, tasks);
-                response.json(task);
-              });
-            }
-          );
-        })
-        .catch(err => {
-          response.json(err);
-        });
+        .then(_ => TaskQueries.createTask(name, description, listId))
+        .then(task => response.json(task))
+        // ListQueries.getTasks(listId).then(tasks => {
+        //   ListHandler.getInstance().updateTasks(listId, tasks);
+        .catch(err => response.json(500));
     };
   }
 
   public validate(
-    dueDate: Date,
+    name: string,
     description: string,
     listId: number,
     request: AuthRequest
@@ -40,6 +32,7 @@ export class PostTaskCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !listId) {
       return Promise.reject();
     } else {
+      return Promise.resolve();
       PermissionQueries.checkListManage(request.user.id, listId).then(
         results => {
           if (results) return Promise.resolve();

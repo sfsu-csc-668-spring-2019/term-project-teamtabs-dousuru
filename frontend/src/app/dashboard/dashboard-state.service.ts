@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, mergeAll } from "rxjs/operators";
 import { ApiService } from "./../networking/api.service";
-import { Organization, Project, List } from "../models";
+import { Organization, Project, List, Task } from "../models";
 
 @Injectable({
   providedIn: "root"
@@ -100,5 +100,13 @@ export class DashboardStateService {
       "new list",
       "description stuffs"
     );
+  }
+
+  createTask(taskId: number): Observable<Task> {
+    if (!this.lists) {
+      // don't think this is right
+      return of();
+    }
+    return this.apiService.createTask(taskId, "new task", "description stuffs");
   }
 }

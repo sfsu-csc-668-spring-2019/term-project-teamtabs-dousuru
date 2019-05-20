@@ -5,4 +5,9 @@
   <li>
     <app-task-detail *ngFor="let task of tasks" [task]="task"></app-task-detail>
   </li>
+  <li>
+    <button (click)="addTask()">
+      Add Task
+    </button>
+  </li>
 </ul>

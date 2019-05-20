@@ -4,5 +4,5 @@ export class List {
   id: number;
   name: string;
   description: string;
-  tasks: Task[];
+  containedTasks: Task[];
 }
