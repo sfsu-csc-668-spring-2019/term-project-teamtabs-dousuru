@@ -17,6 +17,10 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { UsersListComponent } from "./users-list/users-list.component";
 import { EditOrganizationComponent } from "./edit-organization/edit-organization.component";
 import { EditProjectComponent } from "./edit-project/edit-project.component";
+import { CreateListComponent } from "./project-detail/create-list/create-list.component";
+import { CreateTaskComponent } from "./project-detail/create-task/create-task.component";
+import { EditListComponent } from "./project-detail/edit-list/edit-list.component";
+import { EditTaskComponent } from "./project-detail/edit-task/edit-task.component";
 import { DashboardHomepageComponent } from "./dashboard-homepage/dashboard-homepage.component";
 import { CreateProjectComponent } from "./create-project/create-project.component";
 
@@ -35,6 +39,10 @@ import { CreateProjectComponent } from "./create-project/create-project.componen
     UsersListComponent,
     EditOrganizationComponent,
     EditProjectComponent,
+    CreateListComponent,
+    CreateTaskComponent,
+    EditListComponent,
+    EditTaskComponent,
     DashboardHomepageComponent,
     CreateProjectComponent
   ],
@@ -49,6 +57,10 @@ import { CreateProjectComponent } from "./create-project/create-project.componen
   entryComponents: [
     CreateOrganizationComponent,
     EditOrganizationComponent,
+    EditProjectComponent,
+    CreateListComponent,
+    EditListComponent,
+    EditTaskComponent,
     CreateProjectComponent,
     EditProjectComponent
   ]

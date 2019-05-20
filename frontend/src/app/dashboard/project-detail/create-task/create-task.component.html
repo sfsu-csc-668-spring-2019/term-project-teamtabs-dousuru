@@ -1,0 +1,21 @@
+<form class="form" [formGroup]="formGroup" (submit)="onSubmit()">
+  <h1>Create a new task</h1>
+  <fieldset>
+    <label>
+      Name:
+      <input type="text" placeholder="Name of task" formControlName="name" />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of task"
+        formControlName="description"
+      />
+    </label>
+  </fieldset>
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+  <button class="primary block" type="submit">Create</button>
+</form>

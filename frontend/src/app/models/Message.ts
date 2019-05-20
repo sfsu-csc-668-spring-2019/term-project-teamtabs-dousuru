@@ -3,7 +3,7 @@ import { User } from "./User";
 export class Message {
   id: number;
   owner: User;
-  messagePartitions: MessagePartition[];
+  partitions: MessagePartition[];
   timeCreated: Date;
   timeUpdated: Date;
 }

@@ -18,19 +18,12 @@ export class Message extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column({ type: "timestamp", nullable: false })
-  timeCreated: Date;
-
-  @Column({ type: "timestamp", nullable: false })
-  timeUpdated: Date;
-
   @ManyToOne(type => User, user => user.ownedMessages)
   owner: User;
 
-  @ManyToMany(type => Project, project => project.projectMessages, {
+  @ManyToOne(type => Project, project => project.projectMessages, {
     onDelete: "CASCADE"
   })
-  @JoinTable()
   baseProject: Project;
 
   @ManyToMany(

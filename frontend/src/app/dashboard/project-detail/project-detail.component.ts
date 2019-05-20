@@ -5,6 +5,8 @@ import { map } from "rxjs/operators";
 import { Project } from "src/app/models/Project";
 import { List } from "src/app/models/List";
 import { DashboardStateService } from "../dashboard-state.service";
+import { CreateListComponent } from "./create-list/create-list.component";
+import { ModalService } from "src/app/shared/modal.service";
 
 @Component({
   selector: "app-project-detail",
@@ -16,7 +18,10 @@ export class ProjectDetailComponent implements OnInit {
   lists: Observable<List[]>; // somehow need to get this, @TODO need this route for dashboard state service
   shouldDisplay$: Observable<boolean>;
 
-  constructor(private dashboardStateService: DashboardStateService) {}
+  constructor(
+    private dashboardStateService: DashboardStateService,
+    private modal: ModalService
+  ) {}
 
   ngOnInit() {
     this.project = this.dashboardStateService.selectedProject.asObservable();
@@ -27,11 +32,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   addList() {
-    this.dashboardStateService
-      .createList()
-      .toPromise()
-      .then(list => {
-        console.log(list);
-      });
+    this.modal.open(CreateListComponent);
   }
 }

@@ -1,5 +1,8 @@
-<div class="row">
-  <input type="checkbox" />
-  <p (click)="toggleExpanded()">{{ task.name }}</p>
+<div class="root">
+  <div class="row">
+    <input type="checkbox" />
+    <p (click)="toggleExpanded()">{{ task.name }}</p>
+    <button class="edit-button" (click)="edit()">Edit task</button>
+  </div>
+  <p [hidden]="!expanded">{{ task.description }}</p>
 </div>
-<p [hidden]="!expanded">{{ task.description }}</p>

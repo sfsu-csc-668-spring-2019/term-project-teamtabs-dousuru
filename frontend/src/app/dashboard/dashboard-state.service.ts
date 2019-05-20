@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, mergeAll } from "rxjs/operators";
 import { ApiService } from "./../networking/api.service";
-import { Organization, Project, List, Task } from "../models";
+import { Organization, Project, List, Task, Message } from "../models";
 
 @Injectable({
   providedIn: "root"
@@ -13,6 +13,7 @@ export class DashboardStateService {
   projects: Observable<Project[]>;
   selectedProject: BehaviorSubject<Project>;
   lists: Observable<List[]>;
+  chat: Observable<Message[]>;
 
   constructor(private apiService: ApiService) {
     this.selectedOrganization = new BehaviorSubject(null);
@@ -33,6 +34,15 @@ export class DashboardStateService {
           return [];
         }
         return this.apiService.getLists(selected);
+      }),
+      mergeAll()
+    );
+    this.chat = this.selectedProject.pipe(
+      map(selected => {
+        if (!selected) {
+          return [];
+        }
+        return this.apiService.getChat(selected);
       }),
       mergeAll()
     );
@@ -107,16 +117,16 @@ export class DashboardStateService {
     this.selectedProject.next(project);
   }
 
-  createList(): Observable<List> {
+  createList(name: string, description: string): Observable<List> {
     if (!this.selectedProject.value) {
       return of();
     }
     const project = this.selectedProject.value;
-    return this.apiService.createList(
-      project,
-      "new list",
-      "description stuffs"
-    );
+    return this.apiService.createList(project, name, description);
+  }
+
+  updateList(list: List): Observable<List> {
+    return this.apiService.updateList(list);
   }
 
   createTask(taskId: number): Observable<Task> {
@@ -125,5 +135,17 @@ export class DashboardStateService {
       return of();
     }
     return this.apiService.createTask(taskId, "new task", "description stuffs");
+  }
+
+  updateTask(task: Task): Observable<Task> {
+    return this.apiService.updateTask(task);
+  }
+
+  sendMessage(message: Message): Observable<Message> {
+    const proj = this.selectedProject.value;
+    if (!proj) {
+      return;
+    }
+    return this.apiService.sendMessage(proj, message);
   }
 }

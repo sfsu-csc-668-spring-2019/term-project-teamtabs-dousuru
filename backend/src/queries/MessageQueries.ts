@@ -12,7 +12,6 @@ export class MessageQueries {
     receiverId: number,
     partitions: any[]
   ): Promise<Message> {
-    let timeCreated = new Date();
     let owner = await User.findOne(ownerId, { relations: ["contacts"] });
     let receiver = await User.findOne(receiverId, { relations: ["contacts"] });
     MessageQueries.RegisterContact(owner, receiver);
@@ -30,7 +29,6 @@ export class MessageQueries {
       messagePartitions.map(messagePartition => messagePartition.save())
     );
     let message = await Message.create({
-      timeCreated,
       owner,
       receiver,
       messagePartitions
@@ -67,7 +65,6 @@ export class MessageQueries {
     organizationId: number,
     partitions: any[]
   ): Promise<Message> {
-    let timeCreated = new Date();
     let owner = await User.findOne(ownerId);
     let baseOrganization = await Organization.findOne(organizationId);
     let messagePartitions = await Promise.all(
@@ -83,7 +80,6 @@ export class MessageQueries {
       messagePartitions.map(messagePartition => messagePartition.save())
     );
     let message = await Message.create({
-      timeCreated,
       owner,
       baseOrganization,
       messagePartitions
@@ -103,42 +99,50 @@ export class MessageQueries {
     projectId: number,
     partitions: any[]
   ): Promise<Message> {
-    let timeCreated = new Date();
-    let owner = await User.findOne(ownerId);
-    let baseProject = await Project.findOne(projectId);
-    let messagePartitions = await Promise.all(
-      partitions.map(partition =>
-        MessagePartition.create({
-          index: partition.index,
-          associatedValue: partition.associatedValue,
-          type: partition.type
-        })
-      )
-    );
-    await Promise.all(
-      messagePartitions.map(messagePartition => messagePartition.save())
-    );
-    let message = await Message.create({
-      timeCreated,
-      owner,
-      baseProject,
-      messagePartitions
-    });
-    return await message.save();
+    try {
+      let owner = await User.findOne(ownerId);
+      let baseProject = await Project.findOne(projectId);
+      let messagePartitions = await Promise.all(
+        partitions.map(partition =>
+          MessagePartition.create({
+            index: partition.index,
+            associatedValue: partition.associatedValue,
+            type: partition.type
+          }).save()
+        )
+      );
+      let message = await Message.create({
+        owner,
+        baseProject,
+        messagePartitions
+      });
+      return await message.save();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public static async getProjectMessages(
     projectId: number
   ): Promise<Message[]> {
-    let baseProject = await Project.findOne(projectId);
-    return await Message.find({ where: { baseProject } });
+    try {
+      let baseProject = await Project.findOne(projectId, {
+        relations: [
+          "projectMessages",
+          "projectMessages.messagePartitions",
+          "projectMessages.owner"
+        ]
+      });
+      return baseProject.projectMessages;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public static async updateMessage(
     messageId: number,
     partitions: any[]
   ): Promise<Message> {
-    let timeUpdated = new Date();
     let messagePartitions = await Promise.all(
       partitions.map(partition =>
         MessagePartition.create({
@@ -158,7 +162,6 @@ export class MessageQueries {
       )
     );
     message.messagePartitions = messagePartitions;
-    message.timeUpdated = timeUpdated;
     return await message.save();
   }
 }
