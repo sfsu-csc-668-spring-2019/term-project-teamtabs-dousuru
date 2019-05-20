@@ -5,8 +5,6 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { HomepageComponent } from "./homepage/homepage.component";
 import { TodoComponent } from "./todo/todo/todo.component";
-import { AuthGuard } from "./auth/auth.guard";
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { JoinOrganizationComponent } from "./join-organization/join-organization.component";

@@ -65,6 +65,11 @@ export class DashboardStateService {
     this.selectedOrganization.next(selectedOrg);
   }
 
+  clearSelected() {
+    this.selectedOrganization.next(null);
+    this.selectedProject.next(null);
+  }
+
   createOrganization(name, description, icon): Observable<Organization> {
     return this.apiService.createOrganization(name, description, icon);
   }

@@ -1,11 +1,11 @@
-<ul class="organizations">
+<ul class="organizations" (click)="clear()">
   <li *ngFor="let organization of organizations | async" class="organization">
     <img
       [src]="organization.icon"
       [alt]="organization.name"
       class="org-image"
       [ngClass]="{ selected: isSelected(organization) | async }"
-      (click)="selectOrganization(organization.id)"
+      (click)="selectOrganization($event, organization.id)"
     />
     <button
       *ngIf="isSelected(organization) | async"
@@ -15,7 +15,7 @@
       Edit
     </button>
   </li>
-  <li class="add-button" role="button" (click)="addOrganization()">
+  <li class="add-button" role="button" (click)="addOrganization($event)">
     <fa-icon [icon]="plusIcon"></fa-icon>
   </li>
 </ul>
