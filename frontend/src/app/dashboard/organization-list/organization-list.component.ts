@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCog } from "@fortawesome/free-solid-svg-icons";
 import { DashboardStateService } from "./../dashboard-state.service";
 import { Organization } from "../../models";
 import { ModalService } from "src/app/shared/modal.service";
 import { CreateOrganizationComponent } from "../create-organization/create-organization.component";
 import { map } from "rxjs/operators";
+import { EditOrganizationComponent } from "../edit-organization/edit-organization.component";
 
 @Component({
   selector: "app-organization-list",
@@ -14,6 +15,8 @@ import { map } from "rxjs/operators";
 })
 export class OrganizationListComponent implements OnInit {
   plusIcon = faPlus;
+  editIcon = faCog;
+
   organizations: Observable<Organization[]>;
   selectedOrganization: Observable<Organization>;
   constructor(
@@ -44,5 +47,11 @@ export class OrganizationListComponent implements OnInit {
 
   addOrganization() {
     this.modal.open(CreateOrganizationComponent);
+  }
+
+  openEditMenu() {
+    if (this.dashboardStateService.selectedOrganization.value) {
+      this.modal.open(EditOrganizationComponent);
+    }
   }
 }

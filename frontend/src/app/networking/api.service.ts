@@ -27,6 +27,12 @@ export class ApiService {
     return this.http.put<Organization>(url, body);
   }
 
+  updateOrganization(organization: Organization): Observable<Organization> {
+    const url = `${this.apiURL}/organization/`;
+    const body = organization;
+    return this.http.post<Organization>(url, body);
+  }
+
   createAccount(
     email: string,
     username: string,

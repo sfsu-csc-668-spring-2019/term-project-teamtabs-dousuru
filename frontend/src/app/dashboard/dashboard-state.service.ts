@@ -59,6 +59,10 @@ export class DashboardStateService {
     return this.apiService.createOrganization(name, description, icon);
   }
 
+  updateOrganization(organization: Organization): Observable<Organization> {
+    return this.apiService.updateOrganization(organization);
+  }
+
   createProject(): Observable<Project> {
     if (!this.selectedOrganization.value) {
       // tslint:disable-next-line: deprecation

@@ -47,3 +47,16 @@ $border-thickness: 3px;
     transition: all 0.2s ease-in;
   }
 }
+
+.edit-button {
+  @extend %list-item;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 2rem;
+  &:hover {
+    color: white;
+  }
+}
