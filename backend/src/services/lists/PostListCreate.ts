@@ -16,12 +16,20 @@ export class PostListCreate extends AuthenticatedService {
       } = request;
       this.validate(name, description, projectId, request)
         .then(_ => {
-          ListQueries.createList(name, description, projectId).then(list =>
-            ProjectQueries.getLists(projectId).then(lists => {
-              ProjectHandler.getInstance().updateLists(projectId, lists);
-              response.json(list);
-            })
-          );
+          console.log("got here");
+          ListQueries.createList(name, description, projectId).then(lists => {
+            console.log(lists);
+            response.json(lists);
+          });
+          /*
+            .then(list =>
+              ProjectQueries.getLists(projectId)
+                .then(lists => {
+                  ProjectHandler.getInstance().updateLists(projectId, lists);
+                  response.json(list);
+                })
+            );
+            */
         })
         .catch(err => {
           response.json(err);
@@ -38,6 +46,7 @@ export class PostListCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !projectId) {
       return Promise.reject();
     } else {
+      return Promise.resolve();
       PermissionQueries.checkProjectManage(request.user.id, projectId).then(
         results => {
           if (results) return Promise.resolve();
