@@ -25,4 +25,13 @@ export class ProjectDetailComponent implements OnInit {
     this.lists = this.dashboardStateService.lists;
     //this.lists = this.projectDetailService.getLists();
   }
+
+  addList() {
+    this.dashboardStateService
+      .createList()
+      .toPromise()
+      .then(list => {
+        console.log(list);
+      });
+  }
 }

@@ -65,6 +65,24 @@ export class ApiService {
     return this.http.put<Project>(url, body);
   }
 
+  createList(
+    project: number | Project,
+    name: string,
+    description: string
+  ): Observable<List> {
+    if (typeof project !== "number") {
+      project = project.id;
+    }
+    const url = `${this.apiURL}/list/create`;
+    const body = { name, description, project };
+    return this.http.post<List>(url, body);
+  }
+
+  // createTask(
+  //   project: number | Project,
+
+  // )
+
   getLists(project: number | Project): Observable<List[]> {
     if (typeof project !== "number") {
       project = project.id;

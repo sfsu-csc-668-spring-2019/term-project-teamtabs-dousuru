@@ -81,4 +81,16 @@ export class DashboardStateService {
   setSelectedProject(project: Project) {
     this.selectedProject.next(project);
   }
+
+  createList(): Observable<List> {
+    if (!this.selectedProject.value) {
+      return of();
+    }
+    const project = this.selectedProject.value;
+    return this.apiService.createList(
+      project,
+      "new list",
+      "description stuffs"
+    );
+  }
 }
