@@ -4,8 +4,9 @@
   [gsapToggled]="collapsed"
   gsapDuration="0.3"
 >
-  <app-organization-list class="organizations"></app-organization-list>
+  <app-organization-list></app-organization-list>
   <app-projects-list class="sidebar"></app-projects-list>
+  <app-users-list></app-users-list>
   <div class="main">
     <button (click)="toggleCollapsed()" class="collapse-button">
       <fa-icon [icon]="collapsed ? faChevronRight : faChevronLeft"></fa-icon>

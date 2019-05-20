@@ -14,6 +14,7 @@ import { TaskComponent } from "./project-detail/task/task.component";
 import { TaskDetailComponent } from "./project-detail/task-detail/task-detail.component";
 import { CreateOrganizationComponent } from "./create-organization/create-organization.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { UsersListComponent } from "./users-list/users-list.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     TitleComponent,
     ListDetailComponent,
     TaskComponent,
-    TaskDetailComponent
+    TaskDetailComponent,
+    UsersListComponent
   ],
   imports: [
     CommonModule,

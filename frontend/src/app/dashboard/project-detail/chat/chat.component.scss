@@ -2,28 +2,41 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: green;
+
+  color: #222;
+  background-color: #e4e4e4;
+
   height: 100%;
-  width: 50%;
+  width: 25vw;
+
   overflow: hidden;
 
+  resize: both;
+
+  transition: all 0.5s ease-in-out;
   &.collapsed {
-    height: unset;
-    .chat-body {
-      transform: translateY(100%);
-      transition: all 1s;
-      height: 0;
-    }
+    height: 4rem;
+    color: #e4e4e4;
+    background-color: #222;
   }
 }
 
 .chat-header {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 4rem;
+
+  cursor: pointer;
+
+  h3 {
+    margin: 0 1rem;
+  }
 }
 
 .chat-body {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  max-height: 100%;
 }
