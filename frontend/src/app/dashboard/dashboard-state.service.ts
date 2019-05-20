@@ -82,6 +82,10 @@ export class DashboardStateService {
     return this.apiService.createProject(org, "new project", "asdf", true);
   }
 
+  updateProject(project: Project): Observable<Project> {
+    return this.apiService.updateProject(project);
+  }
+
   setSelectedProject(project: Project) {
     this.selectedProject.next(project);
   }

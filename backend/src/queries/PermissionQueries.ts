@@ -28,8 +28,8 @@ export class PermissionQueries {
       relations: ["roles"]
     });
     user.roles.forEach(role => {
-      if (organization.roles.includes(role) && role.canManage) {
-        return true;
+      if (organization.roles.find(r => r.id === role.id)) {
+        if (role.canManage) return true;
       }
     });
     return false;
@@ -48,7 +48,7 @@ export class PermissionQueries {
       return this.checkOrganizationManage(userId, project.baseOrganization.id);
     }
     user.roles.forEach(role => {
-      if (project.roles.includes(role)) {
+      if (project.roles.find(r => r.id === role.id)) {
         if (role.canManage) {
           return true;
         }

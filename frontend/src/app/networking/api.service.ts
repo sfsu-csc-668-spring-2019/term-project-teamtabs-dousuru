@@ -71,6 +71,12 @@ export class ApiService {
     return this.http.put<Project>(url, body);
   }
 
+  updateProject(project: Project): Observable<Project> {
+    const url = `${this.apiURL}/project/update/${project.id}`;
+    const body = project;
+    return this.http.post<Project>(url, body);
+  }
+
   createList(
     projectId: number | Project,
     name: string,

@@ -1,5 +1,5 @@
-<ul class="projects">
-  <ul>
+<div class="root">
+  <ul *ngIf="shouldDisplay$ | async" class="projects">
     <li
       *ngFor="let project of projects$ | async"
       class="project"
@@ -7,9 +7,10 @@
       (click)="select(project)"
     >
       {{ project.name }}
+      <button class="edit-button" (click)="edit(project)">Edit</button>
     </li>
     <div class="centered">
       <button class="add-project" (click)="addProject()">Add Project</button>
     </div>
   </ul>
-</ul>
+</div>

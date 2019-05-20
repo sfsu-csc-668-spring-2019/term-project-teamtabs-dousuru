@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ComponentRef } from "@angular/core";
 import { OverlayRef, ComponentType, Overlay } from "@angular/cdk/overlay";
 import { ComponentPortal } from "@angular/cdk/portal";
 
@@ -9,7 +9,7 @@ export class ModalService {
   currentWindow: OverlayRef;
   constructor(private overlay: Overlay) {}
 
-  open<T>(component: ComponentType<T>): OverlayRef {
+  open<T>(component: ComponentType<T>): ComponentRef<T> {
     const position = this.overlay
       .position()
       .global()
@@ -21,13 +21,13 @@ export class ModalService {
       hasBackdrop: true
     });
     const portal = new ComponentPortal(component);
-    ref.attach(portal);
+    const portalRef = ref.attach(portal);
     // no need to unsub since the service exists for entire app lifecycle
     ref.backdropClick().subscribe(() => {
       this.close();
     });
     this.currentWindow = ref;
-    return ref;
+    return portalRef;
   }
 
   close() {

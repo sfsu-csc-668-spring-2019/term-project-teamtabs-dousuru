@@ -16,6 +16,7 @@ import { CreateOrganizationComponent } from "./create-organization/create-organi
 import { ReactiveFormsModule } from "@angular/forms";
 import { UsersListComponent } from "./users-list/users-list.component";
 import { EditOrganizationComponent } from "./edit-organization/edit-organization.component";
+import { EditProjectComponent } from "./edit-project/edit-project.component";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { EditOrganizationComponent } from "./edit-organization/edit-organization
     TaskComponent,
     TaskDetailComponent,
     UsersListComponent,
-    EditOrganizationComponent
+    EditOrganizationComponent,
+    EditProjectComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,10 @@ import { EditOrganizationComponent } from "./edit-organization/edit-organization
     ReactiveFormsModule
   ],
   exports: [DashboardComponent],
-  entryComponents: [CreateOrganizationComponent, EditOrganizationComponent]
+  entryComponents: [
+    CreateOrganizationComponent,
+    EditOrganizationComponent,
+    EditProjectComponent
+  ]
 })
 export class DashboardModule {}

@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { DashboardStateService } from "../dashboard-state.service";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
+import { Organization } from "src/app/models";
 
 @Component({
   selector: "app-edit-organization",
@@ -9,6 +10,8 @@ import { FormBuilder, Validators } from "@angular/forms";
 })
 export class EditOrganizationComponent implements OnInit {
   constructor(private state: DashboardStateService, private fb: FormBuilder) {}
+
+  @Input() organization: Organization;
 
   formGroup = this.fb.group({
     name: [""],
@@ -19,7 +22,7 @@ export class EditOrganizationComponent implements OnInit {
   ngOnInit() {}
 
   save() {
-    const org = this.state.selectedOrganization.value;
+    const org = this.organization;
     if (!org || !this.formGroup.valid) {
       return;
     }
