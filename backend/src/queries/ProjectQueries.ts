@@ -73,7 +73,10 @@ export class ProjectQueries {
     let project = await Project.findOne(projectId, { relations: ["owner"] });
     if (project.owner.id === ownerId) {
       await Project.delete(projectId);
-    } else return Promise.reject();
+      return Promise.resolve();
+    } else {
+      return Promise.reject();
+    }
   }
 
   public static async changeOwner(

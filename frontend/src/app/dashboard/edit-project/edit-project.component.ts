@@ -33,4 +33,14 @@ export class EditProjectComponent implements OnInit {
         console.log(proj);
       });
   }
+
+  delete() {
+    if (!this.project) {
+      return;
+    }
+    this.state
+      .deleteProject(this.project)
+      .toPromise()
+      .then(() => console.log("deleted"));
+  }
 }

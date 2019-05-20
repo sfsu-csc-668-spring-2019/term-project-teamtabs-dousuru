@@ -82,6 +82,11 @@ export class ApiService {
     return this.http.post<Project>(url, body);
   }
 
+  deleteProject(project: Project): Observable<void> {
+    const url = `${this.apiURL}/project/${project.id}`;
+    return this.http.delete<void>(url);
+  }
+
   createList(
     projectId: number | Project,
     name: string,

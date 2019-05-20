@@ -16,25 +16,12 @@ export class DeleteProject extends AuthenticatedService {
         user
       } = request;
       this.validate(id, request)
-        .then(_ => ProjectQueries.getProject(id))
-        .then(project => {
-          const organizationId = project.baseOrganization.id;
-          ProjectQueries.deleteProject(user.id, id)
-            .then(_ =>
-              OrganizationQueries.getOrganizationProjects(
-                user.id,
-                organizationId
-              )
-            )
-            .then(data => {
-              OrganizationHandler.getInstance().updateProjects(
-                organizationId.toString(),
-                data
-              );
-              response.sendStatus(200);
-            });
-        })
-        .catch(_ => response.sendStatus(500));
+        .then(() => ProjectQueries.deleteProject(user.id, id))
+        .then(() => response.sendStatus(200))
+        .catch(err => {
+          console.error(err);
+          response.sendStatus(500);
+        });
     };
   }
 

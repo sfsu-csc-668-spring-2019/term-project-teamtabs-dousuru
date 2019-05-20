@@ -94,6 +94,10 @@ export class DashboardStateService {
     return this.apiService.updateProject(project);
   }
 
+  deleteProject(project: Project): Observable<void> {
+    return this.apiService.deleteProject(project);
+  }
+
   setSelectedProject(project: Project) {
     this.selectedProject.next(project);
   }
