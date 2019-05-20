@@ -73,6 +73,10 @@ export class DashboardStateService {
     return this.apiService.updateOrganization(organization);
   }
 
+  deleteOrganization(organization: Organization): Observable<void> {
+    return this.apiService.deleteOrganization(organization);
+  }
+
   getInviteLink(organization: Organization): Observable<string> {
     return this.apiService.getInviteLink(organization);
   }

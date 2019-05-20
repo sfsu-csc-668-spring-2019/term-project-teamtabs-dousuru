@@ -23,15 +23,7 @@ export class DeleteOrganization extends AuthenticatedService {
       this.validate(user)
         .then(_ => this.checkPermission(user, id))
         .then(_ => OrganizationQueries.deleteOrganization(user.id, id))
-        .then(_ => UserQueries.getOrganizations(user.id))
-        .then((data: Organization[]) => {
-          UserHandler.getInstance().update(
-            user.id.toString(),
-            "dasboard",
-            data
-          );
-          response.sendStatus(200);
-        })
+        .then(() => response.sendStatus(200))
         .catch(_ => response.sendStatus(500));
     };
   }

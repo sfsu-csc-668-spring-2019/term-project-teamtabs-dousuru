@@ -76,4 +76,14 @@ export class EditOrganizationComponent implements OnInit {
     formData.append("file", icon);
     return this.http.post(url, formData);
   }
+
+  delete() {
+    if (!this.organization) {
+      return;
+    }
+    this.state
+      .deleteOrganization(this.organization)
+      .toPromise()
+      .then(() => console.log("deleted"));
+  }
 }
