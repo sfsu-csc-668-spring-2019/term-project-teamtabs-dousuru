@@ -6,16 +6,21 @@ export class PermissionQueries {
     userId: number,
     organizationId: number
   ): Promise<boolean> {
+    console.log("got here");
     const user = await User.findOne(userId, { relations: ["roles"] });
     const organization = await Organization.findOne(organizationId, {
       relations: ["roles"]
     });
-    user.roles.forEach(role => {
-      if (organization.roles.includes(role) && role.canPost) {
-        return true;
-      }
+    return new Promise((resolve, reject) => {
+      user.roles.forEach(role => {
+        if (organization.roles.find(r => r.id === role.id)) {
+          if (role.canPost === true) {
+            resolve(true);
+          }
+        }
+      });
+      resolve(false);
     });
-    return false;
   }
 
   //checks if user has management permission for organization
@@ -27,12 +32,16 @@ export class PermissionQueries {
     const organization = await Organization.findOne(organizationId, {
       relations: ["roles"]
     });
-    user.roles.forEach(role => {
-      if (organization.roles.find(r => r.id === role.id)) {
-        if (role.canManage) return true;
-      }
+    return new Promise((resolve, reject) => {
+      user.roles.forEach(role => {
+        if (organization.roles.find(r => r.id === role.id)) {
+          if (role.canManage === true) {
+            resolve(true);
+          }
+        }
+      });
+      resolve(false);
     });
-    return false;
   }
 
   //checks if user has management permission for project
@@ -47,13 +56,13 @@ export class PermissionQueries {
     if (project.isPublic) {
       return this.checkOrganizationManage(userId, project.baseOrganization.id);
     }
-    user.roles.forEach(role => {
-      if (project.roles.find(r => r.id === role.id)) {
-        if (role.canManage) {
-          return true;
+    return new Promise((resolve, reject) => {
+      user.roles.forEach(role => {
+        if (project.roles.find(r => r.id === role.id)) {
+          if (role.canManage === true) resolve(true);
         }
-      }
-      return false;
+      });
+      resolve(false);
     });
   }
 

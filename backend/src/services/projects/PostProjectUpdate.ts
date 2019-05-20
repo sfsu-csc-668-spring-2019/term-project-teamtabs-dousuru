@@ -22,34 +22,22 @@ export class PostProjectUpdate extends AuthenticatedService {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         params: { projectId },
-        body: { name, description, isPublic, newOwnerId }
+        body: { name, description, isPublic }
       } = request;
       this.validate(projectId, request)
-        .then(_ => this.checkPermission(projectId, request))
-        .then(_ => {
-          ProjectQueries.updateProject(
-            projectId,
-            name,
-            description,
-            isPublic,
-            newOwnerId,
-            request.user.id
-          ).then(updatedProject => {
-            let organization = updatedProject.baseOrganization;
-            OrganizationHandler.getInstance().update(
-              organization.id.toString(),
-              organization
-            );
-            ProjectHandler.getInstance().update(projectId, updatedProject);
-            response.json(updatedProject);
-          });
+        .then(() => this.checkPermission(projectId, request))
+        .then(() =>
+          ProjectQueries.updateProject(projectId, name, description, isPublic)
+        )
+        .then(updatedProject => {
+          response.json(updatedProject);
         })
-        .catch(err => response.json(err));
+        .catch(err => response.sendStatus(500));
     };
   }
 
   public validate(projectId: number, request: AuthRequest): Promise<void> {
-    if (!request.user || projectId) {
+    if (!request.user || !projectId) {
       return Promise.reject();
     } else {
       return Promise.resolve();
@@ -64,7 +52,7 @@ export class PostProjectUpdate extends AuthenticatedService {
       request.user.id,
       projectId
     ).then(results => {
-      if (results) return Promise.resolve();
+      if (results) return Promise.resolve(results);
       return Promise.reject();
     });
   }
