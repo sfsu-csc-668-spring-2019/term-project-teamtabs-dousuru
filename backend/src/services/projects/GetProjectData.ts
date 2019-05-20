@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { UserManager, ProjectManager } from "../../controllers";
+import { ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ProjectHandler } from "../../socket/handlers";
 
@@ -18,7 +18,7 @@ export class GetProjectData extends AuthenticatedService {
       (request: AuthRequest, response: Response) =>
         this.validate(request, id)
           .then(_ => this.checkPermission(request, id))
-          .then(_ => ProjectManager.getProject(id))
+          .then(_ => ProjectQueries.getProject(id))
           .then(project => {
             ProjectHandler.getInstance().join(
               id,
@@ -40,7 +40,7 @@ export class GetProjectData extends AuthenticatedService {
   }
 
   public checkPermission(request: AuthRequest, id: number): Promise<any> {
-    return UserManager.checkProjectPermission(request.user.id, id).then(
+    return PermissionQueries.checkProjectPermission(request.user.id, id).then(
       hasPermission => {
         if (hasPermission) {
           return Promise.resolve();

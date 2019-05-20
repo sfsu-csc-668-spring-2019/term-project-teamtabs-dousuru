@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager, UserManager } from "../../controllers";
+import { OrganizationQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostOrganizationSearch extends AuthenticatedService {
@@ -17,7 +17,7 @@ export class PostOrganizationSearch extends AuthenticatedService {
       this.validate(id, name, request)
         .then(_ => this.checkPermission(request, id))
         .then(_ =>
-          OrganizationManager.getContentsByName(request.user.id, id, name)
+          OrganizationQueries.getContentsByName(request.user.id, id, name)
         )
         .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
@@ -37,11 +37,12 @@ export class PostOrganizationSearch extends AuthenticatedService {
   }
 
   public checkPermission(request: AuthRequest, id: number): Promise<any> {
-    return UserManager.checkOrganizationPermission(request.user.id, id).then(
-      results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      }
-    );
+    return PermissionQueries.checkOrganizationPermission(
+      request.user.id,
+      id
+    ).then(results => {
+      if (results) return Promise.resolve();
+      return Promise.reject();
+    });
   }
 }

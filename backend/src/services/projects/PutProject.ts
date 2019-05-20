@@ -1,10 +1,10 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import {
-  ProjectManager,
-  UserManager,
-  OrganizationManager
-} from "../../controllers";
+  ProjectQueries,
+  OrganizationQueries,
+  PermissionQueries
+} from "../../queries";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler, ProjectHandler } from "../../socket/handlers";
@@ -24,7 +24,7 @@ export class PutProject extends AuthenticatedService {
       this.validate(name, description, isPublic, organizationId, request)
         .then(() => this.checkPermission(request, organizationId))
         .then(() =>
-          ProjectManager.createProject(
+          ProjectQueries.createProject(
             name,
             description,
             isPublic,
@@ -33,7 +33,7 @@ export class PutProject extends AuthenticatedService {
           )
         )
         .then(results =>
-          OrganizationManager.getOrganizationProjects(
+          OrganizationQueries.getOrganizationProjects(
             user.id,
             organizationId
           ).then(data => {
@@ -73,7 +73,7 @@ export class PutProject extends AuthenticatedService {
     organizationId: number
   ): Promise<void> {
     console.log("check permission");
-    return UserManager.checkOrganizationPermission(
+    return PermissionQueries.checkOrganizationPermission(
       request.user.id,
       organizationId
     ).then(hasPermission => {

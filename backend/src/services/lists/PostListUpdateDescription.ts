@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager, ProjectManager } from "../../controllers";
+import { ListQueries, ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler, ProjectHandler } from "../../socket/handlers";
 
@@ -17,9 +17,9 @@ export class PostListUpdateDescription extends AuthenticatedService {
       } = request;
       this.validate(listId, description, request)
         .then(_ => {
-          ListManager.updateDescription(description, listId).then(results => {
+          ListQueries.updateDescription(description, listId).then(results => {
             const projectId = results.baseProjectId;
-            ProjectManager.getLists(projectId).then(data => {
+            ProjectQueries.getLists(projectId).then(data => {
               ProjectHandler.getInstance().updateLists(projectId, data);
               ListHandler.getInstance().update(results.id, results);
               response.json(results);
@@ -38,10 +38,12 @@ export class PostListUpdateDescription extends AuthenticatedService {
     if (!request.user || !listId || !description) {
       return Promise.reject();
     } else {
-      UserManager.checkListManage(request.user.id, listId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkListManage(request.user.id, listId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

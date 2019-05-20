@@ -8,11 +8,11 @@ import {
   Tag,
   Task
 } from "../entity";
-import { ListManager } from "./ListManager";
-import { UserManager } from "./UserManager";
-import { RoleManager } from "./RoleManager";
+import { ListQueries } from "./ListQueries";
+import { UserQueries } from "./UserQueries";
+import { RoleQueries } from "./RoleQueries";
 
-export class ProjectManager {
+export class ProjectQueries {
   public static async createProject(
     name: string,
     description: string,
@@ -32,7 +32,7 @@ export class ProjectManager {
         owner,
         baseOrganization
       }).save();
-      project.roles = await RoleManager.createDefaultProjectRoles(
+      project.roles = await RoleQueries.createDefaultProjectRoles(
         project.id,
         ownerId
       );
@@ -109,10 +109,10 @@ export class ProjectManager {
   ): Promise<JSON> {
     let result: any = {};
     let tasks: Task[];
-    (await ProjectManager.getTasks(projectId)).map(_tasks =>
+    (await ProjectQueries.getTasks(projectId)).map(_tasks =>
       tasks.concat(_tasks)
     );
-    result.tasks = UserManager.filterCaseInsensitive(tasks, "name", name);
+    result.tasks = UserQueries.filterCaseInsensitive(tasks, "name", name);
     return result;
   }
 
@@ -220,7 +220,7 @@ export class ProjectManager {
       relations: ["containedLists"]
     })).containedLists;
     let tasks: Task[];
-    (await Promise.all(lists.map(list => ListManager.getTasks(list.id)))).map(
+    (await Promise.all(lists.map(list => ListQueries.getTasks(list.id)))).map(
       _tasks => tasks.concat(_tasks)
     );
     return tasks;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 import { User } from "../../entity";
 
 export class PostUserSearch extends Service {
@@ -21,6 +21,6 @@ export class PostUserSearch extends Service {
   }
 
   public validate(displayName: string): Promise<User[]> {
-    return Promise.resolve(UserManager.getUsers(displayName));
+    return Promise.resolve(UserQueries.getUsers(displayName));
   }
 }

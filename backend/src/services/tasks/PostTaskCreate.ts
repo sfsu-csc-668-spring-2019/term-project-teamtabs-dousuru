@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { TaskManager, UserManager, ListManager } from "../../controllers";
+import { TaskQueries, ListQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler } from "../../socket/handlers";
 
@@ -16,9 +16,9 @@ export class PostTaskCreate extends AuthenticatedService {
       } = request;
       this.validate(name, description, listId, request)
         .then(_ => {
-          TaskManager.createTask(name, description, listId, dueDate).then(
+          TaskQueries.createTask(name, description, listId, dueDate).then(
             task => {
-              ListManager.getTasks(listId).then(tasks => {
+              ListQueries.getTasks(listId).then(tasks => {
                 ListHandler.getInstance().updateTasks(listId, tasks);
                 response.json(task);
               });
@@ -40,10 +40,12 @@ export class PostTaskCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !listId) {
       return Promise.reject();
     } else {
-      UserManager.checkListManage(request.user.id, listId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkListManage(request.user.id, listId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

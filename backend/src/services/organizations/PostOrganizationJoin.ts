@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import { OrganizationQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
 
@@ -16,7 +16,7 @@ export class PostOrganizationJoin extends AuthenticatedService {
       } = request;
       this.validate(id, inviteLink, request)
         .then(_ =>
-          OrganizationManager.addOrganizationUser(
+          OrganizationQueries.addOrganizationUser(
             request.user.id,
             id,
             inviteLink

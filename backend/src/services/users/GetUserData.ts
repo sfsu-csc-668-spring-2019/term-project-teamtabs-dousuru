@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 import { User } from "../../entity";
 
 export class GetUserData extends Service {
@@ -14,7 +14,7 @@ export class GetUserData extends Service {
       response: Response,
       __: NextFunction
     ) => {
-      UserManager.getUserInformationById(userId)
+      UserQueries.getUserInformationById(userId)
         .then(results => {
           response.json(results);
         })
@@ -23,6 +23,6 @@ export class GetUserData extends Service {
   }
 
   public validate(userId: number): Promise<User> {
-    return Promise.resolve(UserManager.getUserInformationById(userId));
+    return Promise.resolve(UserQueries.getUserInformationById(userId));
   }
 }

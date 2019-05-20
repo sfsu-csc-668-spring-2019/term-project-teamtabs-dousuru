@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ProjectManager, OrganizationManager } from "../../controllers";
+import { ProjectQueries, OrganizationQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
 
@@ -16,12 +16,12 @@ export class DeleteProject extends AuthenticatedService {
         user
       } = request;
       this.validate(id, request)
-        .then(_ => ProjectManager.getProject(id))
+        .then(_ => ProjectQueries.getProject(id))
         .then(project => {
           const organizationId = project.baseOrganization.id;
-          ProjectManager.deleteProject(user.id, id)
+          ProjectQueries.deleteProject(user.id, id)
             .then(_ =>
-              OrganizationManager.getOrganizationProjects(
+              OrganizationQueries.getOrganizationProjects(
                 user.id,
                 organizationId
               )

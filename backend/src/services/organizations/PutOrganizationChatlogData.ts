@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager, UserManager } from "../../controllers";
+import { MessageQueries, PermissionQueries } from "../../queries";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
@@ -20,11 +20,11 @@ export class PutOrganizationChatlogData extends AuthenticatedService {
         .then(_ => {
           if (undefined !== updateId) {
             return Promise.resolve(
-              MessageManager.updateMessage(updateId, partitions)
+              MessageQueries.updateMessage(updateId, partitions)
             );
           } else {
             return Promise.resolve(
-              MessageManager.createOrganizationMessage(
+              MessageQueries.createOrganizationMessage(
                 request.user.id,
                 id,
                 partitions
@@ -49,7 +49,7 @@ export class PutOrganizationChatlogData extends AuthenticatedService {
     if (!request.user || !partitions) {
       return Promise.reject();
     } else {
-      UserManager.checkOrganizationPermission(request.user.id, id).then(
+      PermissionQueries.checkOrganizationPermission(request.user.id, id).then(
         results => {
           if (results) {
             return Promise.resolve();

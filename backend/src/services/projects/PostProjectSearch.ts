@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ProjectManager, UserManager } from "../../controllers";
+import { ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostProjectSearch extends AuthenticatedService {
@@ -26,11 +26,11 @@ export class PostProjectSearch extends AuthenticatedService {
     request: AuthRequest
   ): Promise<JSON> {
     if (request.user) {
-      UserManager.checkProjectPermission(request.user.id, projectId).then(
+      PermissionQueries.checkProjectPermission(request.user.id, projectId).then(
         userHasAccess => {
           if (userHasAccess) {
             return Promise.resolve(
-              ProjectManager.getContentsByName(projectId, name)
+              ProjectQueries.getContentsByName(projectId, name)
             );
           } else {
             return Promise.reject();

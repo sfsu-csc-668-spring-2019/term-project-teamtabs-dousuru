@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { TaskManager, UserManager, ListManager } from "../../controllers";
+import { TaskQueries, ListQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler, TaskHandler } from "../../socket/handlers";
 
@@ -17,9 +17,9 @@ export class PostUpdateTaskDescription extends AuthenticatedService {
       } = request;
       this.validate(taskId, description, request)
         .then(_ => {
-          TaskManager.updateDescription(description, taskId).then(results => {
+          TaskQueries.updateDescription(description, taskId).then(results => {
             const listId = results.baseListId;
-            ListManager.getTasks(listId).then(tasks => {
+            ListQueries.getTasks(listId).then(tasks => {
               ListHandler.getInstance().updateTasks(listId, tasks);
               TaskHandler.getInstance().update(taskId, results);
               response.json(results);
@@ -38,10 +38,12 @@ export class PostUpdateTaskDescription extends AuthenticatedService {
     if (!request.user || !taskId || !description) {
       return Promise.reject();
     } else {
-      UserManager.checkTaskManage(request.user.id, taskId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkTaskManage(request.user.id, taskId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

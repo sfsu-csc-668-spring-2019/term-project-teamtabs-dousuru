@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { ListManager, UserManager } from "../../controllers";
+import { ListQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler } from "../../socket/handlers";
 
@@ -16,7 +16,7 @@ export class GetListData extends AuthenticatedService {
         user
       } = request;
       this.validate(listId, request);
-      ListManager.getListData(listId)
+      ListQueries.getListData(listId)
         .then(list => {
           ListHandler.getInstance().join(
             listId,
@@ -35,10 +35,12 @@ export class GetListData extends AuthenticatedService {
     if (!request.user || !listId) {
       return Promise.reject();
     } else {
-      UserManager.checkListPermission(request.user.id, listId).then(results => {
-        if (results) return Promise.resolve();
-        return Promise.reject();
-      });
+      PermissionQueries.checkListPermission(request.user.id, listId).then(
+        results => {
+          if (results) return Promise.resolve();
+          return Promise.reject();
+        }
+      );
     }
   }
 }

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { UserManager } from "../../controllers/UserManager";
+import { UserQueries } from "../../queries/UserQueries";
 
 export class GetOrganizationList extends AuthenticatedService {
   public getRoute(): string {
@@ -12,7 +12,7 @@ export class GetOrganizationList extends AuthenticatedService {
   public authenticatedExecute(): IMiddlewareFunction {
     return (request: Request, response: Response, _: NextFunction) => {
       this.validate(request)
-        .then(user => UserManager.getOrganizations(user.id))
+        .then(user => UserQueries.getOrganizations(user.id))
         .then(orgs => response.json(orgs))
         .catch(_ => {
           response.sendStatus(400);
