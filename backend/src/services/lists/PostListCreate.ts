@@ -14,14 +14,16 @@ export class PostListCreate extends AuthenticatedService {
       const {
         body: { name, description, projectId }
       } = request;
-      this.validate(name, description, projectId, request)
-        .then(_ => {
-          console.log("got here");
-          ListQueries.createList(name, description, projectId).then(lists => {
-            console.log(lists);
-            response.json(lists);
-          });
-          /*
+      this.validate(name, description, projectId, request).then(_ => {
+        console.log("got here");
+        ListQueries.createList(name, description, projectId)
+          .then(list => {
+            response.json(list);
+          })
+          .catch(err => console.log(err));
+      });
+    };
+    /*
             .then(list =>
               ProjectQueries.getLists(projectId)
                 .then(lists => {
@@ -30,11 +32,6 @@ export class PostListCreate extends AuthenticatedService {
                 })
             );
             */
-        })
-        .catch(err => {
-          response.json(err);
-        });
-    };
   }
 
   public validate(
@@ -46,13 +43,13 @@ export class PostListCreate extends AuthenticatedService {
     if (!request.user || !name || !description || !projectId) {
       return Promise.reject();
     } else {
-      return Promise.resolve();
-      PermissionQueries.checkProjectManage(request.user.id, projectId).then(
-        results => {
-          if (results) return Promise.resolve();
-          return Promise.reject();
-        }
-      );
+      return PermissionQueries.checkProjectManage(
+        request.user.id,
+        projectId
+      ).then(results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      });
     }
   }
 }

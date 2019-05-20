@@ -4,7 +4,7 @@ import { TaskQueries, ListQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { ListHandler, TaskHandler } from "../../socket/handlers";
 
-export class PostUpdateTask extends AuthenticatedService {
+export class PostTaskUpdate extends AuthenticatedService {
   public getRoute(): string {
     return "POST /update/:taskId";
   }
