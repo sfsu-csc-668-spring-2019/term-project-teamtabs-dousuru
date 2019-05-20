@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, mergeAll } from "rxjs/operators";
 import { ApiService } from "./../networking/api.service";
 import { Organization, Project, List, Task, Message } from "../models";
+import { io, serverAddress } from "../../api/socket";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
   providedIn: "root"
@@ -14,8 +16,12 @@ export class DashboardStateService {
   selectedProject: BehaviorSubject<Project>;
   lists: Observable<List[]>;
   chat: Observable<Message[]>;
+  socket: any = null;
 
-  constructor(private apiService: ApiService) {
+  constructor(
+    private authService: AuthService,
+    private apiService: ApiService
+  ) {
     this.selectedOrganization = new BehaviorSubject(null);
     this.organizationsSubject = new BehaviorSubject([]);
     this.projects = this.selectedOrganization.asObservable().pipe(
@@ -46,6 +52,13 @@ export class DashboardStateService {
       }),
       mergeAll()
     );
+    this.socket = io.connect(serverAddress, {
+      query: `token=${authService.authToken}`
+    });
+    this.socket.on("dashboard:update", this.onOrganizationListUpdate);
+    this.organizations.forEach(org =>
+      this.socket.on(`organization:${org.id}:update`, this.onOrganizationUpdate)
+    );
   }
 
   get organizations(): Organization[] {
@@ -55,6 +68,26 @@ export class DashboardStateService {
   set organizations(newValue: Organization[]) {
     this.organizationsSubject.next(newValue);
   }
+
+  onOrganizationUpdate = data => {
+    let org = this.organizations.find(org => org.id === data.id);
+    org.name = data.name;
+    org.description = data.description;
+    org.icon = data.icon;
+  };
+
+  onOrganizationListUpdate = orgs => {
+    this.organizations = orgs;
+    this.organizations.forEach(org =>
+      this.socket.on(`organization:${org.id}:update`, this.onOrganizationUpdate)
+    );
+  };
+
+  onProjectListUpdate = data => {
+    console.log("jerererer");
+    console.log(data);
+    this.setSelectedOrganization(this.selectedOrganization.value.id);
+  };
 
   fetchOrganizations() {
     this.apiService
@@ -72,7 +105,15 @@ export class DashboardStateService {
     if (selectedOrg !== this.selectedOrganization.value) {
       this.selectedProject.next(null);
     }
+    const currentOrg = this.selectedOrganization.value;
+    if (null !== currentOrg) {
+      this.socket.off(`organization:${currentOrg.id}:update:projects`);
+    }
     this.selectedOrganization.next(selectedOrg);
+    this.socket.on(
+      `organization:${id}:update:projects`,
+      this.onProjectListUpdate
+    );
   }
 
   clearSelected() {

@@ -3,7 +3,7 @@ import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserQueries } from "../../queries/UserQueries";
-import { ProjectHandler } from "../../socket/handlers";
+import { ProjectHandler, ListHandler } from "../../socket/handlers";
 
 export class GetListByProject extends AuthenticatedService {
   public getRoute(): string {
@@ -23,6 +23,13 @@ export class GetListByProject extends AuthenticatedService {
             id,
             user.id.toString(),
             user.username
+          );
+          lists.forEach(list =>
+            ListHandler.getInstance().join(
+              list.id.toString(),
+              user.id.toString(),
+              user.username
+            )
           );
           response.json(lists);
         })

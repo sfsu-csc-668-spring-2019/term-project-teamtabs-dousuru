@@ -3,7 +3,7 @@ import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationQueries } from "../../queries";
-import { OrganizationHandler } from "../../socket/handlers";
+import { OrganizationHandler, ProjectHandler } from "../../socket/handlers";
 
 export class GetProjectsByOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -23,6 +23,13 @@ export class GetProjectsByOrganization extends AuthenticatedService {
             id,
             user.id.toString(),
             user.username
+          );
+          projs.forEach(proj =>
+            ProjectHandler.getInstance().join(
+              proj.id.toString(),
+              user.id.toString(),
+              user.username
+            )
           );
           response.json(projs);
         })

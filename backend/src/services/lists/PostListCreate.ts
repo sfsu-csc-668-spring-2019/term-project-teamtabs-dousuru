@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { ListQueries, ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
-import { ProjectHandler } from "../../socket/handlers";
+import { ProjectHandler, ListHandler } from "../../socket/handlers";
 
 export class PostListCreate extends AuthenticatedService {
   public getRoute(): string {
@@ -12,28 +12,28 @@ export class PostListCreate extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        body: { name, description, projectId }
+        body: { name, description, projectId },
+        user
       } = request;
       this.validate(name, description, projectId, request).then(_ => {
         ListQueries.createList(name, description, projectId)
-          .then(list => {
-            response.json(list);
-          })
+          .then(list =>
+            ProjectQueries.getLists(projectId).then(lists => {
+              ProjectHandler.getInstance().updateLists(projectId, lists);
+              ListHandler.getInstance().join(
+                list.id.toString(),
+                user.id.toString(),
+                user.username
+              );
+              response.json(list);
+            })
+          )
           .catch(err => {
             console.log(err);
             response.sendStatus(500);
           });
       });
     };
-    /*
-            .then(list =>
-              ProjectQueries.getLists(projectId)
-                .then(lists => {
-                  ProjectHandler.getInstance().updateLists(projectId, lists);
-                  response.json(list);
-                })
-            );
-            */
   }
 
   public validate(

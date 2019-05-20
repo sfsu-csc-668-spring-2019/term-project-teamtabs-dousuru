@@ -17,17 +17,8 @@ export class PostListUpdate extends AuthenticatedService {
       } = request;
       this.validate(listId, name, description, request)
         .then(_ => {
-          ListQueries.update(name, description, listId).then(results =>
-            response.json(results)
-          );
-        })
-        .catch(err => {
-          console.log(err);
-          response.sendStatus(500);
-        });
-    };
-    /*
-              const projectId = results.baseProjectId;
+          ListQueries.update(name, description, listId).then(results => {
+            const projectId = results.baseProjectId;
             ProjectQueries.getLists(projectId).then(data => {
               ProjectHandler.getInstance().updateLists(projectId, data);
               ListHandler.getInstance().update(results.id, results);
@@ -37,7 +28,6 @@ export class PostListUpdate extends AuthenticatedService {
         })
         .catch(err => response.json(err));
     };
-    */
   }
 
   public validate(

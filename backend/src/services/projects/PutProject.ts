@@ -33,7 +33,6 @@ export class PutProject extends AuthenticatedService {
           )
         )
         .then(results =>
-          /*
           OrganizationQueries.getOrganizationProjects(
             user.id,
             organizationId
@@ -42,9 +41,15 @@ export class PutProject extends AuthenticatedService {
               organizationId,
               data
             );
+            ProjectHandler.getInstance().join(
+              results.id.toString(),
+              user.id.toString(),
+              user.username
+            );
             ProjectHandler.getInstance().update(results.id.toString(), results);
-            */
-          response.json(results)
+
+            response.json(results);
+          })
         )
         .catch(err => {
           console.error(err);

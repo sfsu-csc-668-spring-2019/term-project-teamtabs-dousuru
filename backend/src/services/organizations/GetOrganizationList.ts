@@ -3,6 +3,7 @@ import { IMiddlewareFunction, AuthenticatedService } from "..";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
 import { UserQueries } from "../../queries/UserQueries";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class GetOrganizationList extends AuthenticatedService {
   public getRoute(): string {
@@ -10,10 +11,20 @@ export class GetOrganizationList extends AuthenticatedService {
   }
 
   public authenticatedExecute(): IMiddlewareFunction {
-    return (request: Request, response: Response, _: NextFunction) => {
+    return (request: AuthRequest, response: Response, _: NextFunction) => {
       this.validate(request)
         .then(user => UserQueries.getOrganizations(user.id))
-        .then(orgs => response.json(orgs))
+        .then(orgs => {
+          orgs.forEach(org =>
+            OrganizationHandler.getInstance().join(
+              org.id.toString(),
+              request.user.id.toString(),
+              request.user.username
+            )
+          );
+
+          response.json(orgs);
+        })
         .catch(_ => {
           response.sendStatus(400);
         });

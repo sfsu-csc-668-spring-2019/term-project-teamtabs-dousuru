@@ -26,10 +26,10 @@ export class PutProjectChatlogData extends AuthenticatedService {
           );
         })
         .then(message => response.json(message))
-        // .then(data => {
-        //   ProjectHandler.getInstance().chat(projectId, data);
-        //   response.sendStatus(200);
-        // })
+        .then(data => {
+          ProjectHandler.getInstance().chat(projectId, data);
+          response.sendStatus(200);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }

@@ -3,7 +3,7 @@ import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationQueries, UserQueries } from "../../queries";
 import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
-import { UserHandler } from "../../socket/handlers";
+import { UserHandler, OrganizationHandler } from "../../socket/handlers";
 
 export class PutOrganization extends AuthenticatedService {
   public getRoute(): string {
@@ -25,7 +25,14 @@ export class PutOrganization extends AuthenticatedService {
             user.id
           )
         )
-        .then(org => response.json(org))
+        .then(org => {
+          OrganizationHandler.getInstance().join(
+            org.id.toString(),
+            user.id.toString(),
+            user.username
+          );
+          response.json(org);
+        })
         .then(_ => UserQueries.getOrganizations(user.id))
         .then(data =>
           UserHandler.getInstance().update(
