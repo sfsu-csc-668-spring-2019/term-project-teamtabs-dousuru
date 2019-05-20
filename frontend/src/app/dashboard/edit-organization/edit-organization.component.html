@@ -1,6 +1,9 @@
 <form class="form" [formGroup]="formGroup" (submit)="save()">
   <h1>Edit organization</h1>
-  <p>Invite Link: {{ inviteLink | async }}</p>
+  <p>
+    Invite Link:
+    <input [value]="inviteLink | async" [contentEditable]="false" />
+  </p>
   <fieldset>
     <label>
       Name:

@@ -16,6 +16,7 @@ import { AuthInterceptor } from "./networking/auth.interceptor";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
+import { JoinOrganizationComponent } from "./join-organization/join-organization.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LogoutComponent } from "./logout/logout.component";
     LoginComponent,
     RegisterComponent,
     LandingPageComponent,
-    LogoutComponent
+    LogoutComponent,
+    JoinOrganizationComponent
   ],
   imports: [
     BrowserModule,

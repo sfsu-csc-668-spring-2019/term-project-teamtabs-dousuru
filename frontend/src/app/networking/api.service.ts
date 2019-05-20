@@ -105,7 +105,7 @@ export class ApiService {
 
   getInviteLink(organization: Organization): Observable<string> {
     const url = `${this.apiURL}/organization/inviteLink/${organization.id}`;
-    const frontendPath = "/joinOrganization";
+    const frontendPath = "/join_organization";
     const location = window.location;
     const frontendURL = `${location.protocol}//${window.location.host +
       frontendPath}`;
@@ -114,6 +114,17 @@ export class ApiService {
         return frontendURL + `?invite=${inviteCode}`;
       })
     );
+  }
+
+  getOrganizationFromInvite(inviteCode: string): Observable<Organization> {
+    const url = `${this.apiURL}/organization/withInvite/${inviteCode}`;
+    return this.http.get<Organization>(url);
+  }
+
+  joinOrganization(inviteCode: string): Observable<Organization> {
+    const url = `${this.apiURL}/organization/join/${inviteCode}`;
+    console.log("calling join");
+    return this.http.get<Organization>(url);
   }
 }
 

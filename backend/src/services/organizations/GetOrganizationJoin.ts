@@ -5,9 +5,9 @@ import { AuthRequest } from "../../types/AuthRequest";
 import { OrganizationHandler } from "../../socket/handlers";
 import { SecretsService } from "../../middleware/SecretsService";
 
-export class PostOrganizationJoin extends AuthenticatedService {
+export class GetOrganizationJoin extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /join/:inviteLink";
+    return "GET /join/:inviteLink";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
