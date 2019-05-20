@@ -31,17 +31,18 @@ export class ProjectQueries {
         isPublic,
         owner,
         baseOrganization
-      });
+      }).save();
       project.roles = await RoleQueries.createDefaultProjectRoles(
         project.id,
         ownerId
       );
-      ProjectQueries.addUser(project.id, ownerId);
+      await ProjectQueries.addUser(project.id, ownerId);
       baseOrganization.containedProjects =
         baseOrganization.containedProjects || [];
       baseOrganization.containedProjects.push(project);
-      baseOrganization.save();
-      return project.save();
+      await baseOrganization.save();
+      await project.save();
+      return project;
     } catch (err) {
       console.error(err);
     }

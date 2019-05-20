@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { Organization, Project, List, Task } from "../models";
+import { Organization, Project, List, Task, Message } from "../models";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 
@@ -142,8 +142,18 @@ export class ApiService {
 
   joinOrganization(inviteCode: string): Observable<Organization> {
     const url = `${this.apiURL}/organization/join/${inviteCode}`;
-    console.log("calling join");
     return this.http.get<Organization>(url);
+  }
+
+  getChat(project: Project): Observable<Message[]> {
+    const url = `${this.apiURL}/project/chatlog/${project.id}`;
+    return this.http.get<Message[]>(url);
+  }
+
+  sendMessage(project: Project, message: Message): Observable<Message> {
+    const url = `${this.apiURL}/project/chatlog/${project.id}`;
+    console.log(message);
+    return this.http.put<Message>(url, message);
   }
 }
 

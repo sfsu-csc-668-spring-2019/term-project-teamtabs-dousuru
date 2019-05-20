@@ -5,6 +5,9 @@ $background: #e4e4e4;
   bottom: 0;
   right: 0;
 
+  display: flex;
+  flex-direction: column;
+
   color: $foreground;
   background-color: $background;
 
@@ -41,4 +44,16 @@ $background: #e4e4e4;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+}
+
+.input-box {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 1rem;
+
+  textarea {
+    resize: none;
+  }
 }

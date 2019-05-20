@@ -22,7 +22,7 @@ export class PutProject extends AuthenticatedService {
         user
       } = request;
       this.validate(name, description, isPublic, organizationId, request)
-        .then(() => this.checkPermission(request, organizationId))
+        // .then(() => this.checkPermission(request, organizationId))
         .then(() =>
           ProjectQueries.createProject(
             name,
@@ -78,15 +78,5 @@ export class PutProject extends AuthenticatedService {
       request.user.id,
       organizationId
     );
-  }
-
-  public createProject(
-    name: string,
-    description: string,
-    isPublic: boolean,
-    ownerId: number,
-    organizationId: number
-  ) {
-    return;
   }
 }

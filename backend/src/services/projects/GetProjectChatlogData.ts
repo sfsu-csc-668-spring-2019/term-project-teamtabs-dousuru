@@ -14,8 +14,12 @@ export class GetProjectChatlogData extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(request, id)
-        .then(_ => this.checkPermission(request, id))
+        // .then(_ => this.checkPermission(request, id))
         .then(_ => MessageQueries.getProjectMessages(id))
+        .then(messages => {
+          console.log(messages);
+          return messages;
+        })
         .then(messages => response.json(messages))
         .catch(_ => response.sendStatus(500));
     };
