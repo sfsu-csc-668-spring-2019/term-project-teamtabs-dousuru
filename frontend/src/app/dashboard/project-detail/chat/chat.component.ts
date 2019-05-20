@@ -46,12 +46,14 @@ export class ChatComponent implements OnInit {
       .toPromise()
       .then(resolved => {
         console.log(resolved);
+        this.messageForm.reset();
       });
   }
 
   getText(message: any) {
+    const text = message.owner.username + ": ";
     return message.messagePartitions
       .filter(msg => msg.type === "text")
-      .reduce((acc, val) => (acc += val.associatedValue), "");
+      .reduce((acc, val) => (acc += val.associatedValue), text);
   }
 }

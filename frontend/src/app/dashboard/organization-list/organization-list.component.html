@@ -10,7 +10,7 @@
     <button
       *ngIf="isSelected(organization) | async"
       class="organization-button"
-      (click)="edit(organization)"
+      (click)="edit($event, organization)"
     >
       Edit
     </button>
