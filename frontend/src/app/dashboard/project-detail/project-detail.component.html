@@ -1,13 +1,15 @@
 <div class="project-detail">
-  <app-title class="title" [project]="project"></app-title>
-  <div class="list">
-    <app-list-detail
-      *ngFor="let list of lists | async"
-      [list]="list"
-    ></app-list-detail>
-    <div>
-      <button (click)="addList()">Add New</button>
+  <div *ngIf="shouldDisplay$ | async">
+    <app-title class="title" [project]="project"></app-title>
+    <div class="list">
+      <app-list-detail
+        *ngFor="let list of lists | async"
+        [list]="list"
+      ></app-list-detail>
+      <div>
+        <button (click)="addList()">Add New</button>
+      </div>
     </div>
+    <app-chat class="chat"></app-chat>
   </div>
-  <app-chat class="chat"></app-chat>
 </div>

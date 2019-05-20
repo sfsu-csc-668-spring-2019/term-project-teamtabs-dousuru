@@ -14,6 +14,7 @@ import { EditProjectComponent } from "../edit-project/edit-project.component";
 export class ProjectsListComponent implements OnInit {
   projects$: Observable<Project[]>;
   selectedProject$: Observable<Project>;
+  shouldDisplay$: Observable<boolean>;
 
   constructor(
     private state: DashboardStateService,
@@ -23,6 +24,9 @@ export class ProjectsListComponent implements OnInit {
   ngOnInit() {
     this.projects$ = this.state.projects;
     this.selectedProject$ = this.state.selectedProject.asObservable();
+    this.shouldDisplay$ = this.state.selectedOrganization
+      .asObservable()
+      .pipe(map(org => !!org));
   }
 
   addProject() {

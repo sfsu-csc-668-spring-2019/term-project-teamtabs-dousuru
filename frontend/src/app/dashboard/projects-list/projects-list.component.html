@@ -1,5 +1,5 @@
-<ul class="projects">
-  <ul>
+<div class="root">
+  <ul *ngIf="shouldDisplay$ | async" class="projects">
     <li
       *ngFor="let project of projects$ | async"
       class="project"
@@ -13,4 +13,4 @@
       <button class="primary" (click)="addProject()">Add New</button>
     </li>
   </ul>
-</ul>
+</div>
