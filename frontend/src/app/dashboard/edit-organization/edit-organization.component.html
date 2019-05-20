@@ -26,9 +26,15 @@
       <input
         type="file"
         placeholder="Icon of organization"
-        formControlName="icon"
+        (change)="changeFile($event)"
       />
     </label>
   </fieldset>
+  <img
+    *ngIf="imageLink"
+    [src]="imageLink"
+    alt="the image you uploaded"
+    class="upload-image"
+  />
   <button class="primary block" type="submit">Save</button>
 </form>
