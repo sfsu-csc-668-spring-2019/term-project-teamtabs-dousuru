@@ -25,6 +25,7 @@ export class PostProjectUpdate extends AuthenticatedService {
         body: { name, description, isPublic }
       } = request;
       this.validate(projectId, request)
+        .then(() => this.checkPermission(projectId, request))
         .then(() =>
           ProjectQueries.updateProject(projectId, name, description, isPublic)
         )
