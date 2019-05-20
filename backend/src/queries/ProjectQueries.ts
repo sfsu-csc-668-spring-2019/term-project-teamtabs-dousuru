@@ -47,23 +47,25 @@ export class ProjectQueries {
   }
 
   public static async updateProject(
-    ownerId: number,
     projectId: number,
     name: string,
     description: string,
     isPublic: boolean,
-    newOwnerId: number
+    newOwnerId: number,
+    userId: number
   ): Promise<Project> {
-    let project = await Project.findOne(projectId, { relations: ["owner"] });
-    if (project.owner.id !== ownerId) {
-      throw new Error(
-        "Error: project update is only accessable for organization owner"
-      );
-    }
+    let project = await Project.findOne(projectId, {
+      relations: [
+        "owner",
+        "baseOrganization",
+        "baseOrganization.containedProjects"
+      ]
+    });
     project.name = name;
     project.description = description;
     project.isPublic = isPublic;
-    if (newOwnerId !== ownerId) {
+
+    if (newOwnerId && project.owner.id == userId) {
       let newOwner = await User.findOne(newOwnerId);
       project.owner = newOwner;
     }

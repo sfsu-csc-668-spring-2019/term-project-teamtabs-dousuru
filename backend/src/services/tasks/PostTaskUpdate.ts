@@ -6,7 +6,7 @@ import { ListHandler, TaskHandler } from "../../socket/handlers";
 
 export class PostUpdateTask extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /updateTask/:taskId";
+    return "POST /update/:taskId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
@@ -15,7 +15,8 @@ export class PostUpdateTask extends AuthenticatedService {
         params: { taskId },
         body: { description, name, completed }
       } = request;
-      this.validate(taskId, description, request)
+      this.validate(taskId, request)
+        .then(_ => this.checkPermission(taskId, request))
         .then(_ => TaskQueries.updateTask(taskId, name, description, completed))
         .then(updatedTask => {
           const listId = updatedTask.baseList.id;
@@ -29,20 +30,20 @@ export class PostUpdateTask extends AuthenticatedService {
     };
   }
 
-  public validate(
-    taskId: number,
-    description: string,
-    request: AuthRequest
-  ): Promise<void> {
-    if (!request.user || !taskId || !description) {
+  public validate(taskId: number, request: AuthRequest): Promise<void> {
+    if (!request.user || !taskId) {
       return Promise.reject();
     } else {
-      PermissionQueries.checkTaskManage(request.user.id, taskId).then(
-        results => {
-          if (results) return Promise.resolve();
-          return Promise.reject();
-        }
-      );
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(taskId: number, request: AuthRequest): Promise<void> {
+    return PermissionQueries.checkTaskManage(request.user.id, taskId).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }
