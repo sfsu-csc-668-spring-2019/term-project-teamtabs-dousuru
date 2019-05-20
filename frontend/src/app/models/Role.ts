@@ -9,16 +9,4 @@ export class Role {
   canInvite: boolean;
   canManage: boolean;
   canPost: boolean;
-
-  getOrganization(): Observable<Organization> {
-    return of();
-  }
-
-  getProject(): Observable<Project> {
-    return of();
-  }
-
-  getUsers(): Observable<User[]> {
-    return of();
-  }
 }

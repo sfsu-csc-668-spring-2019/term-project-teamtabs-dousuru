@@ -14,6 +14,7 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { AuthInterceptor } from "./networking/auth.interceptor";
 import { DashboardModule } from "./dashboard/dashboard.module";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
 
 @NgModule({
@@ -22,6 +23,7 @@ import { LogoutComponent } from "./logout/logout.component";
     HomepageComponent,
     LoginComponent,
     RegisterComponent,
+    LandingPageComponent,
     LogoutComponent
   ],
   imports: [
