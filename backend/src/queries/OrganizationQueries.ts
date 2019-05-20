@@ -13,11 +13,9 @@ export class OrganizationQueries {
     ownerId: number
   ): Promise<Organization> {
     let owner = await User.findOne(ownerId);
-    let inviteLink = SecretsService.createToken(await Organization.count());
     let organization = await Organization.create({
       name,
       description,
-      inviteLink,
       icon,
       owner
     }).save();
@@ -26,11 +24,7 @@ export class OrganizationQueries {
       ownerId
     );
     organization.containedProjects = [];
-    return OrganizationQueries.addOrganizationUser(
-      organization.id,
-      ownerId,
-      inviteLink
-    );
+    return OrganizationQueries.addOrganizationUser(organization.id, ownerId);
   }
 
   public static async updateOrganization(
@@ -106,16 +100,12 @@ export class OrganizationQueries {
 
   public static async addOrganizationUser(
     organizationId: number,
-    userId: number,
-    inviteLink: string
+    userId: number
   ): Promise<Organization> {
     let user = await User.findOne(userId);
     let organization = await Organization.findOne(organizationId, {
       relations: ["users", "roles"]
     });
-    if (organization.inviteLink != inviteLink) {
-      throw new Error("Error: organization invite link doesn't match");
-    }
     if (!organization.users.includes(user)) {
       organization.users.push(user);
       let memberRole = organization.roles.find(role => role.name == "Member");
@@ -234,19 +224,9 @@ export class OrganizationQueries {
     return await organization.save();
   }
 
-  public static async getInviteLink(
-    ownerId: number,
-    organizationId: number
-  ): Promise<string> {
-    let organization = await Organization.findOne(organizationId, {
-      relations: ["owner"]
-    });
-    if (organization.owner.id === ownerId) {
-      return organization.inviteLink;
-    }
-    throw new Error(
-      "Error: organization invite link is only accessable to owner"
-    );
+  public static async getInviteLink(organizationId: number): Promise<string> {
+    const organization = await Organization.findOne(organizationId);
+    return SecretsService.generateInvite(organization);
   }
 
   public static async getMessages(organizationId: number): Promise<Message[]> {

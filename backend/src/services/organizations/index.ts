@@ -2,7 +2,7 @@ import { DeleteOrganization } from "./DeleteOrganization";
 import { GetOrganizationChatlogData } from "./GetOrganizationChatlogData";
 import { GetOrganizationData } from "./GetOrganizationData";
 import { GetOrganizationList } from "./GetOrganizationList";
-import { PostOrganizationInvite } from "./PostOrganizationInvite";
+import { GetOrganizationInvite } from "./GetOrganizationInvite";
 import { PostOrganizationJoin } from "./PostOrganizationJoin";
 import { PostOrganizationLeave } from "./PostOrganizationLeave";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
@@ -15,7 +15,7 @@ export default [
   GetOrganizationChatlogData,
   GetOrganizationList,
   GetOrganizationData,
-  PostOrganizationInvite,
+  GetOrganizationInvite,
   PostOrganizationJoin,
   PostOrganizationLeave,
   PostOrganizationSearch,
