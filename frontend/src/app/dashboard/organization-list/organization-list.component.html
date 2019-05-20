@@ -1,16 +1,21 @@
-<div class="organizations">
-  <ul>
-    <li *ngFor="let organization of organizations | async">
-      <img
-        [src]="organization.icon"
-        [alt]="organization.name"
-        class="org-image"
-        [ngClass]="{ selected: isSelected(organization) | async }"
-        (click)="selectOrganization(organization.id)"
-      />
-    </li>
-    <li class="add-button" role="button" (click)="addOrganization()">
-      <fa-icon [icon]="plusIcon"></fa-icon>
-    </li>
-  </ul>
-</div>
+<ul class="organizations">
+  <li *ngFor="let organization of organizations | async" class="organization">
+    <img
+      [src]="organization.icon"
+      [alt]="organization.name"
+      class="org-image"
+      [ngClass]="{ selected: isSelected(organization) | async }"
+      (click)="selectOrganization(organization.id)"
+    />
+    <button
+      *ngIf="isSelected(organization) | async"
+      class="organization-button"
+      (click)="edit(organization)"
+    >
+      Edit
+    </button>
+  </li>
+  <li class="add-button" role="button" (click)="addOrganization()">
+    <fa-icon [icon]="plusIcon"></fa-icon>
+  </li>
+</ul>

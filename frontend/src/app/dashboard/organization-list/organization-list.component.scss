@@ -47,3 +47,16 @@ $border-thickness: 3px;
     transition: all 0.2s ease-in;
   }
 }
+
+.organization {
+  position: relative;
+  .organization-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #1284e6;
+    color: white;
+    font-size: 0.5rem;
+    font-weight: bold;
+  }
+}

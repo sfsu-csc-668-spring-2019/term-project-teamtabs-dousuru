@@ -1,0 +1,30 @@
+<form class="form" [formGroup]="formGroup" (submit)="save()">
+  <h1>Edit organization</h1>
+  <fieldset>
+    <label>
+      Name:
+      <input
+        type="text"
+        placeholder="Name of organization"
+        formControlName="name"
+      />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of organization"
+        formControlName="description"
+      />
+    </label>
+    <label>
+      Icon:
+      <input
+        type="text"
+        placeholder="Icon of organization"
+        formControlName="icon"
+      />
+    </label>
+  </fieldset>
+  <button class="primary block" type="submit">Save</button>
+</form>

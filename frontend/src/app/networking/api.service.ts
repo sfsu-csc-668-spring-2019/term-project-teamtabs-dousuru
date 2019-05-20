@@ -27,6 +27,12 @@ export class ApiService {
     return this.http.put<Organization>(url, body);
   }
 
+  updateOrganization(organization: Organization): Observable<Organization> {
+    const url = `${this.apiURL}/organization/`;
+    const body = organization;
+    return this.http.post<Organization>(url, body);
+  }
+
   createAccount(
     email: string,
     username: string,
@@ -63,6 +69,12 @@ export class ApiService {
     const url = `${this.apiURL}/project/${organization}`;
     const body = { name, isPublic, description };
     return this.http.put<Project>(url, body);
+  }
+
+  updateProject(project: Project): Observable<Project> {
+    const url = `${this.apiURL}/project/update/${project.id}`;
+    const body = project;
+    return this.http.post<Project>(url, body);
   }
 
   createList(

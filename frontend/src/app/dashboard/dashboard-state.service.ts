@@ -69,6 +69,10 @@ export class DashboardStateService {
     return this.apiService.createOrganization(name, description, icon);
   }
 
+  updateOrganization(organization: Organization): Observable<Organization> {
+    return this.apiService.updateOrganization(organization);
+  }
+
   createProject(): Observable<Project> {
     if (!this.selectedOrganization.value) {
       // tslint:disable-next-line: deprecation
@@ -76,6 +80,10 @@ export class DashboardStateService {
     }
     const org = this.selectedOrganization.value;
     return this.apiService.createProject(org, "new project", "asdf", true);
+  }
+
+  updateProject(project: Project): Observable<Project> {
+    return this.apiService.updateProject(project);
   }
 
   setSelectedProject(project: Project) {

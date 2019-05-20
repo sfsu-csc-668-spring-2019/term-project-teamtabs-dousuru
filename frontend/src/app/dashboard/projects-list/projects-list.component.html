@@ -7,6 +7,7 @@
       (click)="select(project)"
     >
       {{ project.name }}
+      <button class="edit-button" (click)="edit(project)">Edit</button>
     </li>
     <li class="add-project">
       <button class="primary" (click)="addProject()">Add New</button>
