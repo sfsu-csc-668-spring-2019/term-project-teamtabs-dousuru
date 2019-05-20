@@ -17,7 +17,8 @@ import { DashboardModule } from "./dashboard/dashboard.module";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { JoinOrganizationComponent } from "./join-organization/join-organization.component";
-
+import { CloudinaryModule } from "@cloudinary/angular-5.x";
+import * as Cloudinary from "cloudinary-core";
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,12 @@ import { JoinOrganizationComponent } from "./join-organization/join-organization
     ThemeModule,
     DashboardModule,
     NetworkTestingModule,
+    CloudinaryModule.forRoot(Cloudinary, {
+      cloud_name: "dqxyppabj",
+      api_key: "335475344613779",
+      api_secret: "m84lq8TsonIY-hfYXY9z19_7Plw",
+      upload_preset: "dousuru"
+    }),
     AppRoutingModule
   ],
   bootstrap: [AppComponent],
