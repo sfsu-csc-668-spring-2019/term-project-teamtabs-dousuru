@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, mergeAll } from "rxjs/operators";
 import { ApiService } from "./../networking/api.service";
-import { Organization, Project, List, Task } from "../models";
+import { Organization, Project, List, Task, Message } from "../models";
 
 @Injectable({
   providedIn: "root"
@@ -13,6 +13,7 @@ export class DashboardStateService {
   projects: Observable<Project[]>;
   selectedProject: BehaviorSubject<Project>;
   lists: Observable<List[]>;
+  chat: Observable<Message[]>;
 
   constructor(private apiService: ApiService) {
     this.selectedOrganization = new BehaviorSubject(null);
@@ -33,6 +34,15 @@ export class DashboardStateService {
           return [];
         }
         return this.apiService.getLists(selected);
+      }),
+      mergeAll()
+    );
+    this.chat = this.selectedProject.pipe(
+      map(selected => {
+        if (!selected) {
+          return [];
+        }
+        return this.apiService.getChat(selected);
       }),
       mergeAll()
     );
@@ -129,5 +139,13 @@ export class DashboardStateService {
 
   updateTask(task: Task): Observable<Task> {
     return this.apiService.updateTask(task);
+  }
+
+  sendMessage(message: Message): Observable<Message> {
+    const proj = this.selectedProject.value;
+    if (!proj) {
+      return;
+    }
+    return this.apiService.sendMessage(proj, message);
   }
 }
