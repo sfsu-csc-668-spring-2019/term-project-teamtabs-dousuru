@@ -48,6 +48,52 @@ export class TaskQueries {
       .execute();
   }
 
+  static async getProjectLists(projectID: number): Promise<List[]> {
+    try {
+      const lists = await List.getRepository().query(
+        'SELECT * FROM list WHERE "baseProjectId" = $1',
+        [projectID]
+      );
+      return lists;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async updateTask(
+    taskId: number,
+    name: string,
+    description: string,
+    completed: boolean
+  ): Promise<Task> {
+    let task = await Task.findOne(taskId, { relations: ["baseList"] });
+    if (name) {
+      task.name = name;
+    }
+    if (description) {
+      task.description = description;
+    }
+    if (completed != undefined) {
+      if (completed) {
+        this.finishTask(taskId);
+      } else {
+        task.endTime = null;
+      }
+    }
+    return task.save();
+  }
+
+  static async finishTask(taskId: number): Promise<Task> {
+    try {
+      await Task.getRepository().query(
+        'UPDATE task Set "endTime" = now() WHERE "id" = $1',
+        [taskId]
+      );
+      return await Task.findOne(taskId);
+    } catch (err) {
+      console.error(err);
+    }
+  }
   static async updateName(name: string, taskId: number): Promise<any> {
     return await getConnection()
       .createQueryBuilder()
