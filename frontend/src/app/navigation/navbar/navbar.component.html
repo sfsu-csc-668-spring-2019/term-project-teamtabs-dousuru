@@ -1,6 +1,19 @@
 <div class="navbar">
   <a routerLink="/">
-    navbar works! Source: app/navigation/navbar
+    <img src="assets/photos/logo.png" alt="DouSuru logo" class="logo" />
   </a>
-  <app-theme-chooser class="right"></app-theme-chooser>
+  <ul class="links">
+    <li *ngIf="authenticated$ | async">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li *ngIf="authenticated$ | async">
+      <a routerLink="/logout" routerLinkActive="active">Logout</a>
+    </li>
+    <li *ngIf="!(authenticated$ | async)">
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+    </li>
+    <li *ngIf="!(authenticated$ | async)">
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    </li>
+  </ul>
 </div>

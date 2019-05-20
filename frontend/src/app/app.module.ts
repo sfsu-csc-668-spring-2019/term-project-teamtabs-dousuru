@@ -13,13 +13,20 @@ import { AuthModule } from "./auth/auth.module";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { AuthInterceptor } from "./networking/auth.interceptor";
+import { DashboardModule } from "./dashboard/dashboard.module";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { LogoutComponent } from "./logout/logout.component";
+import { JoinOrganizationComponent } from "./join-organization/join-organization.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LandingPageComponent,
+    LogoutComponent,
+    JoinOrganizationComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +37,7 @@ import { AuthInterceptor } from "./networking/auth.interceptor";
     AuthModule,
     TodoModule,
     ThemeModule,
+    DashboardModule,
     NetworkTestingModule,
     AppRoutingModule
   ],

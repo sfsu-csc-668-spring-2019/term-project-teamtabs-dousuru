@@ -1,31 +1,55 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager, ProjectManager } from "../../controllers";
-import { Project } from "../../entity";
+import {
+  ProjectQueries,
+  OrganizationQueries,
+  PermissionQueries
+} from "../../queries";
+import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { OrganizationHandler, ProjectHandler } from "../../socket/handlers";
 
 export class PutProject extends AuthenticatedService {
   public getRoute(): string {
-    return "PUT /";
+    return "PUT /:organizationId";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        body: { name, description, isPublic, updatedId, newOwnerId },
-        params: { organizationId }
+        body: { name, description, isPublic },
+        params: { organizationId },
+        user
       } = request;
-      this.validate(
-        name,
-        description,
-        isPublic,
-        organizationId,
-        updatedId,
-        newOwnerId,
-        request
-      )
-        .then(response.json)
-        .catch(_ => response.sendStatus(500));
+      this.validate(name, description, isPublic, organizationId, request)
+        .then(() => this.checkPermission(request, organizationId))
+        .then(() =>
+          ProjectQueries.createProject(
+            name,
+            description,
+            isPublic,
+            request.user.id,
+            organizationId
+          )
+        )
+        .then(results =>
+          /*
+          OrganizationQueries.getOrganizationProjects(
+            user.id,
+            organizationId
+          ).then(data => {
+            OrganizationHandler.getInstance().updateProjects(
+              organizationId,
+              data
+            );
+            ProjectHandler.getInstance().update(results.id.toString(), results);
+            */
+          response.json(results)
+        )
+        .catch(err => {
+          console.error(err);
+          response.sendStatus(500);
+        });
     };
   }
 
@@ -34,43 +58,35 @@ export class PutProject extends AuthenticatedService {
     description: string,
     isPublic: boolean,
     organizationId: number,
-    updatedId: number,
-    newOwnerId: number,
     request: AuthRequest
-  ): Promise<Project> {
-    if (request.user) {
-      OrganizationManager.userIsAuthorized(
-        request.user.id,
-        organizationId
-      ).then(userIsAuthorized => {
-        if (userIsAuthorized) {
-          if (undefined !== updatedId) {
-            return Promise.resolve(
-              ProjectManager.updateProject(
-                request.user.id,
-                updatedId,
-                name,
-                description,
-                isPublic,
-                newOwnerId
-              )
-            );
-          } else {
-            return Promise.resolve(
-              ProjectManager.createProject(
-                name,
-                description,
-                isPublic,
-                organizationId,
-                request.user.id
-              )
-            );
-          }
-        }
-        return Promise.reject();
-      });
-    } else {
-      return Promise.reject();
-    }
+  ): Promise<User> {
+    return new Promise((resolve, reject) => {
+      if (request.user && name && description && isPublic && organizationId) {
+        resolve(request.user);
+      } else {
+        reject();
+      }
+    });
+  }
+
+  public checkPermission(
+    request: AuthRequest,
+    organizationId: number
+  ): Promise<any> {
+    console.log("check permission");
+    return PermissionQueries.checkOrganizationPost(
+      request.user.id,
+      organizationId
+    );
+  }
+
+  public createProject(
+    name: string,
+    description: string,
+    isPublic: boolean,
+    ownerId: number,
+    organizationId: number
+  ) {
+    return;
   }
 }

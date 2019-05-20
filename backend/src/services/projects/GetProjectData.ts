@@ -1,39 +1,53 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { UserManager, ProjectManager } from "../../controllers";
-import { Project } from "../../entity";
+import { ProjectQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class GetProjectData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /id/:projectId";
+    return "GET /:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { projectId }
+        params: { id },
+        user
       } = request;
       (request: AuthRequest, response: Response) =>
-        this.validate(request, projectId)
-          .then(response.json)
+        this.validate(request, id)
+          .then(_ => this.checkPermission(request, id))
+          .then(_ => ProjectQueries.getProject(id))
+          .then(project => {
+            ProjectHandler.getInstance().join(
+              id,
+              user.id.toString(),
+              user.username
+            );
+            response.json(project);
+          })
           .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(request: AuthRequest, projectId: number): Promise<Project> {
-    if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
-        userCanAccess => {
-          if (userCanAccess) {
-            return Promise.resolve(ProjectManager.getProject(projectId));
-          } else {
-            return Promise.reject();
-          }
-        }
-      );
-    } else {
+  public validate(request: AuthRequest, id: number): Promise<any> {
+    if (!request.user || !id) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return PermissionQueries.checkProjectPermission(request.user.id, id).then(
+      hasPermission => {
+        if (hasPermission) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject();
+        }
+      }
+    );
   }
 }

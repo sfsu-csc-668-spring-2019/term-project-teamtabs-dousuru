@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostUserSearchContents extends AuthenticatedService {
@@ -21,6 +21,6 @@ export class PostUserSearchContents extends AuthenticatedService {
   }
 
   public validate(userId: number, name: string): Promise<JSON> {
-    return Promise.resolve(UserManager.getContentsByName(userId, name));
+    return Promise.resolve(UserQueries.getContentsByName(userId, name));
   }
 }

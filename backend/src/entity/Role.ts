@@ -28,13 +28,19 @@ export class Role extends BaseEntity {
   canPost: boolean;
 
   @ManyToOne(type => Organization, organization => organization.roles, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
+    nullable: true
   })
   organization: Organization;
 
-  @ManyToOne(type => Project, project => project.roles, { onDelete: "CASCADE" })
+  @ManyToOne(type => Project, project => project.roles, {
+    onDelete: "CASCADE",
+    nullable: true
+  })
   project: Project;
 
-  @ManyToMany(type => User, user => user.roles)
+  @ManyToMany(type => User, user => user.roles, {
+    onDelete: "CASCADE"
+  })
   users: User[];
 }

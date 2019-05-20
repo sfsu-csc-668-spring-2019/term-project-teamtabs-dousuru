@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 
 export class PutUserUpdate extends Service {
   public getRoute(): string {
@@ -15,7 +15,7 @@ export class PutUserUpdate extends Service {
     ) => {
       this.validate(displayName, username, icon, id)
         .then(_ => {
-          UserManager.updateAccount(displayName, icon, id).then(results => {
+          UserQueries.updateAccount(displayName, icon, id).then(results => {
             response.send(results);
           });
         })

@@ -1,44 +1,50 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
-import { Organization } from "../../entity";
+import { OrganizationQueries, PermissionQueries } from "../../queries";
+import { User } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { OrganizationHandler } from "../../socket/handlers";
 
 export class GetOrganizationData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /id/:organizationId";
+    return "GET /:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: AuthRequest, response: Response, __: NextFunction) => {
-      const {
-        params: { organizationId }
-      } = request;
-      this.validate(request, organizationId)
-        .then(response.json)
+    return (
+      { params: { id }, user }: AuthRequest,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(user)
+        .then(_ => this.checkPermission(user, id))
+        .then(_ => OrganizationQueries.getOrganization(id))
+        .then(organization => {
+          OrganizationHandler.getInstance().join(
+            id,
+            user.id.toString(),
+            user.username
+          );
+          response.json(organization);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(
-    request: AuthRequest,
-    organizationId: number
-  ): Promise<Organization> {
-    if (request.user) {
-      OrganizationManager.userIsAuthorized(
-        request.user.id,
-        organizationId
-      ).then(userIsAuthorized => {
-        if (userIsAuthorized) {
-          return Promise.resolve(
-            OrganizationManager.getOrganization(request.user.id, organizationId)
-          );
-        } else {
-          return Promise.reject();
-        }
-      });
-    } else {
+  public validate(user: User): Promise<any> {
+    if (!user) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(user: User, id: number): Promise<any> {
+    return PermissionQueries.checkOrganizationPermission(user.id, id).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }

@@ -43,6 +43,9 @@ export class TaskHandler {
   }
 
   public join(taskId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.taskSockets.get(taskId)) {
       this.taskSockets.set(taskId, new Map());
     }
@@ -68,9 +71,15 @@ export class TaskHandler {
       );
   }
 
-  public chat(taskId: string, message: string): void {
+  public chat(taskId: string, message: any): void {
     this.taskSockets
       .get(taskId)
       .forEach(userSocket => userSocket.emit(`task:${taskId}:chat`, message));
+  }
+
+  public update(taskId: string, data: any): void {
+    this.taskSockets
+      .get(taskId)
+      .forEach(userSocket => userSocket.emit(`task:${taskId}:update`, data));
   }
 }

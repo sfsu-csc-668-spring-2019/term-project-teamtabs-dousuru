@@ -1,9 +1,7 @@
 <div class="chat-container" [ngClass]="{ collapsed: collapsed }">
-  <div class="chat-header">
+  <div class="chat-header" (click)="toggleCollapsed()">
     <h3>Chat</h3>
-    <button (click)="toggleCollapsed()">
-      <fa-icon [icon]="collapsed ? upArrow : downArrow"></fa-icon>
-    </button>
+    <fa-icon [icon]="collapsed ? upArrow : downArrow"></fa-icon>
   </div>
   <div class="chat-body">
     <p>test</p>

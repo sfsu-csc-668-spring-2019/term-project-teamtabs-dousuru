@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { UserManager } from "../../controllers";
+import { UserQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 import { User } from "../../entity";
 
@@ -22,7 +22,7 @@ export class GetUserContact extends AuthenticatedService {
 
   public validate(ownerId: number, request: AuthRequest): Promise<User[]> {
     if (request.user && request.user.id === ownerId) {
-      return Promise.resolve(UserManager.getContacts(ownerId));
+      return Promise.resolve(UserQueries.getContacts(ownerId));
     } else {
       return Promise.reject();
     }

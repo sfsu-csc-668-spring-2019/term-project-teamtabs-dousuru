@@ -1,0 +1,13 @@
+<h3>{{ list.name }}</h3>
+<p>{{ list.description }}</p>
+<hr />
+<ul>
+  <li>
+    <app-task-detail *ngFor="let task of tasks" [task]="task"></app-task-detail>
+  </li>
+  <li>
+    <button (click)="addTask()">
+      Add Task
+    </button>
+  </li>
+</ul>

@@ -1,31 +1,27 @@
-import { GetOrganizationChatlogData } from "./GetOrganizationChatlogData";
-import { GetOrganizationConfiguration } from "./GetOrganizationConfiguration";
-import { GetOrganizationData } from "./GetOrganizationData";
-import { GetOrganizationNotification } from "./GetOrganizationNotification";
-import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
-import { PostOrganizationConfiguration } from "./PostOrganizationConfiguration";
-import { PutOrganization } from "./PutOrganization";
 import { DeleteOrganization } from "./DeleteOrganization";
-import { PostOrganizationInvite } from "./PostOrganizationInvite";
-import { PostOrganizationJoin } from "./PostOrganizationJoin";
+import { GetOrganizationChatlogData } from "./GetOrganizationChatlogData";
+import { GetOrganizationData } from "./GetOrganizationData";
+import { GetOrganizationList } from "./GetOrganizationList";
+import { GetOrganizationInvite } from "./GetOrganizationInvite";
+import { GetOrganizationJoin } from "./GetOrganizationJoin";
 import { PostOrganizationLeave } from "./PostOrganizationLeave";
-import { PostOrganizationLog } from "./PostOrganizationLog";
-import { PostOrganizationNotification } from "./PostOrganizationNotification";
 import { PostOrganizationSearch } from "./PostOrganizationSearch";
+import { PutOrganizationChatlogData } from "./PutOrganizationChatlogData";
+import { PutOrganization } from "./PutOrganization";
+import { PostOrganization } from "./PostOrganization";
+import { GetOrganizationWithInvite } from "./GetOrganizationWithInvite";
 
 export default [
   DeleteOrganization,
   GetOrganizationChatlogData,
-  GetOrganizationConfiguration,
+  GetOrganizationList,
   GetOrganizationData,
-  GetOrganizationNotification,
-  PostOrganizationConfiguration,
-  PostOrganizationInvite,
-  PostOrganizationJoin,
+  GetOrganizationInvite,
+  GetOrganizationJoin,
   PostOrganizationLeave,
-  PostOrganizationLog,
-  PostOrganizationNotification,
   PostOrganizationSearch,
   PutOrganizationChatlogData,
-  PutOrganization
+  PutOrganization,
+  PostOrganization,
+  GetOrganizationWithInvite
 ];

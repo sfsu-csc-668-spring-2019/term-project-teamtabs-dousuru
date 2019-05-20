@@ -1,23 +1,74 @@
+$background: #222;
+$foreground: #efefef;
 .organizations {
   width: 100%;
   height: 100%;
-  background-color: #3d9970;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  background-color: $background;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+$border-thickness: 3px;
+%list-item {
+  border: $border-thickness solid transparent;
+  border-radius: 50%;
+
+  width: 5rem;
+  height: 5rem;
+  margin: 0.2rem auto;
 }
 
 .org-image {
-  $border-radius: 3px;
-  border-radius: 50%;
+  @extend %list-item;
   object-fit: cover;
-  margin: 0.2rem auto;
-  width: 5rem;
-  height: 5rem;
-  border: $border-radius solid transparent;
 
-  &.active {
-    border-color: white;
+  transition: border-color 0.25s;
+  &:hover {
+    border-color: rgba($color: $foreground, $alpha: 0.5);
   }
 
+  &.selected {
+    transition: border-color 0.25s ease-in-out;
+    border-color: $foreground;
+  }
+}
+
+.add-button {
+  @extend %list-item;
+  color: $foreground;
+  font-size: 1.3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: $border-thickness solid $foreground;
+
+  transition: all 0.25s ease-in-out;
   &:hover {
-    border-color: #ddd;
+    $hover-color: $foreground;
+    background-color: $hover-color;
+    color: $background;
+  }
+}
+
+.organization {
+  position: relative;
+  .organization-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #1284e6;
+    color: $foreground;
+    font-size: 0.5rem;
+    font-weight: bold;
   }
 }

@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { SecretsService } from "../controllers/SecretsService";
+import { SecretsService } from "./SecretsService";
 import { User } from "../entity";
 
 export default async function authenticate(

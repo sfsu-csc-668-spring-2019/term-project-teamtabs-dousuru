@@ -1,31 +1,55 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import {
+  OrganizationQueries,
+  UserQueries,
+  PermissionQueries
+} from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
+import { UserHandler } from "../../socket/handlers";
+import { Organization, User } from "../../entity";
 
 export class DeleteOrganization extends AuthenticatedService {
   public getRoute(): string {
-    return "DELETE /id/:organizationId";
+    return "DELETE /:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
-    return (request: AuthRequest, response: Response, __: NextFunction) => {
-      const {
-        params: { organizationId }
-      } = request;
-      this.validate(organizationId, request)
-        .then(_ => response.sendStatus(200))
+    return (
+      { params: { id }, user }: AuthRequest,
+      response: Response,
+      __: NextFunction
+    ) => {
+      this.validate(user)
+        .then(_ => this.checkPermission(user, id))
+        .then(_ => OrganizationQueries.deleteOrganization(user.id, id))
+        .then(_ => UserQueries.getOrganizations(user.id))
+        .then((data: Organization[]) => {
+          UserHandler.getInstance().update(
+            user.id.toString(),
+            "dasboard",
+            data
+          );
+          response.sendStatus(200);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(organizationId: number, request: AuthRequest): Promise<void> {
-    if (request.user) {
-      return Promise.resolve(
-        OrganizationManager.deleteOrganization(request.user.id, organizationId)
-      );
-    } else {
+  public validate(user: User): Promise<void> {
+    if (!user) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(user: User, id: number): Promise<any> {
+    return PermissionQueries.checkOrganizationManage(user.id, id).then(
+      results => {
+        if (results) return Promise.resolve();
+        return Promise.reject();
+      }
+    );
   }
 }

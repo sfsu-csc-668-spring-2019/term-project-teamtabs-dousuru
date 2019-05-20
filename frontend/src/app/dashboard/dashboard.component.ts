@@ -16,7 +16,7 @@ export class DashboardComponent {
   collapsed = false;
   gridInfo: ToggleDescriptor = {
     on: { gridTemplateColumns: "0rem 0% 1fr" },
-    off: { gridTemplateColumns: "5rem 20% 1fr" }
+    off: { gridTemplateColumns: "6rem 20% 1fr" }
   };
 
   faChevronLeft = faChevronLeft;
@@ -26,11 +26,5 @@ export class DashboardComponent {
 
   toggleCollapsed() {
     this.collapsed = !this.collapsed;
-  }
-
-  test() {
-    this.api.getOrganizations().subscribe(data => {
-      console.log(data);
-    });
   }
 }

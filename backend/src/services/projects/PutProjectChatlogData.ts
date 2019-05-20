@@ -1,8 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager, UserManager } from "../../controllers";
+import { MessageQueries, PermissionQueries } from "../../queries";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { ProjectHandler } from "../../socket/handlers";
 
 export class PutProjectChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -16,7 +17,10 @@ export class PutProjectChatlogData extends AuthenticatedService {
         params: { projectId }
       } = request;
       this.validate(projectId, partitions, updateId, request)
-        .then(response.json)
+        .then(data => {
+          ProjectHandler.getInstance().chat(projectId, data);
+          response.sendStatus(200);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
@@ -28,16 +32,16 @@ export class PutProjectChatlogData extends AuthenticatedService {
     request: AuthRequest
   ): Promise<Message> {
     if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
+      PermissionQueries.checkOrganizationPost(request.user.id, projectId).then(
         userIsMember => {
           if (userIsMember) {
             if (undefined !== updateId) {
               return Promise.resolve(
-                MessageManager.updateMessage(updateId, partitions)
+                MessageQueries.updateMessage(updateId, partitions)
               );
             }
             return Promise.resolve(
-              MessageManager.createProjectMessage(
+              MessageQueries.createProjectMessage(
                 request.user.id,
                 projectId,
                 partitions

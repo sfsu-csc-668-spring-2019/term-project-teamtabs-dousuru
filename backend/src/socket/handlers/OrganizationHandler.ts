@@ -47,6 +47,9 @@ export class OrganizationHandler {
   }
 
   public join(organizationId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.organizationSockets.get(organizationId)) {
       this.organizationSockets.set(organizationId, new Map());
     }
@@ -76,11 +79,25 @@ export class OrganizationHandler {
     );
   }
 
-  public chat(organizationId: string, message: string): void {
+  public chat(organizationId: string, message: any): void {
     this.organizationSockets
       .get(organizationId)
       .forEach(userSocket =>
         userSocket.emit(`organization:${organizationId}:chat`, message)
+      );
+  }
+  public update(organizationId: string, data: any): void {
+    this.organizationSockets
+      .get(organizationId)
+      .forEach(userSocket =>
+        userSocket.emit(`organization:${organizationId}:update`, data)
+      );
+  }
+  public updateProjects(organizationId: string, data: any): void {
+    this.organizationSockets
+      .get(organizationId)
+      .forEach(userSocket =>
+        userSocket.emit(`organization:${organizationId}:update:projects`, data)
       );
   }
 }

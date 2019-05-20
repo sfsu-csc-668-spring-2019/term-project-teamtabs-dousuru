@@ -1,8 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager } from "../../controllers";
+import { MessageQueries } from "../../queries";
 import { Message } from "../../entity";
 import { AuthRequest } from "../../types/AuthRequest";
+import { UserHandler } from "../../socket/handlers";
 
 export class PutUserChatlogData extends AuthenticatedService {
   public getRoute(): string {
@@ -16,7 +17,10 @@ export class PutUserChatlogData extends AuthenticatedService {
         params: { userId: ownerId, chatId: receiverId }
       } = request;
       this.validate(ownerId, receiverId, partitions, updateId, request)
-        .then(response.json)
+        .then(message => {
+          UserHandler.getInstance().chat(ownerId, receiverId, message);
+          response.json(message);
+        })
         .catch(_ => response.sendStatus(500));
     };
   }
@@ -31,11 +35,11 @@ export class PutUserChatlogData extends AuthenticatedService {
     if (request.user && request.user.id === ownerId) {
       if (undefined !== updateId) {
         return Promise.resolve(
-          MessageManager.updateMessage(updateId, partitions)
+          MessageQueries.updateMessage(updateId, partitions)
         );
       }
       return Promise.resolve(
-        MessageManager.createUserMessage(ownerId, receiverId, partitions)
+        MessageQueries.createUserMessage(ownerId, receiverId, partitions)
       );
     } else {
       return Promise.reject();

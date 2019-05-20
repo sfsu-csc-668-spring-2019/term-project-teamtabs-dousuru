@@ -1,40 +1,43 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { MessageManager, UserManager } from "../../controllers";
-import { Message } from "../../entity";
+import { MessageQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class GetProjectChatlogData extends AuthenticatedService {
   public getRoute(): string {
-    return "GET /id/:projectId/chatlog";
+    return "GET /chatlog/:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        params: { projectId }
+        params: { id }
       } = request;
-      this.validate(request, projectId)
-        .then(response.json)
+      this.validate(request, id)
+        .then(_ => this.checkPermission(request, id))
+        .then(_ => MessageQueries.getProjectMessages(id))
+        .then(messages => response.json(messages))
         .catch(_ => response.sendStatus(500));
     };
   }
 
-  public validate(request: AuthRequest, projectId: number): Promise<Message[]> {
-    if (request.user) {
-      UserManager.getUserHasAccessToProject(request.user.id, projectId).then(
-        userCanAccess => {
-          if (userCanAccess) {
-            return Promise.resolve(
-              MessageManager.getProjectMessages(projectId)
-            );
-          } else {
-            return Promise.reject();
-          }
-        }
-      );
-    } else {
+  public validate(request: AuthRequest, id: number): Promise<any> {
+    if (!request.user || !id) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return PermissionQueries.checkProjectPermission(request.user.id, id).then(
+      userHasPermission => {
+        if (userHasPermission) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject();
+        }
+      }
+    );
   }
 }

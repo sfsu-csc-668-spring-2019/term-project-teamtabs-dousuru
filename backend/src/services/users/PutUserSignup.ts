@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Service, IMiddlewareFunction } from "..";
-import { SecretsService } from "../../controllers/SecretsService";
-import { UserManager } from "../../controllers";
+import { SecretsService } from "../../middleware/SecretsService";
+import { UserQueries } from "../../queries";
 
 export class PutUserSignup extends Service {
   public getRoute(): string {
@@ -17,7 +17,7 @@ export class PutUserSignup extends Service {
       this.validate(email, password, username)
         .then(_ => SecretsService.encrypt(password))
         .then(encryptedPassword =>
-          UserManager.createAccount(email, encryptedPassword, username, icon)
+          UserQueries.createAccount(email, encryptedPassword, username, icon)
         )
         .then(({ id }) =>
           response.json({ token: SecretsService.createToken(id) })

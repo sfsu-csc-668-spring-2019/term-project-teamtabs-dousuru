@@ -1,0 +1,5 @@
+<div class="row">
+  <input type="checkbox" />
+  <p (click)="toggleExpanded()">{{ task.name }}</p>
+</div>
+<p [hidden]="!expanded">{{ task.description }}</p>

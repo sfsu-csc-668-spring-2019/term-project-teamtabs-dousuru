@@ -43,6 +43,9 @@ export class ListHandler {
   }
 
   public join(listId: string, userId: string, username: string): void {
+    if (undefined === this.userSockets.get(userId)) {
+      return;
+    }
     if (undefined === this.listSockets.get(listId)) {
       this.listSockets.set(listId, new Map());
     }
@@ -68,9 +71,23 @@ export class ListHandler {
       );
   }
 
-  public chat(listId: string, message: string): void {
+  public chat(listId: string, message: any): void {
     this.listSockets
       .get(listId)
       .forEach(userSocket => userSocket.emit(`list:${listId}:chat`, message));
+  }
+
+  public update(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket => userSocket.emit(`list:${listId}:update`, data));
+  }
+
+  public updateTasks(listId: string, data: any): void {
+    this.listSockets
+      .get(listId)
+      .forEach(userSocket =>
+        userSocket.emit(`list:${listId}:update:tasks`, data)
+      );
   }
 }

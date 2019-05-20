@@ -1,4 +1,4 @@
-import { SecretsService } from "../controllers/SecretsService";
+import { SecretsService } from "./SecretsService";
 import { User } from "../entity";
 
 export default async function authenticateSocket(token: string): Promise<User> {

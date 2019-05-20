@@ -1,49 +1,48 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
-import { OrganizationManager } from "../../controllers";
+import { OrganizationQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
 export class PostOrganizationSearch extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /id/:organizationId/search";
+    return "POST /search/:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         body: { name },
-        params: { organizationId }
+        params: { id }
       } = request;
-      this.validate(organizationId, name, request)
-        .then(response.json)
+      this.validate(id, name, request)
+        .then(_ => this.checkPermission(request, id))
+        .then(_ =>
+          OrganizationQueries.getContentsByName(request.user.id, id, name)
+        )
+        .then(results => response.json(results))
         .catch(_ => response.sendStatus(500));
     };
   }
 
   public validate(
-    organizationId: number,
+    id: number,
     name: string,
     request: AuthRequest
-  ): Promise<JSON> {
-    if (request.user) {
-      OrganizationManager.userIsAuthorized(
-        request.user.id,
-        organizationId
-      ).then(userIsAuthorized => {
-        if (userIsAuthorized) {
-          return Promise.resolve(
-            OrganizationManager.getContentsByName(
-              request.user.id,
-              organizationId,
-              name
-            )
-          );
-        } else {
-          return Promise.reject();
-        }
-      });
-    } else {
+  ): Promise<any> {
+    if (!request.user || !name) {
       return Promise.reject();
+    } else {
+      return Promise.resolve();
     }
+  }
+
+  public checkPermission(request: AuthRequest, id: number): Promise<any> {
+    return PermissionQueries.checkOrganizationPermission(
+      request.user.id,
+      id
+    ).then(results => {
+      if (results) return Promise.resolve();
+      return Promise.reject();
+    });
   }
 }

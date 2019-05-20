@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IMiddlewareFunction, Service } from "..";
-import { UserManager, OrganizationManager } from "../../controllers";
+import { UserQueries, OrganizationQueries } from "../../queries";
 
 export class GetLandingPage extends Service {
   public getRoute(): string {
@@ -26,7 +26,7 @@ export class GetLandingPage extends Service {
     //Make account
     //UserManager.createAccount(this.email, this.password, this.displayName, this.username, this.icon)
     //Get User info
-    var results = await UserManager.getUserInformation(this.displayName);
+    var results = await UserQueries.getUserInformation(this.displayName);
     //Make Org
     const orgName = "Nifty Org";
     const orgDescription = "The niftiest!";
@@ -38,9 +38,9 @@ export class GetLandingPage extends Service {
     //get Organization
     // var orgResults = await OrganizationManager.getOrganization(1);
 
-    var userorgs = await UserManager.getOrganizations(1);
+    var userorgs = await UserQueries.getOrganizations(1);
 
-    var orgUsers = await OrganizationManager.getOrganizationUsers(1);
+    var orgUsers = await OrganizationQueries.getOrganizationUsers(1);
     response.send(userorgs);
   }
 
@@ -49,15 +49,15 @@ export class GetLandingPage extends Service {
     //UserManager.createAccount(this.email, this.password, this.displayName, this.username, this.icon)
     var results = [];
     //Get User info
-    var userInformation = await UserManager.getUserInformation(
+    var userInformation = await UserQueries.getUserInformation(
       this.displayName
     );
     results.push(userInformation);
 
-    var userOrgs = await UserManager.getOrganizations(this.user_id);
+    var userOrgs = await UserQueries.getOrganizations(this.user_id);
     results.push(userOrgs);
 
-    var userProjects = await UserManager.getOrganizationProjects(
+    var userProjects = await UserQueries.getOrganizationProjects(
       this.user_id,
       userOrgs[0].id
     );
