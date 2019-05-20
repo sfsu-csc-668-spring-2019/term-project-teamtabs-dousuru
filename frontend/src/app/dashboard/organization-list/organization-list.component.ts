@@ -49,9 +49,8 @@ export class OrganizationListComponent implements OnInit {
     this.modal.open(CreateOrganizationComponent);
   }
 
-  openEditMenu() {
-    if (this.dashboardStateService.selectedOrganization.value) {
-      this.modal.open(EditOrganizationComponent);
-    }
+  edit(organization: Organization) {
+    const componentRef = this.modal.open(EditOrganizationComponent);
+    componentRef.instance.organization = organization;
   }
 }

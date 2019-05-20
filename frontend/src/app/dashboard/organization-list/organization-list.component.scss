@@ -48,15 +48,15 @@ $border-thickness: 3px;
   }
 }
 
-.edit-button {
-  @extend %list-item;
-  margin-top: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: gray;
-  font-size: 2rem;
-  &:hover {
+.organization {
+  position: relative;
+  .organization-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #1284e6;
     color: white;
+    font-size: 0.5rem;
+    font-weight: bold;
   }
 }
