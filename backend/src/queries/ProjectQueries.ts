@@ -60,9 +60,15 @@ export class ProjectQueries {
         "baseOrganization.containedProjects"
       ]
     });
-    project.name = name;
-    project.description = description;
-    project.isPublic = isPublic;
+    if (name) {
+      project.name = name;
+    }
+    if (description) {
+      project.description = description;
+    }
+    if (isPublic) {
+      project.isPublic = isPublic;
+    }
     return await project.save();
   }
 
