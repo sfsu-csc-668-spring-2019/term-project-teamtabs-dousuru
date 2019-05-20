@@ -3,9 +3,9 @@ import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { OrganizationQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
 
-export class PostOrganizationInvite extends AuthenticatedService {
+export class GetOrganizationInvite extends AuthenticatedService {
   public getRoute(): string {
-    return "POST /inviteLink/:id";
+    return "GET /inviteLink/:id";
   }
 
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
@@ -14,8 +14,7 @@ export class PostOrganizationInvite extends AuthenticatedService {
         params: { id }
       } = request;
       this.validate(id, request)
-        .then(_ => this.checkPermission(id, request))
-        .then(_ => OrganizationQueries.getInviteLink(request.user.id, id))
+        .then(_ => OrganizationQueries.getInviteLink(id))
         .then(inviteLink => response.json(inviteLink))
         .catch(_ => response.sendStatus(500));
     };

@@ -73,6 +73,10 @@ export class DashboardStateService {
     return this.apiService.updateOrganization(organization);
   }
 
+  getInviteLink(organization: Organization): Observable<string> {
+    return this.apiService.getInviteLink(organization);
+  }
+
   createProject(): Observable<Project> {
     if (!this.selectedOrganization.value) {
       // tslint:disable-next-line: deprecation

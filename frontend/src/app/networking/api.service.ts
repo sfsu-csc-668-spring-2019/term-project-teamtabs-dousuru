@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { Organization, Project, List } from "../models";
 import { environment } from "src/environments/environment";
 
@@ -101,6 +101,19 @@ export class ApiService {
     }
     const url = `${this.apiURL}/list/projectLists/${project}`;
     return this.http.get<List[]>(url);
+  }
+
+  getInviteLink(organization: Organization): Observable<string> {
+    const url = `${this.apiURL}/organization/inviteLink/${organization.id}`;
+    const frontendPath = "/joinOrganization";
+    const location = window.location;
+    const frontendURL = `${location.protocol}//${window.location.host +
+      frontendPath}`;
+    return this.http.get<string>(url).pipe(
+      map(inviteCode => {
+        return frontendURL + `?invite=${inviteCode}`;
+      })
+    );
   }
 }
 
