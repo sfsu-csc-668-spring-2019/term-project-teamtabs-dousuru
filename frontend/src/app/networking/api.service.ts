@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
-import { Organization, Project } from "../models";
+import { Organization, Project, List } from "../models";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -69,6 +69,32 @@ export class ApiService {
     const url = `${this.apiURL}/project/${organization}`;
     const body = { name, isPublic, description };
     return this.http.put<Project>(url, body);
+  }
+
+  createList(
+    projectId: number | Project,
+    name: string,
+    description: string
+  ): Observable<List> {
+    if (typeof projectId !== "number") {
+      projectId = projectId.id;
+    }
+    const url = `${this.apiURL}/list/create`;
+    const body = { name, description, projectId };
+    return this.http.post<List>(url, body);
+  }
+
+  // createTask(
+  //   project: number | Project,
+
+  // )
+
+  getLists(project: number | Project): Observable<List[]> {
+    if (typeof project !== "number") {
+      project = project.id;
+    }
+    const url = `${this.apiURL}/list/projectLists/${project}`;
+    return this.http.get<List[]>(url);
   }
 }
 
