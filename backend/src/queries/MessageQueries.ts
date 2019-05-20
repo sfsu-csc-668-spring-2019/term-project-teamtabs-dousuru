@@ -127,9 +127,12 @@ export class MessageQueries {
   ): Promise<Message[]> {
     try {
       let baseProject = await Project.findOne(projectId, {
-        relations: ["projectMessages", "projectMessages.messagePartitions"]
+        relations: [
+          "projectMessages",
+          "projectMessages.messagePartitions",
+          "projectMessages.owner"
+        ]
       });
-      console.log(baseProject);
       return baseProject.projectMessages;
     } catch (err) {
       console.error(err);
