@@ -40,7 +40,12 @@ import * as Cloudinary from "cloudinary-core";
     ThemeModule,
     DashboardModule,
     NetworkTestingModule,
-    CloudinaryModule.forRoot(Cloudinary, { cloud_name: "dqxyppabj" }),
+    CloudinaryModule.forRoot(Cloudinary, {
+      cloud_name: "dqxyppabj",
+      api_key: "335475344613779",
+      api_secret: "m84lq8TsonIY-hfYXY9z19_7Plw",
+      upload_preset: "dousuru"
+    }),
     AppRoutingModule
   ],
   bootstrap: [AppComponent],

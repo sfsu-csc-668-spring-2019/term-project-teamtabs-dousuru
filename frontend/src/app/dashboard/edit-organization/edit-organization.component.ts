@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Observable } from "rxjs";
-import { Cloudinary } from "@cloudinary/angular-5.x";
-import { DashboardStateService } from "../dashboard-state.service";
+import { HttpClient, HttpBackend } from "@angular/common/http";
 import { FormBuilder } from "@angular/forms";
-import { Organization } from "src/app/models";
+import { Observable, of } from "rxjs";
+import { Cloudinary } from "@cloudinary/angular-5.x";
+import { Organization } from "../../models";
+import { DashboardStateService } from "../dashboard-state.service";
 
 @Component({
   selector: "app-edit-organization",
@@ -14,7 +15,8 @@ export class EditOrganizationComponent implements OnInit {
   constructor(
     private state: DashboardStateService,
     private fb: FormBuilder,
-    private cloudinary: Cloudinary
+    private cloudinary: Cloudinary,
+    private http: HttpBackend
   ) {}
 
   @Input() organization: Organization;
@@ -37,9 +39,12 @@ export class EditOrganizationComponent implements OnInit {
       return;
     }
     const { name, description, icon } = this.formGroup.value;
-    const formData = new FormData();
-    formData.append("icon", icon);
-    console.log(formData);
+    this.upload(icon)
+      .pipe()
+      .toPromise()
+      .then(value => {
+        console.log(value);
+      });
     org.name = name;
     org.description = description;
     org.icon = icon;
@@ -51,9 +56,14 @@ export class EditOrganizationComponent implements OnInit {
       });
   }
 
-  upload() {
+  upload(icon: any): any {
     const cloudName = this.cloudinary.cloudinaryInstance.config().cloud_name;
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-    const data = this.formGroup.value;
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload?upload_preset=dousuru`;
+    console.log(url);
+    const formData = new FormData();
+    formData.append("file", icon);
+    return fetch(url, { method: "POST", body: formData }).then(stuff =>
+      console.log(stuff)
+    );
   }
 }
