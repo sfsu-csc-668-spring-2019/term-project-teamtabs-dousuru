@@ -81,13 +81,13 @@ export class DashboardStateService {
     return this.apiService.getInviteLink(organization);
   }
 
-  createProject(): Observable<Project> {
+  createProject(name, description, isPublic): Observable<Project> {
     if (!this.selectedOrganization.value) {
       // tslint:disable-next-line: deprecation
       return of();
     }
     const org = this.selectedOrganization.value;
-    return this.apiService.createProject(org, "new project", "asdf", true);
+    return this.apiService.createProject(org, name, description, isPublic);
   }
 
   updateProject(project: Project): Observable<Project> {
