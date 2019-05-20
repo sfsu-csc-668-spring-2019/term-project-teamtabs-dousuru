@@ -33,6 +33,7 @@ export class PutProject extends AuthenticatedService {
           )
         )
         .then(results =>
+          /*
           OrganizationQueries.getOrganizationProjects(
             user.id,
             organizationId
@@ -42,8 +43,8 @@ export class PutProject extends AuthenticatedService {
               data
             );
             ProjectHandler.getInstance().update(results.id.toString(), results);
-            response.json(results);
-          })
+            */
+          response.json(results)
         )
         .catch(err => {
           console.error(err);
@@ -71,20 +72,12 @@ export class PutProject extends AuthenticatedService {
   public checkPermission(
     request: AuthRequest,
     organizationId: number
-  ): Promise<void> {
+  ): Promise<any> {
     console.log("check permission");
-    return PermissionQueries.checkOrganizationPermission(
+    return PermissionQueries.checkOrganizationPost(
       request.user.id,
       organizationId
-    ).then(hasPermission => {
-      if (hasPermission) {
-        console.log("cool");
-        return Promise.resolve();
-      } else {
-        console.log("not cool");
-        return Promise.reject();
-      }
-    });
+    );
   }
 
   public createProject(

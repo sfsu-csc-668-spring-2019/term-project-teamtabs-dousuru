@@ -15,7 +15,6 @@ export class PostListCreate extends AuthenticatedService {
         body: { name, description, projectId }
       } = request;
       this.validate(name, description, projectId, request).then(_ => {
-        console.log("got here");
         ListQueries.createList(name, description, projectId)
           .then(list => {
             response.json(list);
