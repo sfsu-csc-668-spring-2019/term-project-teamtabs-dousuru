@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 
 import { Project } from "../../../models/Project";
-import { ProjectDetailService } from "../project-detail.service";
 import { Observable } from "rxjs";
 
 @Component({

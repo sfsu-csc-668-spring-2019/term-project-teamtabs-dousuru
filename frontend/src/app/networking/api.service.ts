@@ -66,15 +66,15 @@ export class ApiService {
   }
 
   createList(
-    project: number | Project,
+    projectId: number | Project,
     name: string,
     description: string
   ): Observable<List> {
-    if (typeof project !== "number") {
-      project = project.id;
+    if (typeof projectId !== "number") {
+      projectId = projectId.id;
     }
     const url = `${this.apiURL}/list/create`;
-    const body = { name, description, project };
+    const body = { name, description, projectId };
     return this.http.post<List>(url, body);
   }
 
