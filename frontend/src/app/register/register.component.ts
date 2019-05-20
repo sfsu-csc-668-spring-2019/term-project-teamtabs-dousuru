@@ -22,13 +22,11 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       email: ["", Validators.required],
       username: ["", Validators.required],
-      displayname: [""],
       password: ["", Validators.required]
     });
   }
 
   onSubmit(): void {
-    console.log(this.registerForm);
     const { email, username, password } = this.registerForm.value;
     this.authService
       .createAccount(username, email, password)
