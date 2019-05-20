@@ -6,36 +6,28 @@ export class ProjectHandler {
   private userSockets: Map<string, Socket>;
   private userProjects: Map<string, string[]>;
 
-  private constructor(
-    projectSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userProjects: Map<string, string[]>
-  ) {
+  private constructor(userSockets: Map<string, Socket>) {
     if (ProjectHandler._instance) {
       throw new Error(
         "Instantiation failed: use ProjectHandler.getInstance() instead of new."
       );
     }
-    this.projectSockets = projectSockets;
+    this.projectSockets = new Map();
+    this.userProjects = new Map();
     this.userSockets = userSockets;
-    this.userProjects = userProjects;
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
     this.chat = this.chat.bind(this);
     ProjectHandler._instance = this;
   }
 
-  public static initializeInstance(
-    projectSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userProjects: Map<string, string[]>
-  ): void {
+  public static initializeInstance(userSockets: Map<string, Socket>): void {
     if (ProjectHandler._instance) {
       throw new Error(
         "Instantiation failed: instance has already been initiated."
       );
     }
-    new ProjectHandler(projectSockets, userSockets, userProjects);
+    new ProjectHandler(userSockets);
   }
 
   public static getInstance(): ProjectHandler {
@@ -71,6 +63,16 @@ export class ProjectHandler {
       .forEach(userSocket =>
         userSocket.emit(`project:${projectId}:leave`, { userId, username })
       );
+  }
+
+  public disconnect(userId: string): void {
+    const projects = this.userProjects.get(userId);
+    if (projects) {
+      projects.map(projectId =>
+        this.projectSockets.get(projectId).delete(userId)
+      );
+    }
+    this.userProjects.delete(userId);
   }
 
   public chat(projectId: string, message: any): void {

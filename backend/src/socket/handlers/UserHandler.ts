@@ -28,6 +28,10 @@ export class UserHandler {
     return UserHandler._instance;
   }
 
+  public disconnect(userId: string): void {
+    this.sockets.delete(userId);
+  }
+
   public chat(userId: string, room: string, message: any): void {
     const socket = this.sockets.get(userId);
     if (socket) {

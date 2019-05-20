@@ -6,36 +6,28 @@ export class TaskHandler {
   private userSockets: Map<string, Socket>;
   private userTasks: Map<string, string[]>;
 
-  private constructor(
-    taskSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userTasks: Map<string, string[]>
-  ) {
+  private constructor(userSockets: Map<string, Socket>) {
     if (TaskHandler._instance) {
       throw new Error(
         "Instantiation failed: use TaskHandler.getInstance() instead of new."
       );
     }
-    this.taskSockets = taskSockets;
+    this.taskSockets = new Map();
+    this.userTasks = new Map();
     this.userSockets = userSockets;
-    this.userTasks = userTasks;
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
     this.chat = this.chat.bind(this);
     TaskHandler._instance = this;
   }
 
-  public static initializeInstance(
-    taskSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userTasks: Map<string, string[]>
-  ): void {
+  public static initializeInstance(userSockets: Map<string, Socket>): void {
     if (TaskHandler._instance) {
       throw new Error(
         "Instantiation failed: instance has already been initiated."
       );
     }
-    new TaskHandler(taskSockets, userSockets, userTasks);
+    new TaskHandler(userSockets);
   }
 
   public static getInstance(): TaskHandler {
@@ -69,6 +61,14 @@ export class TaskHandler {
       .forEach(userSocket =>
         userSocket.emit(`task:${taskId}:leave`, { userId, username })
       );
+  }
+
+  public disconnect(userId: string): void {
+    const tasks = this.userTasks.get(userId);
+    if (tasks) {
+      tasks.map(taskId => this.taskSockets.get(taskId).delete(userId));
+    }
+    this.userTasks.delete(userId);
   }
 
   public chat(taskId: string, message: any): void {

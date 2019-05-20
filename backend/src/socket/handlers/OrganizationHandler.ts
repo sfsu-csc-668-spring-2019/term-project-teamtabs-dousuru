@@ -6,40 +6,28 @@ export class OrganizationHandler {
   private userSockets: Map<string, Socket>;
   private userOrganizations: Map<string, string[]>;
 
-  private constructor(
-    organizationSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userOrganizations: Map<string, string[]>
-  ) {
+  private constructor(userSockets: Map<string, Socket>) {
     if (OrganizationHandler._instance) {
       throw new Error(
         "Instantiation failed: use OrganizationHandler.getInstance() instead of new."
       );
     }
-    this.organizationSockets = organizationSockets;
+    this.organizationSockets = new Map();
+    this.userOrganizations = new Map();
     this.userSockets = userSockets;
-    this.userOrganizations = userOrganizations;
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
     this.chat = this.chat.bind(this);
     OrganizationHandler._instance = this;
   }
 
-  public static initializeInstance(
-    organizationSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userOrganizations: Map<string, string[]>
-  ): void {
+  public static initializeInstance(userSockets: Map<string, Socket>): void {
     if (OrganizationHandler._instance) {
       throw new Error(
         "Instantiation failed: instance has already been initiated."
       );
     }
-    new OrganizationHandler(
-      organizationSockets,
-      userSockets,
-      userOrganizations
-    );
+    new OrganizationHandler(userSockets);
   }
 
   public static getInstance(): OrganizationHandler {
@@ -77,6 +65,16 @@ export class OrganizationHandler {
         username
       })
     );
+  }
+
+  public disconnect(userId: string): void {
+    const organizations = this.userOrganizations.get(userId);
+    if (organizations) {
+      organizations.map(organizationId =>
+        this.organizationSockets.get(organizationId).delete(userId)
+      );
+    }
+    this.userOrganizations.delete(userId);
   }
 
   public chat(organizationId: string, message: any): void {
