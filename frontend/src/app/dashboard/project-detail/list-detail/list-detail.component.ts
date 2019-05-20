@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from "@angular/core";
 
 import { List, Task } from "../../../models";
 import { DashboardStateService } from "../../dashboard-state.service";
+import { ModalService } from "src/app/shared/modal.service";
+import { EditListComponent } from "../edit-list/edit-list.component";
 
 @Component({
   selector: "app-list-detail",
@@ -11,7 +13,10 @@ import { DashboardStateService } from "../../dashboard-state.service";
 export class ListDetailComponent implements OnInit {
   tasks: Task[];
 
-  constructor(private dashboardStateService: DashboardStateService) {}
+  constructor(
+    private dashboardStateService: DashboardStateService,
+    private modal: ModalService
+  ) {}
 
   @Input() id: number; // use this to get http id get
   @Input() list: List;
@@ -31,5 +36,10 @@ export class ListDetailComponent implements OnInit {
       .then(task => {
         console.log(task);
       });
+  }
+
+  edit(list: List) {
+    const editRef = this.modal.open(EditListComponent);
+    editRef.instance.list = list;
   }
 }

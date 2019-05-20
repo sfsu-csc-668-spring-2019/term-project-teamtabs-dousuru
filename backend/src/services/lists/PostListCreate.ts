@@ -19,7 +19,10 @@ export class PostListCreate extends AuthenticatedService {
           .then(list => {
             response.json(list);
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            response.sendStatus(500);
+          });
       });
     };
     /*

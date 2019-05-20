@@ -102,11 +102,19 @@ export class DashboardStateService {
     return this.apiService.createList(project, name, description);
   }
 
+  updateList(list: List): Observable<List> {
+    return this.apiService.updateList(list);
+  }
+
   createTask(taskId: number): Observable<Task> {
     if (!this.lists) {
       // don't think this is right
       return of();
     }
     return this.apiService.createTask(taskId, "new task", "description stuffs");
+  }
+
+  updateTask(task: Task): Observable<Task> {
+    return this.apiService.updateTask(task);
   }
 }

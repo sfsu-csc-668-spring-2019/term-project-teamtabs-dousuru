@@ -90,6 +90,12 @@ export class ApiService {
     return this.http.post<List>(url, body);
   }
 
+  updateList(list: List): Observable<List> {
+    const url = `${this.apiURL}/list/update/${list.id}`;
+    const body = list;
+    return this.http.post<List>(url, body);
+  }
+
   createTask(
     listId: number | List,
     name: string,
@@ -101,6 +107,12 @@ export class ApiService {
     console.log(listId, name, description);
     const url = `${this.apiURL}/task/create`;
     const body = { name, description, listId };
+    return this.http.post<Task>(url, body);
+  }
+
+  updateTask(task: Task): Observable<Task> {
+    const url = `${this.apiURL}/task/update/${task.id}`;
+    const body = task;
     return this.http.post<Task>(url, body);
   }
 

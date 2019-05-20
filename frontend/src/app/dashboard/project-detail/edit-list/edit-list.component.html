@@ -1,0 +1,18 @@
+<form class="form" [formGroup]="formGroup" (submit)="save()">
+  <h1>Edit List</h1>
+  <fieldset>
+    <label>
+      Name:
+      <input type="text" placeholder="Name of list" formControlName="name" />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of list"
+        formControlName="description"
+      />
+    </label>
+  </fieldset>
+  <button class="primary block" type="submit">Save</button>
+</form>

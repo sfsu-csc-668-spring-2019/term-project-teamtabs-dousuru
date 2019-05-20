@@ -3,3 +3,4 @@
   <p (click)="toggleExpanded()">{{ task.name }}</p>
 </div>
 <p [hidden]="!expanded">{{ task.description }}</p>
+<button class="edit-button" (click)="edit()">Edit task</button>

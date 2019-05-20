@@ -18,7 +18,13 @@ export class PostTaskUpdate extends AuthenticatedService {
       this.validate(taskId, request)
         .then(_ => this.checkPermission(taskId, request))
         .then(_ => TaskQueries.updateTask(taskId, name, description, completed))
-        .then(updatedTask => {
+        .then(updatedTask => response.json(updatedTask))
+        .catch(err => {
+          console.log(err);
+          response.sendStatus(500);
+        });
+    };
+    /*{
           const listId = updatedTask.baseList.id;
           ListQueries.getTasks(listId).then(tasks => {
             ListHandler.getInstance().updateTasks(listId.toString(), tasks);
@@ -28,6 +34,7 @@ export class PostTaskUpdate extends AuthenticatedService {
         })
         .catch(err => response.json(err));
     };
+    */
   }
 
   public validate(taskId: number, request: AuthRequest): Promise<void> {
