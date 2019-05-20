@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { Cloudinary } from "@cloudinary/angular-5.x";
 import { Organization } from "../../models";
 import { DashboardStateService } from "../dashboard-state.service";
+import { ImageUploaderService } from "src/app/networking/image-uploader.service";
 
 @Component({
   selector: "app-edit-organization",
@@ -15,8 +16,7 @@ export class EditOrganizationComponent implements OnInit {
   constructor(
     private state: DashboardStateService,
     private fb: FormBuilder,
-    private cloudinary: Cloudinary,
-    private http: HttpClient
+    private imageUploader: ImageUploaderService
   ) {}
 
   @Input() organization: Organization;
@@ -39,8 +39,7 @@ export class EditOrganizationComponent implements OnInit {
     const file = event.target.files[0];
     this.upload(file)
       .toPromise()
-      .then(value => {
-        const url = value.secure_url;
+      .then(url => {
         this.imageLink = url;
       })
       .finally(() => {
@@ -68,13 +67,8 @@ export class EditOrganizationComponent implements OnInit {
       });
   }
 
-  upload(icon: any): Observable<any> {
-    const cloudName = this.cloudinary.cloudinaryInstance.config().cloud_name;
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload?upload_preset=dousuru`;
-    console.log(url);
-    const formData = new FormData();
-    formData.append("file", icon);
-    return this.http.post(url, formData);
+  upload(icon: any): Observable<string> {
+    return this.imageUploader.upload(icon);
   }
 
   delete() {
