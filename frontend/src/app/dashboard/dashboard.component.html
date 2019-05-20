@@ -5,11 +5,14 @@
   gsapDuration="0.3"
 >
   <app-organization-list></app-organization-list>
-  <app-projects-list class="sidebar"></app-projects-list>
-  <div class="main">
+  <app-projects-list class="sidebar" *ngIf="active()"></app-projects-list>
+  <div class="main" *ngIf="active()">
     <button (click)="toggleCollapsed()" class="collapse-button">
       <fa-icon [icon]="collapsed ? faChevronRight : faChevronLeft"></fa-icon>
     </button>
     <app-project-detail></app-project-detail>
+  </div>
+  <div *ngIf="!active()" class="landing-page">
+    <app-dashboard-homepage></app-dashboard-homepage>
   </div>
 </div>

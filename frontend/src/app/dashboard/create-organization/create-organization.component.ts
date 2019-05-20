@@ -1,7 +1,11 @@
 import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
-import { DashboardStateService } from "../dashboard-state.service";
+import { Observable } from "rxjs";
+import { Cloudinary } from "@cloudinary/angular-5.x";
 import { ModalService } from "src/app/shared/modal.service";
+import { DashboardStateService } from "../dashboard-state.service";
+import { HttpClient } from "@angular/common/http";
+import { ImageUploaderService } from "src/app/networking/image-uploader.service";
 
 @Component({
   selector: "app-create-organization",
@@ -12,22 +16,24 @@ export class CreateOrganizationComponent {
   constructor(
     private fb: FormBuilder,
     private state: DashboardStateService,
-    private modal: ModalService
+    private modal: ModalService,
+    private imageUploader: ImageUploaderService
   ) {}
 
   errorMessage: string;
+  uploading = false;
+  imageLink: string;
 
   formGroup = this.fb.group({
     name: ["", Validators.required],
-    description: ["", Validators.required],
-    icon: ["", Validators.required]
+    description: ["", Validators.required]
   });
 
   onSubmit() {
-    if (this.formGroup.valid) {
-      const { name, description, icon } = this.formGroup.value;
+    if (this.formGroup.valid && !this.uploading && this.imageLink) {
+      const { name, description } = this.formGroup.value;
       this.state
-        .createOrganization(name, description, icon)
+        .createOrganization(name, description, this.imageLink)
         .toPromise()
         .then(org => {
           console.log(org);
@@ -36,5 +42,22 @@ export class CreateOrganizationComponent {
     } else {
       this.errorMessage = "Make sure all fields are valid";
     }
+  }
+
+  upload(icon: any): Observable<string> {
+    return this.imageUploader.upload(icon);
+  }
+
+  changeFile(event) {
+    this.uploading = true;
+    const file = event.target.files[0];
+    this.upload(file)
+      .toPromise()
+      .then(url => {
+        this.imageLink = url;
+      })
+      .finally(() => {
+        this.uploading = false;
+      });
   }
 }

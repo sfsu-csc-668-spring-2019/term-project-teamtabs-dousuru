@@ -6,36 +6,29 @@ export class ListHandler {
   private userSockets: Map<string, Socket>;
   private userLists: Map<string, string[]>;
 
-  private constructor(
-    listSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userLists: Map<string, string[]>
-  ) {
+  private constructor(userSockets: Map<string, Socket>) {
     if (ListHandler._instance) {
       throw new Error(
         "Instantiation failed: use ListHandler.getInstance() instead of new."
       );
     }
-    this.listSockets = listSockets;
+
+    this.listSockets = new Map();
+    this.userLists = new Map();
     this.userSockets = userSockets;
-    this.userLists = userLists;
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
     this.chat = this.chat.bind(this);
     ListHandler._instance = this;
   }
 
-  public static initializeInstance(
-    listSockets: Map<string, Map<string, Socket>>,
-    userSockets: Map<string, Socket>,
-    userLists: Map<string, string[]>
-  ): void {
+  public static initializeInstance(userSockets: Map<string, Socket>): void {
     if (ListHandler._instance) {
       throw new Error(
         "Instantiation failed: instance has already been initiated."
       );
     }
-    new ListHandler(listSockets, userSockets, userLists);
+    new ListHandler(userSockets);
   }
 
   public static getInstance(): ListHandler {
@@ -69,6 +62,14 @@ export class ListHandler {
       .forEach(userSocket =>
         userSocket.emit(`list:${listId}:leave`, { userId, username })
       );
+  }
+
+  public disconnect(userId: string): void {
+    const lists = this.userLists.get(userId);
+    if (lists) {
+      lists.map(listId => this.listSockets.get(listId).delete(userId));
+    }
+    this.userLists.delete(userId);
   }
 
   public chat(listId: string, message: any): void {

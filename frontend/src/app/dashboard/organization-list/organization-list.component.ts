@@ -7,6 +7,7 @@ import { ModalService } from "src/app/shared/modal.service";
 import { CreateOrganizationComponent } from "../create-organization/create-organization.component";
 import { map } from "rxjs/operators";
 import { EditOrganizationComponent } from "../edit-organization/edit-organization.component";
+import { SelectionModel } from "@angular/cdk/collections";
 
 @Component({
   selector: "app-organization-list",
@@ -30,7 +31,8 @@ export class OrganizationListComponent implements OnInit {
     this.dashboardStateService.fetchOrganizations();
   }
 
-  selectOrganization(id: number) {
+  selectOrganization(e: Event, id: number) {
+    e.stopPropagation();
     this.dashboardStateService.setSelectedOrganization(id);
   }
 
@@ -45,12 +47,18 @@ export class OrganizationListComponent implements OnInit {
     );
   }
 
-  addOrganization() {
+  addOrganization(e: Event) {
+    e.stopPropagation();
     this.modal.open(CreateOrganizationComponent);
   }
 
-  edit(organization: Organization) {
+  edit(e: Event, organization: Organization) {
+    e.stopPropagation();
     const componentRef = this.modal.open(EditOrganizationComponent);
     componentRef.instance.organization = organization;
+  }
+
+  clear() {
+    this.dashboardStateService.clearSelected();
   }
 }

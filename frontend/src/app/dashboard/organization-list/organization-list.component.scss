@@ -39,6 +39,8 @@ $border-thickness: 3px;
     transition: border-color 0.25s ease-in-out;
     border-color: $foreground;
   }
+  cursor: pointer;
+  z-index: 500;
 }
 
 .add-button {
@@ -58,6 +60,8 @@ $border-thickness: 3px;
     background-color: $hover-color;
     color: $background;
   }
+  cursor: pointer;
+  z-index: 500;
 }
 
 .organization {

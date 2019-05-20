@@ -18,7 +18,8 @@ export class ModalService {
     const ref = this.overlay.create({
       positionStrategy: position,
       disposeOnNavigation: true,
-      hasBackdrop: true
+      hasBackdrop: true,
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
     const portal = new ComponentPortal(component);
     const portalRef = ref.attach(portal);

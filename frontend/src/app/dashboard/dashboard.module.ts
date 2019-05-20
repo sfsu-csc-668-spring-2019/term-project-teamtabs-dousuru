@@ -21,6 +21,8 @@ import { CreateListComponent } from "./project-detail/create-list/create-list.co
 import { CreateTaskComponent } from "./project-detail/create-task/create-task.component";
 import { EditListComponent } from "./project-detail/edit-list/edit-list.component";
 import { EditTaskComponent } from "./project-detail/edit-task/edit-task.component";
+import { DashboardHomepageComponent } from "./dashboard-homepage/dashboard-homepage.component";
+import { CreateProjectComponent } from "./create-project/create-project.component";
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { EditTaskComponent } from "./project-detail/edit-task/edit-task.componen
     CreateListComponent,
     CreateTaskComponent,
     EditListComponent,
-    EditTaskComponent
+    EditTaskComponent,
+    DashboardHomepageComponent,
+    CreateProjectComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +60,9 @@ import { EditTaskComponent } from "./project-detail/edit-task/edit-task.componen
     EditProjectComponent,
     CreateListComponent,
     EditListComponent,
-    EditTaskComponent
+    EditTaskComponent,
+    CreateProjectComponent,
+    EditProjectComponent
   ]
 })
 export class DashboardModule {}
