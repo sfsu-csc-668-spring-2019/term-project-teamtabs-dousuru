@@ -78,21 +78,29 @@ export class DashboardStateService {
     return this.apiService.updateOrganization(organization);
   }
 
+  deleteOrganization(organization: Organization): Observable<void> {
+    return this.apiService.deleteOrganization(organization);
+  }
+
   getInviteLink(organization: Organization): Observable<string> {
     return this.apiService.getInviteLink(organization);
   }
 
-  createProject(): Observable<Project> {
+  createProject(name, description, isPublic): Observable<Project> {
     if (!this.selectedOrganization.value) {
       // tslint:disable-next-line: deprecation
       return of();
     }
     const org = this.selectedOrganization.value;
-    return this.apiService.createProject(org, "new project", "asdf", true);
+    return this.apiService.createProject(org, name, description, isPublic);
   }
 
   updateProject(project: Project): Observable<Project> {
     return this.apiService.updateProject(project);
+  }
+
+  deleteProject(project: Project): Observable<void> {
+    return this.apiService.deleteProject(project);
   }
 
   setSelectedProject(project: Project) {

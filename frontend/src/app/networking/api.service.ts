@@ -33,6 +33,11 @@ export class ApiService {
     return this.http.post<Organization>(url, body);
   }
 
+  deleteOrganization(organization: Organization): Observable<void> {
+    const url = `${this.apiURL}/organization/${organization.id}`;
+    return this.http.delete<void>(url);
+  }
+
   createAccount(
     email: string,
     username: string,
@@ -75,6 +80,11 @@ export class ApiService {
     const url = `${this.apiURL}/project/update/${project.id}`;
     const body = project;
     return this.http.post<Project>(url, body);
+  }
+
+  deleteProject(project: Project): Observable<void> {
+    const url = `${this.apiURL}/project/${project.id}`;
+    return this.http.delete<void>(url);
   }
 
   createList(

@@ -60,9 +60,15 @@ export class ProjectQueries {
         "baseOrganization.containedProjects"
       ]
     });
-    project.name = name;
-    project.description = description;
-    project.isPublic = isPublic;
+    if (name) {
+      project.name = name;
+    }
+    if (description) {
+      project.description = description;
+    }
+    if (isPublic) {
+      project.isPublic = isPublic;
+    }
     return await project.save();
   }
 
@@ -73,7 +79,10 @@ export class ProjectQueries {
     let project = await Project.findOne(projectId, { relations: ["owner"] });
     if (project.owner.id === ownerId) {
       await Project.delete(projectId);
-    } else return Promise.reject();
+      return Promise.resolve();
+    } else {
+      return Promise.reject();
+    }
   }
 
   public static async changeOwner(

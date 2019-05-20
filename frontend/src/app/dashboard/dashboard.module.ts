@@ -18,6 +18,7 @@ import { UsersListComponent } from "./users-list/users-list.component";
 import { EditOrganizationComponent } from "./edit-organization/edit-organization.component";
 import { EditProjectComponent } from "./edit-project/edit-project.component";
 import { DashboardHomepageComponent } from "./dashboard-homepage/dashboard-homepage.component";
+import { CreateProjectComponent } from "./create-project/create-project.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { DashboardHomepageComponent } from "./dashboard-homepage/dashboard-homep
     UsersListComponent,
     EditOrganizationComponent,
     EditProjectComponent,
-    DashboardHomepageComponent
+    DashboardHomepageComponent,
+    CreateProjectComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { DashboardHomepageComponent } from "./dashboard-homepage/dashboard-homep
   entryComponents: [
     CreateOrganizationComponent,
     EditOrganizationComponent,
+    CreateProjectComponent,
     EditProjectComponent
   ]
 })

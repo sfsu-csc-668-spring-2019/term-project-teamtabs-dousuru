@@ -5,6 +5,7 @@ import { DashboardStateService } from "../dashboard-state.service";
 import { Project } from "src/app/models";
 import { ModalService } from "src/app/shared/modal.service";
 import { EditProjectComponent } from "../edit-project/edit-project.component";
+import { CreateProjectComponent } from "../create-project/create-project.component";
 
 @Component({
   selector: "app-projects-list",
@@ -30,12 +31,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   addProject() {
-    this.state
-      .createProject()
-      .toPromise()
-      .then(proj => {
-        console.log(proj);
-      });
+    this.modal.open(CreateProjectComponent);
   }
 
   select(project: Project) {

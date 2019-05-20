@@ -24,11 +24,18 @@
     <label>
       Icon:
       <input
-        type="text"
+        type="file"
         placeholder="Icon of organization"
-        formControlName="icon"
+        (change)="changeFile($event)"
       />
     </label>
   </fieldset>
+  <img
+    *ngIf="imageLink"
+    [src]="imageLink"
+    alt="the image you uploaded"
+    class="upload-image"
+  />
+  <button class="delete-button" (click)="delete()" type="button">Delete</button>
   <button class="primary block" type="submit">Save</button>
 </form>
