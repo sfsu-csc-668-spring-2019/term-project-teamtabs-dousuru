@@ -34,27 +34,28 @@ export class OrganizationQueries {
   }
 
   public static async updateOrganization(
-    ownerId: number,
+    currentUserId: number,
     organizationId: number,
     name: string,
     description: string,
-    icon: string,
-    newOwnerId: number
+    icon: string
   ): Promise<Organization> {
     let organization = await Organization.findOne(organizationId, {
       relations: ["owner"]
     });
-    if (organization.owner.id !== ownerId) {
+    if (organization.owner.id !== currentUserId) {
       throw new Error(
         "Error: organization update is only accessable for organization owner"
       );
     }
-    organization.name = name;
-    organization.description = description;
-    organization.icon = icon;
-    if (newOwnerId !== ownerId) {
-      let newOwner = await User.findOne(newOwnerId);
-      organization.owner = newOwner;
+    if (name) {
+      organization.name = name;
+    }
+    if (description) {
+      organization.description = description;
+    }
+    if (icon) {
+      organization.icon = icon;
     }
     organization = await organization.save();
     return organization;
