@@ -50,9 +50,7 @@ export class ProjectQueries {
     projectId: number,
     name: string,
     description: string,
-    isPublic: boolean,
-    newOwnerId: number,
-    userId: number
+    isPublic: boolean
   ): Promise<Project> {
     let project = await Project.findOne(projectId, {
       relations: [
@@ -64,11 +62,6 @@ export class ProjectQueries {
     project.name = name;
     project.description = description;
     project.isPublic = isPublic;
-
-    if (newOwnerId && project.owner.id == userId) {
-      let newOwner = await User.findOne(newOwnerId);
-      project.owner = newOwner;
-    }
     return await project.save();
   }
 

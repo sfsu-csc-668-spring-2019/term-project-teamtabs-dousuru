@@ -6,8 +6,10 @@
         *ngFor="let list of lists | async"
         [list]="list"
       ></app-list-detail>
-      <div>
-        <button (click)="addList()">Add New</button>
+      <div class="centered">
+        <button class="add-project-detail" (click)="addList()">
+          Add List
+        </button>
       </div>
     </div>
     <app-chat class="chat"></app-chat>

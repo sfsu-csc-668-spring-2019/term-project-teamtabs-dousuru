@@ -1,50 +1,62 @@
+$background: #222;
+$foreground: #efefef;
 .organizations {
   width: 100%;
   height: 100%;
-  background-color: #222;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   text-align: center;
+
+  background-color: $background;
+
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 $border-thickness: 3px;
 %list-item {
+  border: $border-thickness solid transparent;
   border-radius: 50%;
-  margin: 0.2rem auto;
+
   width: 5rem;
   height: 5rem;
-  border: $border-thickness solid transparent;
+  margin: 0.2rem auto;
 }
 
 .org-image {
   @extend %list-item;
   object-fit: cover;
 
+  transition: border-color 0.25s;
   &:hover {
-    border-color: rgba($color: white, $alpha: 0.5);
+    border-color: rgba($color: $foreground, $alpha: 0.5);
   }
 
   &.selected {
-    border-color: white;
+    transition: border-color 0.25s ease-in-out;
+    border-color: $foreground;
   }
 }
 
 .add-button {
   @extend %list-item;
+  color: $foreground;
   font-size: 1.3rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border: $border-thickness solid white;
-  color: white;
 
+  border: $border-thickness solid $foreground;
+
+  transition: all 0.25s ease-in-out;
   &:hover {
-    $hover-color: white;
+    $hover-color: $foreground;
     background-color: $hover-color;
-    color: #222;
-    transition: all 0.2s ease-in;
+    color: $background;
   }
 }
 
@@ -55,7 +67,7 @@ $border-thickness: 3px;
     top: 0;
     right: 0;
     background-color: #1284e6;
-    color: white;
+    color: $foreground;
     font-size: 0.5rem;
     font-weight: bold;
   }

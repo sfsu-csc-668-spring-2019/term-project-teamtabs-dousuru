@@ -8,18 +8,24 @@
 
 .organizations {
   grid-area: organizations;
-  overflow: scroll;
+
+  width: 100%;
+  min-height: 100%;
 }
 
 .projects {
   grid-area: projects;
-  overflow: scroll;
+
+  width: 100%;
+  min-height: 100%;
 }
 
 .main {
   grid-area: main;
   position: relative;
-  overflow: scroll;
+
+  width: 100%;
+  min-height: 100%;
 
   .collapse-button {
     position: absolute;
