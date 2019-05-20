@@ -94,16 +94,12 @@ export class DashboardStateService {
     this.selectedProject.next(project);
   }
 
-  createList(): Observable<List> {
+  createList(name: string, description: string): Observable<List> {
     if (!this.selectedProject.value) {
       return of();
     }
     const project = this.selectedProject.value;
-    return this.apiService.createList(
-      project,
-      "new list",
-      "description stuffs"
-    );
+    return this.apiService.createList(project, name, description);
   }
 
   createTask(taskId: number): Observable<Task> {

@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { UsersListComponent } from "./users-list/users-list.component";
 import { EditOrganizationComponent } from "./edit-organization/edit-organization.component";
 import { EditProjectComponent } from "./edit-project/edit-project.component";
+import { CreateListComponent } from "./project-detail/create-list/create-list.component";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EditProjectComponent } from "./edit-project/edit-project.component";
     TaskDetailComponent,
     UsersListComponent,
     EditOrganizationComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    CreateListComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { EditProjectComponent } from "./edit-project/edit-project.component";
   entryComponents: [
     CreateOrganizationComponent,
     EditOrganizationComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    CreateListComponent
   ]
 })
 export class DashboardModule {}
