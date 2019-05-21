@@ -1,0 +1,39 @@
+<form class="form" [formGroup]="formGroup" (submit)="onSubmit()">
+  <h1>Create a new organization</h1>
+  <fieldset>
+    <label>
+      Name:
+      <input
+        type="text"
+        placeholder="Name of organization"
+        formControlName="name"
+      />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of organization"
+        formControlName="description"
+      />
+    </label>
+    <label>
+      Icon:
+      <input
+        type="file"
+        placeholder="Icon of organization"
+        (change)="changeFile($event)"
+      />
+    </label>
+  </fieldset>
+  <img
+    *ngIf="imageLink"
+    [src]="imageLink"
+    alt="the image you uploaded"
+    class="upload-image"
+  />
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+  <button class="primary block" type="submit">Create</button>
+</form>

@@ -1,0 +1,8 @@
+<label for="todo-filter">
+  Filter:
+  <select [formControl]="dropdown" id="todo-filter">
+    <option *ngFor="let filter of filters" [value]="filter.value">{{
+      filter.name
+    }}</option>
+  </select>
+</label>

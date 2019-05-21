@@ -1,0 +1,14 @@
+<h3>{{ list.name }}</h3>
+<p>{{ list.description }}</p>
+<hr />
+<ul>
+  <li>
+    <app-task-detail *ngFor="let task of tasks" [task]="task"></app-task-detail>
+  </li>
+  <li class="row">
+    <button (click)="addTask()" class="button">
+      Add Task
+    </button>
+    <button class="edit-button button" (click)="edit(list)">Edit list</button>
+  </li>
+</ul>

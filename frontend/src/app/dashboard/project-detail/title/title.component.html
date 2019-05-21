@@ -1,0 +1,4 @@
+<div>
+  <h1 *ngIf="project | async">{{ (project | async).name }}</h1>
+  <p *ngIf="project | async">{{ (project | async).description }}</p>
+</div>

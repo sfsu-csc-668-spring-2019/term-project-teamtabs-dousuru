@@ -1,0 +1,17 @@
+<div class="project-detail">
+  <div *ngIf="shouldDisplay$ | async">
+    <app-title class="title" [project]="project"></app-title>
+    <div class="list">
+      <app-list-detail
+        *ngFor="let list of lists | async"
+        [list]="list"
+      ></app-list-detail>
+      <div class="centered">
+        <button class="add-project-detail" (click)="addList()">
+          Add List
+        </button>
+      </div>
+    </div>
+    <app-chat class="chat"></app-chat>
+  </div>
+</div>

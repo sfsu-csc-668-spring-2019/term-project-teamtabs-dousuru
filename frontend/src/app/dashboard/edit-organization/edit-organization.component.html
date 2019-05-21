@@ -1,0 +1,41 @@
+<form class="form" [formGroup]="formGroup" (submit)="save()">
+  <h1>Edit organization</h1>
+  <p>
+    Invite Link:
+    <input [value]="inviteLink | async" [contentEditable]="false" />
+  </p>
+  <fieldset>
+    <label>
+      Name:
+      <input
+        type="text"
+        placeholder="Name of organization"
+        formControlName="name"
+      />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of organization"
+        formControlName="description"
+      />
+    </label>
+    <label>
+      Icon:
+      <input
+        type="file"
+        placeholder="Icon of organization"
+        (change)="changeFile($event)"
+      />
+    </label>
+  </fieldset>
+  <img
+    *ngIf="imageLink"
+    [src]="imageLink"
+    alt="the image you uploaded"
+    class="upload-image"
+  />
+  <button class="delete-button" (click)="delete()" type="button">Delete</button>
+  <button class="primary block" type="submit">Save</button>
+</form>

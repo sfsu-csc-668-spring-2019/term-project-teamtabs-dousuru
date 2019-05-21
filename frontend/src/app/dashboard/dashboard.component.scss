@@ -1,0 +1,50 @@
+.dashboard {
+  position: relative;
+
+  width: 100%;
+  min-height: 100%;
+
+  display: grid;
+  grid-template-columns: 5rem 20% 1fr;
+  grid-template-areas: "organizations projects main";
+}
+
+.organizations {
+  grid-area: organizations;
+
+  width: 100%;
+  min-height: 100%;
+}
+
+.projects {
+  grid-area: projects;
+
+  width: 100%;
+  min-height: 100%;
+}
+
+.main {
+  grid-area: main;
+  position: relative;
+
+  width: 100%;
+  min-height: 100%;
+
+  .collapse-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0;
+    height: 1.3rem;
+    width: 1.3rem;
+    box-shadow: 2px 2px 2px #444;
+    z-index: 999;
+  }
+}
+
+.landing-page {
+  position: absolute;
+  grid-area: projects;
+  width: calc(100vw - 6em);
+  height: 100%;
+}

@@ -1,0 +1,15 @@
+<div class="chat-container" [ngClass]="{ collapsed: collapsed }">
+  <div class="chat-header" (click)="toggleCollapsed()">
+    <h3>Chat</h3>
+    <fa-icon [icon]="collapsed ? upArrow : downArrow"></fa-icon>
+  </div>
+  <div class="chat-body">
+    <p *ngFor="let message of messages | async" class="message">
+      {{ getText(message) }}
+    </p>
+  </div>
+  <form class="input-box" [formGroup]="messageForm" (submit)="sendMessage()">
+    <input type="text" formControlName="message" />
+    <button type="submit">Send</button>
+  </form>
+</div>

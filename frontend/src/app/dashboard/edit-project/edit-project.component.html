@@ -1,0 +1,23 @@
+<form class="form" [formGroup]="formGroup" (submit)="save()">
+  <h1>Edit Project</h1>
+  <fieldset>
+    <label>
+      Name:
+      <input
+        type="text"
+        placeholder="Name of organization"
+        formControlName="name"
+      />
+    </label>
+    <label>
+      Description:
+      <input
+        type="text"
+        placeholder="Description of organization"
+        formControlName="description"
+      />
+    </label>
+  </fieldset>
+  <button class="delete-button" (click)="delete()" type="button">Delete</button>
+  <button class="primary block" type="submit">Save</button>
+</form>
