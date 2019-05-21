@@ -1,7 +1,21 @@
+$primary: #1284e6;
+
 .check {
   display: inline;
 }
 
 .root {
   margin: 1rem;
+}
+
+.edit-button {
+  color: $primary;
+  background-color: transparent;
+  border: 2px solid $primary;
+
+  &:hover {
+    color: white;
+    background-color: $primary;
+    transition: 0.2s all;
+  }
 }
