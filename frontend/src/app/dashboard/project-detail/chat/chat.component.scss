@@ -44,6 +44,11 @@ $background: #e4e4e4;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  padding: 0.2rem;
+}
+
+.message {
+  margin: 0.5rem;
 }
 
 .input-box {

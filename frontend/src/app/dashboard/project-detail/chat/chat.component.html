@@ -4,7 +4,7 @@
     <fa-icon [icon]="collapsed ? upArrow : downArrow"></fa-icon>
   </div>
   <div class="chat-body">
-    <p *ngFor="let message of messages | async">
+    <p *ngFor="let message of messages | async" class="message">
       {{ getText(message) }}
     </p>
   </div>
