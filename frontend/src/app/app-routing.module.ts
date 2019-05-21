@@ -10,7 +10,7 @@ import { LogoutComponent } from "./logout/logout.component";
 import { JoinOrganizationComponent } from "./join-organization/join-organization.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "/dashboard", pathMatch: "full" },
+  { path: "", component: HomepageComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "todo", component: TodoComponent },
