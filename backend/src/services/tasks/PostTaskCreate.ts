@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { AuthenticatedService, IAuthenticatedMiddlewareFunction } from "..";
 import { TaskQueries, ListQueries, PermissionQueries } from "../../queries";
 import { AuthRequest } from "../../types/AuthRequest";
-import { ListHandler } from "../../socket/handlers";
+import { ListHandler, TaskHandler } from "../../socket/handlers";
 
 export class PostTaskCreate extends AuthenticatedService {
   public getRoute(): string {
@@ -12,13 +12,30 @@ export class PostTaskCreate extends AuthenticatedService {
   public authenticatedExecute(): IAuthenticatedMiddlewareFunction {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
-        body: { name, description, listId }
+        body: { name, description, listId },
+        user
       } = request;
       this.validate(name, description, listId, request)
         .then(_ => TaskQueries.createTask(name, description, listId))
-        .then(task => response.json(task))
-        // ListQueries.getTasks(listId).then(tasks => {
-        //   ListHandler.getInstance().updateTasks(listId, tasks);
+        .then(task =>
+          ListQueries.getTasks(listId).then(tasks => {
+            ListHandler.getInstance().join(
+              listId.toString(),
+              user.id.toString(),
+              user.username
+            );
+            ListHandler.getInstance().updateTasks(listId.toString(), tasks);
+            tasks.forEach(task =>
+              TaskHandler.getInstance().join(
+                task.id.toString(),
+                user.id.toString(),
+                user.username
+              )
+            );
+            response.json(task);
+          })
+        )
+
         .catch(err => response.json(500));
     };
   }

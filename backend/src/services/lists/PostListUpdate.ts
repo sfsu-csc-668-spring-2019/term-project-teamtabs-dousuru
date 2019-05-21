@@ -13,14 +13,25 @@ export class PostListUpdate extends AuthenticatedService {
     return (request: AuthRequest, response: Response, __: NextFunction) => {
       const {
         params: { listId },
-        body: { name, description }
+        body: { name, description },
+        user
       } = request;
       this.validate(listId, name, description, request)
         .then(_ => {
           ListQueries.update(name, description, listId).then(results => {
             const projectId = results.baseProjectId;
             ProjectQueries.getLists(projectId).then(data => {
+              ProjectHandler.getInstance().join(
+                projectId,
+                user.id.toString(),
+                user.username
+              );
               ProjectHandler.getInstance().updateLists(projectId, data);
+              ListHandler.getInstance().join(
+                results.id,
+                user.id.toString(),
+                user.username
+              );
               ListHandler.getInstance().update(results.id, results);
               response.json(results);
             });

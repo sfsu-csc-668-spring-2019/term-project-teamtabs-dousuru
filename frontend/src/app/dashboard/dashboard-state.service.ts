@@ -83,9 +83,7 @@ export class DashboardStateService {
     );
   };
 
-  onProjectListUpdate = data => {
-    console.log("jerererer");
-    console.log(data);
+  onOrganizationProjectsUpdate = _ => {
     this.setSelectedOrganization(this.selectedOrganization.value.id);
   };
 
@@ -112,7 +110,7 @@ export class DashboardStateService {
     this.selectedOrganization.next(selectedOrg);
     this.socket.on(
       `organization:${id}:update:projects`,
-      this.onProjectListUpdate
+      this.onOrganizationProjectsUpdate
     );
   }
 

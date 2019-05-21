@@ -19,6 +19,11 @@ export class PostListCreate extends AuthenticatedService {
         ListQueries.createList(name, description, projectId)
           .then(list =>
             ProjectQueries.getLists(projectId).then(lists => {
+              ProjectHandler.getInstance().join(
+                projectId,
+                user.id.toString(),
+                user.username
+              );
               ProjectHandler.getInstance().updateLists(projectId, lists);
               ListHandler.getInstance().join(
                 list.id.toString(),
